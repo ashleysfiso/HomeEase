@@ -61,7 +61,7 @@ namespace HomeEase.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("login")]
         public async Task<IActionResult> LogIn([FromBody] LoginDto loginDto)
         {
             if(!ModelState.IsValid)

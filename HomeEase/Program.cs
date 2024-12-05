@@ -1,5 +1,7 @@
 using HomeEase.Data;
+using HomeEase.Interfaces;
 using HomeEase.Models;
+using HomeEase.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,6 +26,8 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
     options.Password.RequiredLength = 8;
 })
 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
 
 
 var app = builder.Build();
