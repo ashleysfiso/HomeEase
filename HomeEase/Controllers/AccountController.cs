@@ -1,4 +1,5 @@
-﻿using HomeEase.Dtos;
+﻿using HomeEase.Data;
+using HomeEase.Dtos;
 using HomeEase.Dtos.AccountDtos;
 using HomeEase.Models;
 using Microsoft.AspNetCore.Identity;
@@ -7,21 +8,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HomeEase.Controllers
 {
-    [Route("HomeEase/Account")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : Controller
+    public class AccountController : ControllerBase
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly ApplicationDbContext   _context;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
         }
-
-        [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
+        //This endpoint allows users of the app to register without the adim
+        [HttpPost("register/customers")]
+        public async Task<IActionResult> RegisterCustomer([FromBody] RegisterDto registerDto)
         {
             if(!ModelState.IsValid)
             {
@@ -40,14 +43,75 @@ namespace HomeEase.Controllers
 
             if(createdUser.Succeeded)
             {
-                var roleResults = await _userManager.AddToRoleAsync(appUser , "User");
+                var roleResults = await _userManager.AddToRoleAsync(appUser , "Customer");
                 if(roleResults.Succeeded)
                 {
+                    //Adding user to a customer table
+                    var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == registerDto.Email);
+                    if(user != null)
+                    {
+                        var customer = new Customer { UserId = user.Id };
+                        await _context.Customers.AddAsync(customer);
+                        await _context.SaveChangesAsync();
+                    }
                     return Ok(
                         new NewUserDto
                         {
                             UserName = appUser.UserName,
-                            Email = appUser.Email
+                            Email = appUser.Email,
+                            UserId = user.Id
+                            
+                        });
+                }
+                else
+                {
+                    return StatusCode(500, roleResults.Errors);
+                }
+            }
+            else
+            {
+                return StatusCode(500, createdUser.Errors);
+            }
+        }
+        //This endpoint must be available to admins to register service providers
+        [HttpPost("register/service-providers")]
+        public async Task<IActionResult> RegisterServicerProvider([FromBody] NewServiceProviderDto serviceProviderDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid data");
+            }
+
+            var appUser = new AppUser
+            {
+                UserName = serviceProviderDto.Username,
+                Email = serviceProviderDto.Email,
+                PhoneNumber = serviceProviderDto.PhoneNumber,
+
+            };
+
+            var createdUser = await _userManager.CreateAsync(appUser, serviceProviderDto.Password);
+
+            if (createdUser.Succeeded)
+            {
+                var roleResults = await _userManager.AddToRoleAsync(appUser, "ServiceProvider");
+                if (roleResults.Succeeded)
+                {
+                    //Adding user to a service-provider table
+                    var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == serviceProviderDto.Email);
+                    if (user != null)
+                    {
+                        var serviceProvider = new Models.ServiceProvider { UserId = user.Id, CompanyName = serviceProviderDto.CompanyName};
+                        await _context.ServiceProviders.AddAsync(serviceProvider);
+                        await _context.SaveChangesAsync();
+                    }
+                    return Ok(
+                        new NewUserDto
+                        {
+                            UserName = appUser.UserName,
+                            Email = appUser.Email,
+                            UserId = user.Id
+
                         });
                 }
                 else
@@ -86,7 +150,8 @@ namespace HomeEase.Controllers
                 new NewUserDto
                 {
                     Email = user.Email,
-                    UserName = user.UserName
+                    UserName = user.UserName,
+                    UserId = user.Id
                 });
         }
         
