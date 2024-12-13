@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HomeEase.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241204141357_InitialMigrations")]
-    partial class InitialMigrations
+    [Migration("20241210083848_ReviewTableUpdate")]
+    partial class ReviewTableUpdate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -90,6 +90,113 @@ namespace HomeEase.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("HomeEase.Models.Booking", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("BookingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ServiceProviderId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TotalCost")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("ServiceProviderId", "ServiceId");
+
+                    b.ToTable("Bookings");
+                });
+
+            modelBuilder.Entity("HomeEase.Models.Customer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Customers");
+                });
+
+            modelBuilder.Entity("HomeEase.Models.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ServiceProviderId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("ServiceProviderId", "ServiceId");
+
+                    b.ToTable("Reviews");
+                });
+
             modelBuilder.Entity("HomeEase.Models.Service", b =>
                 {
                     b.Property<int>("Id")
@@ -101,12 +208,12 @@ namespace HomeEase.Migrations
                     b.Property<decimal>("BasePrice")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("MyProperty")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -115,6 +222,71 @@ namespace HomeEase.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Services");
+                });
+
+            modelBuilder.Entity("HomeEase.Models.ServiceOffering", b =>
+                {
+                    b.Property<int>("ServiceProviderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Availability")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Rate")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("ServiceProviderId", "ServiceId");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("ServiceOfferings");
+                });
+
+            modelBuilder.Entity("HomeEase.Models.ServiceProvider", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CompanyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("Rating")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("ServiceProviders");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -146,15 +318,21 @@ namespace HomeEase.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "da47efb4-a3d6-4ff1-92c7-73b7fe7665f7",
+                            Id = "b20d8b52-8ab9-4247-81e6-d42b77a5d70a",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "b83806ac-7ae7-4a07-ada6-49ee6569b264",
-                            Name = "User",
-                            NormalizedName = "USER"
+                            Id = "342a2da1-9323-42cf-9c11-42277077503e",
+                            Name = "Customer",
+                            NormalizedName = "CUSTOMER"
+                        },
+                        new
+                        {
+                            Id = "b0d1bd64-8da0-4ba9-af14-f078ea5458b2",
+                            Name = "ServiceProvider",
+                            NormalizedName = "SERVICEPROVIDER"
                         });
                 });
 
@@ -264,6 +442,85 @@ namespace HomeEase.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("HomeEase.Models.Booking", b =>
+                {
+                    b.HasOne("HomeEase.Models.Customer", "Customer")
+                        .WithMany("Booking")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HomeEase.Models.ServiceOffering", "ServiceOffering")
+                        .WithMany("Bookings")
+                        .HasForeignKey("ServiceProviderId", "ServiceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("ServiceOffering");
+                });
+
+            modelBuilder.Entity("HomeEase.Models.Customer", b =>
+                {
+                    b.HasOne("HomeEase.Models.AppUser", "User")
+                        .WithOne("Customer")
+                        .HasForeignKey("HomeEase.Models.Customer", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HomeEase.Models.Review", b =>
+                {
+                    b.HasOne("HomeEase.Models.Customer", "Customer")
+                        .WithMany("Reviews")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HomeEase.Models.ServiceOffering", "ServiceOffering")
+                        .WithMany("Reiviews")
+                        .HasForeignKey("ServiceProviderId", "ServiceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("ServiceOffering");
+                });
+
+            modelBuilder.Entity("HomeEase.Models.ServiceOffering", b =>
+                {
+                    b.HasOne("HomeEase.Models.Service", "Service")
+                        .WithMany("ServiceProviderServices")
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HomeEase.Models.ServiceProvider", "ServiceProvider")
+                        .WithMany("ServiceProviderServices")
+                        .HasForeignKey("ServiceProviderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Service");
+
+                    b.Navigation("ServiceProvider");
+                });
+
+            modelBuilder.Entity("HomeEase.Models.ServiceProvider", b =>
+                {
+                    b.HasOne("HomeEase.Models.AppUser", "User")
+                        .WithOne("ServiceProvider")
+                        .HasForeignKey("HomeEase.Models.ServiceProvider", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -313,6 +570,37 @@ namespace HomeEase.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("HomeEase.Models.AppUser", b =>
+                {
+                    b.Navigation("Customer");
+
+                    b.Navigation("ServiceProvider");
+                });
+
+            modelBuilder.Entity("HomeEase.Models.Customer", b =>
+                {
+                    b.Navigation("Booking");
+
+                    b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("HomeEase.Models.Service", b =>
+                {
+                    b.Navigation("ServiceProviderServices");
+                });
+
+            modelBuilder.Entity("HomeEase.Models.ServiceOffering", b =>
+                {
+                    b.Navigation("Bookings");
+
+                    b.Navigation("Reiviews");
+                });
+
+            modelBuilder.Entity("HomeEase.Models.ServiceProvider", b =>
+                {
+                    b.Navigation("ServiceProviderServices");
                 });
 #pragma warning restore 612, 618
         }

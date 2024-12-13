@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HomeEase.Controllers
 {
-    [Route("homeease/services")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class ServiceController : Controller
+    public class ServicesController : Controller
     {
         private readonly IServiceRepository _serviceRepo;
-        public ServiceController(IServiceRepository serviceRepo)
+        public ServicesController(IServiceRepository serviceRepo)
         {
             _serviceRepo = serviceRepo;
         }
