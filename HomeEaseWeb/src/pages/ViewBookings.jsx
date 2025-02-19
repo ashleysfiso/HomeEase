@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -17,56 +17,34 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ChevronDown, ChevronUp } from "lucide-react";
-
-// Mock data for bookings
-const bookings = [
-  {
-    id: 1,
-    service: "Haircut",
-    client: "John Doe",
-    date: "2023-06-15",
-    time: "10:00 AM",
-    status: "Confirmed",
-  },
-  {
-    id: 2,
-    service: "Massage",
-    client: "Jane Smith",
-    date: "2023-06-16",
-    time: "2:00 PM",
-    status: "Pending",
-  },
-  {
-    id: 3,
-    service: "Manicure",
-    client: "Alice Johnson",
-    date: "2023-06-17",
-    time: "11:30 AM",
-    status: "Confirmed",
-  },
-  {
-    id: 4,
-    service: "Facial",
-    client: "Bob Brown",
-    date: "2023-06-18",
-    time: "3:00 PM",
-    status: "Cancelled",
-  },
-  {
-    id: 5,
-    service: "Haircut",
-    client: "Charlie Davis",
-    date: "2023-06-19",
-    time: "9:00 AM",
-    status: "Confirmed",
-  },
-];
+import TableSkeleton from "@/components/TableSkeleton";
+import { useAuth } from "@/contexts/AuthContext";
+import { GetBookingByCustomerId } from "@/api";
 
 export default function ServiceBookingPage() {
-  const [sortColumn, setSortColumn] = React.useState("date");
-  const [sortDirection, setSortDirection] = React.useState("asc");
-  const [searchTerm, setSearchTerm] = React.useState("");
-  const [statusFilter, setStatusFilter] = React.useState("all");
+  const [sortColumn, setSortColumn] = useState("date");
+  const [sortDirection, setSortDirection] = useState("asc");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [bookings, setBookings] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const { user } = useAuth();
+  const customerId = user?.customerID;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const results = await GetBookingByCustomerId(customerId);
+        console.log("bookings", results);
+        setBookings(results);
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const sortedBookings = [...bookings].sort((a, b) => {
     if (a[sortColumn] < b[sortColumn]) return sortDirection === "asc" ? -1 : 1;
@@ -76,7 +54,7 @@ export default function ServiceBookingPage() {
 
   const filteredBookings = sortedBookings.filter(
     (booking) =>
-      booking.client.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      booking.companyName.toLowerCase().includes(searchTerm.toLowerCase()) &&
       (statusFilter === "all" || booking.status === statusFilter)
   );
 
@@ -94,7 +72,7 @@ export default function ServiceBookingPage() {
       <h1 className="text-2xl  text-primary font-bold mb-5">Bookings</h1>
       <div className="flex justify-between mb-4">
         <Input
-          placeholder="Search by client name"
+          placeholder="Search by service provider's name"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="max-w-sm"
@@ -114,17 +92,6 @@ export default function ServiceBookingPage() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">
-              <Button variant="ghost" onClick={() => handleSort("id")}>
-                ID{" "}
-                {sortColumn === "id" &&
-                  (sortDirection === "asc" ? (
-                    <ChevronUp className="ml-2 h-4 w-4" />
-                  ) : (
-                    <ChevronDown className="ml-2 h-4 w-4" />
-                  ))}
-              </Button>
-            </TableHead>
             <TableHead>
               <Button variant="ghost" onClick={() => handleSort("service")}>
                 Service{" "}
@@ -137,9 +104,9 @@ export default function ServiceBookingPage() {
               </Button>
             </TableHead>
             <TableHead>
-              <Button variant="ghost" onClick={() => handleSort("client")}>
-                Client{" "}
-                {sortColumn === "client" &&
+              <Button variant="ghost" onClick={() => handleSort("provider")}>
+                Service Provider{" "}
+                {sortColumn === "provider" &&
                   (sortDirection === "asc" ? (
                     <ChevronUp className="ml-2 h-4 w-4" />
                   ) : (
@@ -183,16 +150,19 @@ export default function ServiceBookingPage() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {filteredBookings.map((booking) => (
-            <TableRow key={booking.id}>
-              <TableCell className="font-medium">{booking.id}</TableCell>
-              <TableCell>{booking.service}</TableCell>
-              <TableCell>{booking.client}</TableCell>
-              <TableCell>{booking.date}</TableCell>
-              <TableCell>{booking.time}</TableCell>
-              <TableCell>{booking.status}</TableCell>
-            </TableRow>
-          ))}
+          {isLoading ? (
+            <TableSkeleton />
+          ) : (
+            filteredBookings.map((booking) => (
+              <TableRow key={booking.id}>
+                <TableCell>{booking.serviceName}</TableCell>
+                <TableCell>{booking.companyName}</TableCell>
+                <TableCell>{booking.bookingDate}</TableCell>
+                <TableCell>{booking.bookingDate}</TableCell>
+                <TableCell>{booking.status}</TableCell>
+              </TableRow>
+            ))
+          )}
         </TableBody>
       </Table>
     </div>

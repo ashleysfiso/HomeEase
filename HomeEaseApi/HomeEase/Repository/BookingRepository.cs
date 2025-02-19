@@ -70,5 +70,25 @@ namespace HomeEase.Repository
 
             return booking;
         }
+
+        public async Task<List<Booking>> GetByCustomerIdAsync(int customerId)
+        {
+            var bookings = await _context.Bookings.Include(b => b.ServiceOffering).ThenInclude(so => so.ServiceProvider)
+                                                  .Include(b => b.ServiceOffering).ThenInclude(so => so.Service)
+                                                  .Include(b => b.Customer).ThenInclude(c => c.User)
+                                                  .Where(b => b.CustomerId == customerId)
+                                                  .ToListAsync();
+            return bookings;
+        }
+
+        public async Task<List<Booking>> GetByServiceProviderIdAsync(int serviceProviderId)
+        {
+            var bookings = await _context.Bookings.Include(b => b.ServiceOffering).ThenInclude(so => so.ServiceProvider)
+                                                  .Include(b => b.ServiceOffering).ThenInclude(so => so.Service)
+                                                  .Include(b => b.Customer).ThenInclude(c => c.User)
+                                                  .Where(b => b.ServiceProviderId == serviceProviderId)
+                                                  .ToListAsync();
+            return bookings;
+        }
     }
 }

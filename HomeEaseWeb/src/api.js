@@ -1,11 +1,10 @@
 import axios from "axios";
+import handleAxiosError from "./utils";
 
 const baseURL = "https://localhost:7234/api/";
 
 export async function loginUser(creds) {
   let data;
-
-  console.log(creds.email);
   await axios
     .post(`${baseURL}Account/login`, {
       email: creds.email,
@@ -16,28 +15,10 @@ export async function loginUser(creds) {
       data = res.data;
     })
     .catch((err) => {
-      console.log(err.data);
-      console.log(err.response.status);
-      if (err.response.status === 401) {
-        throw {
-          message: "Incorrect username or password",
-          status: err.response.status,
-        };
-      } else if (err.request) {
-        // Request was made but no response was received
-        console.error("No response received:", err.request);
-        throw {
-          message: `No response received: ${err.request}`,
-          status: err.response.status,
-        };
-      } else {
-        // Something else caused the error
-        console.error("Error setting up request:", err.message);
-        throw {
-          message: `Error setting up request: ${err.message}`,
-          status: err.response.status,
-        };
-      }
+      const errorMessage = handleAxiosError(err);
+      throw {
+        message: errorMessage,
+      };
     });
 
   return data;
@@ -54,31 +35,14 @@ export async function registerUser(creds) {
       password: creds.password,
     })
     .then((res) => {
-      console.log(res);
+      //console.log(res);
       data = res.data;
     })
     .catch((err) => {
-      console.log(err);
-      if (err.response.status === 500) {
-        throw {
-          message: "Incorrect username or password",
-          status: err.response.status,
-        };
-      } else if (err.request) {
-        // Request was made but no response was received
-        console.error("No response received:", err.request);
-        throw {
-          message: `No response received: ${err.request}`,
-          status: err.response.status,
-        };
-      } else {
-        // Something else caused the error
-        console.error("Error setting up request:", err.message);
-        throw {
-          message: `Error setting up request: ${err.message}`,
-          status: err.response.status,
-        };
-      }
+      const errorMessage = handleAxiosError(err);
+      throw {
+        message: errorMessage,
+      };
     });
 
   return data;
@@ -91,29 +55,13 @@ export async function getServices() {
     .then((res) => {
       data = res.data;
     })
-    .catch((error) => {
-      console.log(error);
-      if (err.response.status === 500) {
-        throw {
-          message: "Incorrect username or password",
-          status: err.response.status,
-        };
-      } else if (err.request) {
-        // Request was made but no response was received
-        console.error("No response received:", err.request);
-        throw {
-          message: `No response received: ${err.request}`,
-          status: err.response.status,
-        };
-      } else {
-        // Something else caused the error
-        console.error("Error setting up request:", err.message);
-        throw {
-          message: `Error setting up request: ${err.message}`,
-          status: err.response.status,
-        };
-      }
+    .catch((err) => {
+      const errorMessage = handleAxiosError(err);
+      throw {
+        message: errorMessage,
+      };
     });
+
   return data;
 }
 
@@ -124,28 +72,11 @@ export async function getServiceById(spId, sId) {
     .then((res) => {
       service = res.data;
     })
-    .catch((error) => {
-      console.log(error);
-      if (err.response.status === 500) {
-        throw {
-          message: "Incorrect username or password",
-          status: err.response.status,
-        };
-      } else if (err.request) {
-        // Request was made but no response was received
-        console.error("No response received:", err.request);
-        throw {
-          message: `No response received: ${err.request}`,
-          status: err.response.status,
-        };
-      } else {
-        // Something else caused the error
-        console.error("Error setting up request:", err.message);
-        throw {
-          message: `Error setting up request: ${err.message}`,
-          status: err.response.status,
-        };
-      }
+    .catch((err) => {
+      const errorMessage = handleAxiosError(err);
+      throw {
+        message: errorMessage,
+      };
     });
 
   return service;
@@ -166,9 +97,29 @@ export async function createBooking(bookingInfo) {
     .then((res) => {
       result = res;
     })
-    .catch((error) => {
-      console.log(error);
+    .catch((err) => {
+      const errorMessage = handleAxiosError(err);
+      throw {
+        message: errorMessage,
+      };
     });
 
   return result;
+}
+
+export async function GetBookingByCustomerId(customerId) {
+  let bookings;
+  await axios
+    .get(`${baseURL}Bookings/customer/${customerId}`)
+    .then((res) => {
+      bookings = res.data;
+    })
+    .catch((err) => {
+      const errorMessage = handleAxiosError(err);
+      throw {
+        message: errorMessage,
+      };
+    });
+
+  return bookings;
 }

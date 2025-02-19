@@ -5,7 +5,7 @@ import Services from "./pages/Services";
 import Contact from "./pages/Contact";
 import About from "./pages/AboutUs";
 import Register, { action as registerAction } from "./pages/account/Register";
-import ServiceBookingPage from "./pages/Bookings";
+import ServiceBookingPage from "./pages/ViewBookings";
 import Login from "./pages/account/Login";
 import { action as loginAction } from "./pages/account/Login";
 import FileNotFound from "./pages/404Page";

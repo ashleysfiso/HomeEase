@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HomeEase")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+98b4602b6c30a3de1f48f5bdddb2dfe13725e83d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5bd491237b1eb42156192e5d87eb1d016a8486ee")]
 [assembly: System.Reflection.AssemblyProductAttribute("HomeEase")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HomeEase")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

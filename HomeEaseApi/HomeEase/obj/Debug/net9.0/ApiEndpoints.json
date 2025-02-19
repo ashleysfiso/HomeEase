@@ -111,6 +111,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "HomeEase.Controllers.BookingsController",
+    "Method": "GetByCustomerId",
+    "RelativePath": "api/Bookings/customer/{customerId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "customerId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "HomeEase.Controllers.CustomerController",
     "Method": "GetAll",
     "RelativePath": "api/Customer",

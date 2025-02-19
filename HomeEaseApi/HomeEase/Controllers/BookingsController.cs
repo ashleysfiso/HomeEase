@@ -31,12 +31,19 @@ namespace HomeEase.Controllers
         {
             var booking = await _bookingRepo.GetByIdAsync(id);
 
-            if(booking == null)
+            if (booking == null)
             {
                 return NotFound("Booking does not exists. Please check the details and try again");
             }
 
             return Ok(booking.ToBookingDto());
+        }
+        [HttpGet("customer/{customerId:int}")]
+        public async Task<IActionResult> GetByCustomerId([FromRoute] int customerId)
+        {
+            var bookings = await _bookingRepo.GetByCustomerIdAsync(customerId);
+            var bookingsDto = bookings.Select(b => b.ToBookingDto());
+            return Ok(bookingsDto);
         }
 
         [HttpPost]

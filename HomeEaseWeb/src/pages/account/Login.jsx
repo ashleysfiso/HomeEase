@@ -24,7 +24,6 @@ export async function action({ request }) {
   try {
     const userData = await loginUser({ email, password });
     setUserInsideAction(userData);
-    console.log(userData);
     return redirect("/");
   } catch (error) {
     return error.message;
