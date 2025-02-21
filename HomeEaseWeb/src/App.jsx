@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./Layouts/Layout";
 import Home from "./pages/Home";
 import Services from "./pages/Services";
-import Contact from "./pages/Contact";
+import ContactPage from "./pages/ContactPage";
 import About from "./pages/AboutUs";
 import Register, { action as registerAction } from "./pages/account/Register";
 import ServiceBookingPage from "./pages/ViewBookings";
@@ -13,6 +13,7 @@ import ServicesErrorPage from "./pages/ServicesErrorPage";
 import CleaningBookingPage, {
   action as bookingAction,
 } from "./pages/CleaningBookingPage";
+import BookingPage from "./pages/BookingPage";
 import { requireAuth } from "./utils";
 
 const router = createBrowserRouter([
@@ -35,7 +36,7 @@ const router = createBrowserRouter([
       },
       {
         path: "contact",
-        element: <Contact />,
+        element: <ContactPage />,
       },
       {
         path: "bookings",
@@ -43,7 +44,7 @@ const router = createBrowserRouter([
       },
       {
         path: "services/booking/:sId/:spId",
-        element: <CleaningBookingPage />,
+        element: <BookingPage />,
         action: bookingAction,
         loader: requireAuth,
       },

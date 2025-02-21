@@ -74,12 +74,12 @@ export default function Header() {
 
   const [isOpen, setOpen] = useState(false);
   return (
-    <header className="w-full z-40 fixed top-0 left-0 bg-background">
+    <header className="w-full px-4 md:px-6 lg:px-8 max-w-7xl mx-auto z-40 fixed top-0 left-0 bg-background">
       <div className="relative mx-auto min-h-10 flex sm:gap-4 flex-row lg:grid lg:grid-cols-3 items-center">
         <div className="flex items-center lg:justify-start">
-          <h4 className="text-xl  tracking-wide leading-tight p-4 font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+          <h3 className="text-2xl  tracking-wide leading-tight p-4 font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
             <Link>HomeEase</Link>
-          </h4>
+          </h3>
         </div>
         <div className="justify-center items-center gap-4 lg:flex hidden flex-row">
           <NavigationMenu className="flex justify-start items-start">

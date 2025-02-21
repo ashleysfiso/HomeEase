@@ -122,8 +122,7 @@
               "RelativeToolTip": "HomeEase\\Controllers\\AccountController.cs",
               "ViewState": "AgIAAEwAAAAAAAAAAAAswKUAAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-01T16:55:46.384Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-01T16:55:46.384Z"
             },
             {
               "$type": "Document",
@@ -147,8 +146,7 @@
               "RelativeToolTip": "HomeEase\\Repository\\BookingRepository.cs",
               "ViewState": "AgIAAEQAAAAAAAAAAAAswFkAAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-11T20:53:23.13Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-11T20:53:23.13Z"
             },
             {
               "$type": "Document",
@@ -168,9 +166,9 @@
               "Title": "BookingsController.cs",
               "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Controllers\\BookingsController.cs",
               "RelativeDocumentMoniker": "HomeEase\\Controllers\\BookingsController.cs",
-              "ToolTip": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Controllers\\BookingsController.cs",
-              "RelativeToolTip": "HomeEase\\Controllers\\BookingsController.cs",
-              "ViewState": "AgIAABgAAAAAAAAAAAAYwCcAAAAJAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Controllers\\BookingsController.cs*",
+              "RelativeToolTip": "HomeEase\\Controllers\\BookingsController.cs*",
+              "ViewState": "AgIAABgAAAAAAAAAAAAYwCYAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-10T18:29:56.326Z",
               "EditorCaption": ""
@@ -185,8 +183,7 @@
               "RelativeToolTip": "HomeEase\\Interfaces\\IBookingRepository.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAA7AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-18T17:41:58.402Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-18T17:41:58.402Z"
             },
             {
               "$type": "Document",
@@ -210,8 +207,7 @@
               "RelativeToolTip": "HomeEase\\Interfaces\\ICustomerRepository.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-10T15:07:00.96Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-10T15:07:00.96Z"
             },
             {
               "$type": "Document",

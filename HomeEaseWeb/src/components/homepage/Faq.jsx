@@ -1,14 +1,10 @@
 import React from "react";
-import { MessageSquare } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 
 export default function Faq() {
   const faq = [
@@ -43,30 +39,27 @@ export default function Faq() {
       <div className="sm:mx-auto">
         <div className="flex p-8 flex-col gap-10">
           <div className="flex text-center justify-center items-center gap-4 flex-col">
-            <Badge variant="outline">FAQ</Badge>
             <div className="flex gap-2 flex-col">
-              <h4 className="text-3xl md:text-5xl tracking-tighter max-w-xl text-center font-regular">
-                HomeEase FAQ
-              </h4>
-              <p className="text-lg leading-relaxed tracking-tight text-muted-foreground max-w-xl text-center">
-                Got questions about how HomeEase works? We've got answers!
-              </p>
-            </div>
-            <div>
-              <Link to="/contact">
-                <Button className="gap-4" variant="outline">
-                  Any questions? Reach out <MessageSquare className="w-4 h-4" />
-                </Button>
-              </Link>
+              <h1 className="text-4xl md:text-5xl text-[#0a2242] font-bold text-center mb-8">
+                Frequently Asked Questions
+              </h1>
             </div>
           </div>
 
-          <div className=" w-full ">
+          <div className="w-full max-w-4xl mx-auto px-4">
             <Accordion type="single" collapsible className="w-full">
               {faq.map((item, index) => (
                 <AccordionItem key={index} value={"index-" + index}>
-                  <AccordionTrigger>{item.question}</AccordionTrigger>
-                  <AccordionContent>{item.answer}</AccordionContent>
+                  <div className="rounded-lg">
+                    <div className="flex-col items-center justify-between w-full">
+                      <AccordionTrigger className="hover:no-underline px-6 py-4 text-lg font-medium">
+                        {item.question}
+                      </AccordionTrigger>
+                      <AccordionContent className="px-6 pb-4 ">
+                        {item.answer}
+                      </AccordionContent>
+                    </div>
+                  </div>
                 </AccordionItem>
               ))}
             </Accordion>
