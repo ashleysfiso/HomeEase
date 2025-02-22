@@ -3,7 +3,7 @@ import Layout from "./Layouts/Layout";
 import Home from "./pages/Home";
 import Services from "./pages/Services";
 import ContactPage from "./pages/ContactPage";
-import About from "./pages/AboutUs";
+import AboutPage from "./pages/AboutUsPage";
 import Register, { action as registerAction } from "./pages/account/Register";
 import ServiceBookingPage from "./pages/ViewBookings";
 import Login from "./pages/account/Login";
@@ -32,7 +32,7 @@ const router = createBrowserRouter([
       },
       {
         path: "about",
-        element: <About />,
+        element: <AboutPage />,
       },
       {
         path: "contact",

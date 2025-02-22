@@ -17,7 +17,7 @@ export default function ContactUs() {
   return (
     <div className="container mx-auto px-4 py-12 max-w-7xl">
       <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-5xl font-bold text-[#0a2242] mb-4">
+        <h1 className="text-4xl md:text-5xl font-bold text-navy-900 mb-4">
           Get in touch with us
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">

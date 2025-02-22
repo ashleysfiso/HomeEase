@@ -40,7 +40,7 @@ export default function Faq() {
         <div className="flex p-8 flex-col gap-10">
           <div className="flex text-center justify-center items-center gap-4 flex-col">
             <div className="flex gap-2 flex-col">
-              <h1 className="text-4xl md:text-5xl text-[#0a2242] font-bold text-center mb-8">
+              <h1 className="text-4xl md:text-5xl text-navy-900 font-bold text-center mb-8">
                 Frequently Asked Questions
               </h1>
             </div>

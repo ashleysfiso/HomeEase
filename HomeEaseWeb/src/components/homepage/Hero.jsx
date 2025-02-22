@@ -1,5 +1,6 @@
-import { ArrowRight, Github } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   return (
@@ -14,7 +15,7 @@ export default function Home() {
         </div>
 
         {/* Main Heading */}
-        <h1 className="text-5xl sm:text-6xl font-bold text-[#0a2242] tracking-tight">
+        <h1 className="text-5xl sm:text-6xl font-bold text-navy-900 tracking-tight">
           Home Services Made{" "}
           <span className="bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-400 bg-clip-text text-transparent">
             Simple & Hassle-Free!
@@ -35,14 +36,19 @@ export default function Home() {
 
         {/* Buttons */}
         <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
-          <Button size="lg" className="gap-2">
-            Book a Service
-            <ArrowRight className="h-4 w-4" />
-          </Button>
-          <Button size="lg" variant="outline" className="gap-2">
-            Contact Us
-            <ArrowRight className="h-4 w-4" />
-          </Button>
+          <Link to="/services">
+            <Button size="lg" className="gap-2">
+              Book a Service
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          </Link>
+
+          <Link to="/contact">
+            <Button size="lg" variant="outline" className="gap-2">
+              Contact Us
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          </Link>
         </div>
       </div>
     </main>
