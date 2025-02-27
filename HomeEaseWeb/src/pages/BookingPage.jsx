@@ -17,7 +17,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
-
 import {
   Refrigerator,
   MicrowaveIcon as Oven,
@@ -28,6 +27,13 @@ import {
   AnvilIcon as Iron,
   Shirt,
 } from "lucide-react";
+import StandardCleaningForm from "@/components/bookings/StandardCleaningForm";
+import OfficeCommercialCleaningForm from "@/components/bookings/OfficeCommercialCleaningForm";
+import SpecializedCleaningForm from "@/components/bookings/SpecializedCleaningForm";
+import PlumbingServicesForm from "@/components/bookings/PlumbingServicesForm";
+import LawnCareForm from "@/components/bookings/LawnCareForm";
+import HandymanForm from "@/components/bookings/HandymanForm";
+import LaundryServicesForm from "@/components/bookings/LaundryServicesForm";
 
 const extraTasks = [
   { id: "fridge", label: "Inside Fridge", price: 50, icon: Refrigerator },
@@ -119,83 +125,32 @@ export default function BookingPage() {
               Get once-off help. Try a new worker. Cancel any time
             </p>
           </div>
+          <h2 className="font-semibold">Add details about your booking</h2>
+
+          {/*Standard cleaning booking form*/}
+          {/*<StandardCleaningForm
+            handleToggle={toggleTask}
+            extras={extraTasks}
+            selectedTasks={selectedTasks}
+          />*/}
+
+          {/*Office/Commercial cleaning booking form*/}
+          {/*<OfficeCommercialCleaningForm />*/}
+
+          {/* Specialized cleaning booking form*/}
+          {/*<SpecializedCleaningForm />*/}
+
+          {/*Plumbing service booking form */}
+          {/*<PlumbingServicesForm />*/}
+
+          {/*Lawn care booking form */}
+          {/*<LawnCareForm />*/}
+
+          <LaundryServicesForm />
+          {/** Handyman booking form */}
+          {/*<HandymanForm />*/}
 
           <div className="space-y-6">
-            <div className="space-y-4">
-              <h2 className="font-semibold">Add details about your booking</h2>
-
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <label className="text-sm">How Tidy is Your Home?</label>
-                  <Select>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Lived-In – Tidy but not perfect" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="tidy">
-                        Lived-In – Tidy but not perfect
-                      </SelectItem>
-                      <SelectItem value="messy">
-                        Needs Work – More attention required
-                      </SelectItem>
-                      <SelectItem value="very-messy">
-                        Deep Clean Needed
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-sm">How big is your home?</label>
-                  <Select>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Extra-Large Home: 325+ m²" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="small">
-                        Small Home: 0-100 m²
-                      </SelectItem>
-                      <SelectItem value="medium">
-                        Medium Home: 100-200 m²
-                      </SelectItem>
-                      <SelectItem value="large">
-                        Large Home: 200-325 m²
-                      </SelectItem>
-                      <SelectItem value="xl">
-                        Extra-Large Home: 325+ m²
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h2 className="font-semibold">Extra Tasks</h2>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                {extraTasks.map((task) => {
-                  const Icon = task.icon;
-                  return (
-                    <button
-                      key={task.id}
-                      onClick={() => toggleTask(task.id)}
-                      className={cn(
-                        "p-4 rounded-lg border text-center space-y-2 transition-colors",
-                        selectedTasks.includes(task.id)
-                          ? "border-primary bg-primary/5"
-                          : "hover:border-primary"
-                      )}
-                    >
-                      <div className="w-8 h-8 mx-auto">
-                        <Icon className="w-full h-full" />
-                      </div>
-                      <span className="text-sm">{task.label}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
             <div className="space-y-4">
               <h2 className="font-semibold">Booking Duration</h2>
               <div className="flex items-center gap-4">
@@ -267,6 +222,11 @@ export default function BookingPage() {
                 className="min-h-[100px]"
               />
             </div>
+            <div className="hidden lg:block w-full gap-4">
+              <Button className="flex-1" size="lg">
+                Confirm Booking
+              </Button>
+            </div>
           </div>
         </div>
       </div>
@@ -275,10 +235,7 @@ export default function BookingPage() {
         <PriceSection />
         <div className="flex gap-4">
           <Button className="flex-1" size="lg">
-            Find a Worker
-          </Button>
-          <Button variant="outline" size="lg">
-            Back
+            Confirm Booking
           </Button>
         </div>
       </div>

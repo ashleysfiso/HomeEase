@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./Layouts/Layout";
 import Home from "./pages/Home";
 import Services from "./pages/Services";
+import ServicesPage from "./pages/ServicesPage";
 import ContactPage from "./pages/ContactPage";
 import AboutPage from "./pages/AboutUsPage";
 import Register, { action as registerAction } from "./pages/account/Register";
@@ -15,6 +16,7 @@ import CleaningBookingPage, {
 } from "./pages/CleaningBookingPage";
 import BookingPage from "./pages/BookingPage";
 import { requireAuth } from "./utils";
+import BExample from "./pages/BExample";
 
 const router = createBrowserRouter([
   {
@@ -27,7 +29,7 @@ const router = createBrowserRouter([
       },
       {
         path: "services",
-        element: <Services />,
+        element: <ServicesPage />,
         errorElement: <ServicesErrorPage />,
       },
       {
@@ -54,6 +56,10 @@ const router = createBrowserRouter([
     path: "/login",
     element: <Login />,
     action: loginAction,
+  },
+  {
+    path: "/Be",
+    element: <BExample />,
   },
   {
     path: "/register",

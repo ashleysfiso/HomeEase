@@ -30,9 +30,8 @@ export default function OurStory() {
               <h2 className="text-xl font-semibold">Our Mission</h2>
             </div>
             <p className="text-muted-foreground leading-relaxed pl-[52px]">
-              To make education accessible and impactful, empowering individuals
-              to achieve their dreams and create a better future through
-              knowledge.
+              To connect homeowners with trusted service providers, ensuring
+              high-quality, hassle-free solutions for every home need.
             </p>
           </div>
 
@@ -45,8 +44,9 @@ export default function OurStory() {
               <h2 className="text-xl font-semibold">Our Vision</h2>
             </div>
             <p className="text-muted-foreground leading-relaxed pl-[52px]">
-              To be a global leader in education, fostering innovation,
-              collaboration, and excellence to transform lives and communities.
+              To be the leading platform for home services, simplifying the way
+              people maintain and enhance their living spaces with convenience
+              and trust.
             </p>
           </div>
         </div>

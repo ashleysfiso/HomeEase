@@ -3,10 +3,12 @@ import SupportCard from "@/components/SupportCard";
 import OurStory from "@/components/OurStory";
 import WhatWeOffer from "@/components/homepage/WhatWeOffer";
 import ContactUs from "@/components/ContactUs";
+import { ScrollRestoration } from "react-router-dom";
 
 export default function AboutPage() {
   return (
     <>
+      <ScrollRestoration />
       <PageHeader
         title="About us"
         backgroundImage="/images/page-header-1.jpg"
@@ -22,11 +24,13 @@ export default function AboutPage() {
           </div>
           <div className="space-y-4 md:col-span-2">
             <h2 className="text-3xl font-bold tracking-tight text-navy-900 md:text-4xl">
-              We have grown into a trusted name in the cleaning industry
+              A Trusted Name in Home Services
             </h2>
             <p className="text-lg text-muted-foreground">
-              Choosing UltraClean means a company that values your satisfaction
-              and the cleanliness of your environment.
+              HomeEase has grown into a reliable platform connecting you with
+              skilled service providers for all your home needs. Choosing
+              HomeEase means opting for quality, convenience, and professionals
+              who prioritize your satisfaction.
             </p>
           </div>
         </div>
