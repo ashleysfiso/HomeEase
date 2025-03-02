@@ -17,7 +17,7 @@ import {
   useNavigate,
   useNavigation,
 } from "react-router-dom";
-import ServicesSkeletonLoader from "@/components/ServicesSkeletonLoader";
+import ServicesSkeletonLoader from "@/components/SkeletonLoader/ServicesSkeletonLoader";
 
 export default function Component() {
   const navigate = useNavigate();

@@ -15,7 +15,7 @@ namespace HomeEase.Mappers
                 CompanyName = serviceOffering.ServiceProvider.CompanyName,
                 Rate = serviceOffering.Rate,
                 Availability = serviceOffering.Availability,
-                Description = serviceOffering.Description,
+                Description = serviceOffering.Service.Description,
                 ImgURL = serviceOffering.ImgURL,
             };
         }

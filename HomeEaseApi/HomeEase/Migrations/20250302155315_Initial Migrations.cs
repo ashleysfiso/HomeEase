@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HomeEase.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class InitialMigrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -221,30 +221,6 @@ namespace HomeEase.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Reviews",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Rating = table.Column<int>(type: "int", nullable: false),
-                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CustomerId = table.Column<int>(type: "int", nullable: false),
-                    ServiceId = table.Column<int>(type: "int", nullable: false),
-                    ServiceProviderId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Reviews", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Reviews_Customers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ServiceOfferings",
                 columns: table => new
                 {
@@ -253,6 +229,7 @@ namespace HomeEase.Migrations
                     Rate = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Availability = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImgURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -280,6 +257,8 @@ namespace HomeEase.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BookingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AdditionalInformation = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TotalCost = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -304,14 +283,44 @@ namespace HomeEase.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Reviews",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Rating = table.Column<int>(type: "int", nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    ServiceId = table.Column<int>(type: "int", nullable: false),
+                    ServiceProviderId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reviews", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reviews_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Reviews_ServiceOfferings_ServiceProviderId_ServiceId",
+                        columns: x => new { x.ServiceProviderId, x.ServiceId },
+                        principalTable: "ServiceOfferings",
+                        principalColumns: new[] { "ServiceProviderId", "ServiceId" },
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "2580d1d3-0853-4391-a142-1fbfa9cfc357", null, "Customer", "CUSTOMER" },
-                    { "38270ff9-4487-4fb7-9a30-1e9c7a6e0deb", null, "ServiceProvider", "SERVICEPROVIDER" },
-                    { "855ab303-3195-4f2c-a743-cc2f8bd8c8b0", null, "Admin", "ADMIN" }
+                    { "34ad5fb5-58ad-4ed7-aa5c-3f1404595130", null, "Customer", "CUSTOMER" },
+                    { "ca461194-390e-4f9f-b76a-8b33f242d765", null, "ServiceProvider", "SERVICEPROVIDER" },
+                    { "db976054-7d93-49c2-9e37-f6514740c670", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -375,6 +384,11 @@ namespace HomeEase.Migrations
                 column: "CustomerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Reviews_ServiceProviderId_ServiceId",
+                table: "Reviews",
+                columns: new[] { "ServiceProviderId", "ServiceId" });
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ServiceOfferings_ServiceId",
                 table: "ServiceOfferings",
                 column: "ServiceId");
@@ -414,10 +428,10 @@ namespace HomeEase.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "ServiceOfferings");
+                name: "Customers");
 
             migrationBuilder.DropTable(
-                name: "Customers");
+                name: "ServiceOfferings");
 
             migrationBuilder.DropTable(
                 name: "ServiceProviders");

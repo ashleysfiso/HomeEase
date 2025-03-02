@@ -325,19 +325,19 @@ namespace HomeEase.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "62cbac71-e979-42ee-bfc0-251520e62281",
+                            Id = "db976054-7d93-49c2-9e37-f6514740c670",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "e5d7c9b1-156e-40de-8888-2ccfaf717e7a",
+                            Id = "34ad5fb5-58ad-4ed7-aa5c-3f1404595130",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "ad90c442-9da6-4189-9737-90d828da87b8",
+                            Id = "ca461194-390e-4f9f-b76a-8b33f242d765",
                             Name = "ServiceProvider",
                             NormalizedName = "SERVICEPROVIDER"
                         });

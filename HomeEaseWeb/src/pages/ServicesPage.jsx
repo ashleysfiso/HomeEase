@@ -23,7 +23,7 @@ import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import PageHeader from "@/components/PageHeader";
 import { getServices } from "@/api";
-import ServicesSkeletonLoader from "@/components/ServicesSkeletonLoader";
+import ServicesSkeletonLoader from "@/components/SkeletonLoader/ServicesSkeletonLoader";
 
 export default function ServicesPage() {
   const [searchTerm, setSearchTerm] = useState("");
