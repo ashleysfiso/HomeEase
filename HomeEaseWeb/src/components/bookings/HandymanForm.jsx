@@ -7,11 +7,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export default function HandymanForm() {
+export default function HandymanForm({ handleChange }) {
   const [service, setService] = useState("");
 
   const handleValueChange = (value) => {
     setService(value);
+    handleChange("handymanService", "type", value);
   };
   return (
     <>
@@ -19,16 +20,18 @@ export default function HandymanForm() {
         <div className="space-y-4">
           <div className="space-y-2">
             <label className="text-sm">Type of Handyman Work</label>
-            <Select value={service} onValueChange={handleValueChange}>
+            <Select value={service} onValueChange={handleValueChange} required>
               <SelectTrigger>
                 <SelectValue placeholder="Select Service" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="furniture">🔨 Furniture Assembly</SelectItem>
-                <SelectItem value="door-window">
+                <SelectItem value="furniture assembly">
+                  🔨 Furniture Assembly
+                </SelectItem>
+                <SelectItem value="Door & Window Repairs">
                   🚪 Door & Window Repairs
                 </SelectItem>
-                <SelectItem value="hanging">
+                <SelectItem value="Picture Hanging & Mounting">
                   🖼️ Picture Hanging & Mounting
                 </SelectItem>
                 <SelectItem value="tv-mounting">📦 TV Mounting</SelectItem>
@@ -36,10 +39,15 @@ export default function HandymanForm() {
             </Select>
           </div>
 
-          {service === "furniture" && (
+          {service === "furniture assembly" && (
             <div className="space-y-2">
               <label className="text-sm">Furniture Type</label>
-              <Select>
+              <Select
+                onValueChange={(value) =>
+                  handleChange("handymanService", "propertyValue", value)
+                }
+                required
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select Furniture Type" />
                 </SelectTrigger>
@@ -56,26 +64,40 @@ export default function HandymanForm() {
             </div>
           )}
 
-          {service === "door-window" && (
+          {service === "Door & Window Repairs" && (
             <div className="space-y-2">
               <label className="text-sm">Repair Type</label>
-              <Select>
+              <Select
+                onValueChange={(value) =>
+                  handleChange("handymanService", "propertyValue", value)
+                }
+                required
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select Repair Type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="hinges">Hinge/Lock Fix</SelectItem>
-                  <SelectItem value="replacement">Part Replacement</SelectItem>
-                  <SelectItem value="window">Window Glass Repair</SelectItem>
+                  <SelectItem value="Hinge/Lock Fix">Hinge/Lock Fix</SelectItem>
+                  <SelectItem value="Part Replacement">
+                    Part Replacement
+                  </SelectItem>
+                  <SelectItem value="Window Glass Repair">
+                    Window Glass Repair
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
           )}
 
-          {service === "hanging" && (
+          {service === "Picture Hanging & Mounting" && (
             <div className="space-y-2">
               <label className="text-sm">Item Type</label>
-              <Select>
+              <Select
+                onValueChange={(value) =>
+                  handleChange("handymanService", "propertyValue", value)
+                }
+                required
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select Item Type" />
                 </SelectTrigger>
@@ -83,9 +105,13 @@ export default function HandymanForm() {
                   <SelectItem value="small">
                     Small Frames (A3 or smaller)
                   </SelectItem>
-                  <SelectItem value="medium">Medium Frames/Mirrors</SelectItem>
-                  <SelectItem value="large">Large/Heavy Items</SelectItem>
-                  <SelectItem value="gallery">
+                  <SelectItem value="Medium Frames/Mirrors">
+                    Medium Frames/Mirrors
+                  </SelectItem>
+                  <SelectItem value="Large/Heavy Items">
+                    Large/Heavy Items
+                  </SelectItem>
+                  <SelectItem value="Gallery Wall Arrangement">
                     Gallery Wall Arrangement
                   </SelectItem>
                 </SelectContent>
@@ -96,7 +122,12 @@ export default function HandymanForm() {
           {service === "tv-mounting" && (
             <div className="space-y-2">
               <label className="text-sm">TV Size</label>
-              <Select>
+              <Select
+                onValueChange={(value) =>
+                  handleChange("handymanService", "propertyValue", value)
+                }
+                required
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select TV Size" />
                 </SelectTrigger>

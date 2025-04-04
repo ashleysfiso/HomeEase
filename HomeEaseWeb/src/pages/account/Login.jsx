@@ -10,9 +10,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Form, redirect, useNavigation, useActionData } from "react-router-dom";
-import { loginUser } from "../../api";
+import { LoginUser } from "../../api";
 import { useAuth } from "@/contexts/AuthContext";
 import { Link, ScrollRestoration } from "react-router-dom";
+import { Loader2 } from "lucide-react";
 
 let setUserInsideAction;
 
@@ -22,8 +23,11 @@ export async function action({ request }) {
   const password = formData.get("password");
   console.log(formData);
   try {
-    const userData = await loginUser({ email, password });
+    const userData = await LoginUser({ email, password });
     setUserInsideAction(userData);
+    if (userData.role.includes("ServiceProvider")) {
+      return redirect("/dashboard");
+    }
     return redirect("/");
   } catch (error) {
     return error.message;
@@ -87,9 +91,12 @@ export default function LogInPage() {
                       type="submit"
                       className="w-full"
                     >
-                      {navigation.state === "submitting"
-                        ? "Logging In..."
-                        : "Login"}
+                      {navigation.state === "submitting" ? (
+                        <Loader2 className="animate-spin h-5 w-5 mr-2" />
+                      ) : (
+                        ""
+                      )}
+                      Login
                     </Button>
                     <Button variant="outline" className="w-full">
                       Login with Google

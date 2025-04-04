@@ -11,7 +11,9 @@ namespace HomeEase.Dtos.BookingDtos
         [Required]
         public int ServiceProviderId { get; set; }
         [Required]
-        public DateTime BookingDate { get; set; }
+        public DateOnly BookingDate { get; set; }
+        [Required]
+        public string Time { get; set; }
         [Required]
         public decimal TotalCost { get; set; }
         [Required]

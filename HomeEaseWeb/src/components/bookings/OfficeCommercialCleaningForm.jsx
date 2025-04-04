@@ -7,16 +7,21 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export default function OfficeCommercialCleaningForm() {
+export default function OfficeCommercialCleaningForm({ handleChange }) {
   return (
     <>
       <div className="space-y-4">
         <div className="space-y-4">
           <div className="space-y-2">
-            <label className="text-sm">Cleaning Type:</label>
-            <Select>
+            <label className="text-sm">Cleaning Type</label>
+            <Select
+              onValueChange={(value) =>
+                handleChange("officeCleaning", "type", value)
+              }
+              required
+            >
               <SelectTrigger>
-                <SelectValue placeholder="Office Cleaning" />
+                <SelectValue placeholder="Select Cleaning Type" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="Office Cleaning">Office Cleaning</SelectItem>
@@ -31,10 +36,15 @@ export default function OfficeCommercialCleaningForm() {
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm">How big is your area?</label>
-            <Select>
+            <label className="text-sm">Area Size(m²)</label>
+            <Select
+              onValueChange={(value) =>
+                handleChange("officeCleaning", "officeSize", value)
+              }
+              required
+            >
               <SelectTrigger>
-                <SelectValue placeholder="Extra-Large: 325+ m²" />
+                <SelectValue placeholder="Select Area Size" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="small">Small: 0-100 m²</SelectItem>

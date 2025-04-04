@@ -15,11 +15,13 @@ import {
   redirect,
   useNavigation,
   ScrollRestoration,
+  useActionData,
 } from "react-router-dom";
-import { registerUser } from "../../api";
+import { RegisterUser } from "../../api";
 import { useAuth } from "@/contexts/AuthContext";
+import { Loader2 } from "lucide-react";
 
-let setUserInsideAction;
+//let setUserInsideAction;
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -30,24 +32,25 @@ export async function action({ request }) {
   console.log(formData);
 
   try {
-    const data = await registerUser({
+    const data = await RegisterUser({
       username,
       email,
       phoneNumber,
       password,
     });
     console.log("Log Data from register action", data);
-    setUserInsideAction(data);
-    return redirect("/");
+    //setUserInsideAction(data);
+    return redirect("/login");
   } catch (error) {
-    console.log(error);
-    return error;
+    const [{ description }] = error.message;
+    return description;
   }
 }
 
 export default function Register() {
   const { setUser } = useAuth();
-  setUserInsideAction = setUser;
+  const errorMessage = useActionData();
+  //setUserInsideAction = setUser;
   const navigation = useNavigation();
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
@@ -58,7 +61,11 @@ export default function Register() {
             <CardHeader>
               <CardTitle className="text-2xl">Sign up</CardTitle>
               <CardDescription>
-                Enter your credentials below to create your account
+                {errorMessage ? (
+                  <p className="text-red-600">{errorMessage}</p>
+                ) : (
+                  "Enter your credentials below to create your account"
+                )}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -113,9 +120,12 @@ export default function Register() {
                     type="submit"
                     className="w-full"
                   >
-                    {navigation.state === "submitting"
-                      ? "Signing Up"
-                      : "Sign Up"}
+                    {navigation.state === "submitting" ? (
+                      <Loader2 className="animate-spin h-5 w-5 mr-2" />
+                    ) : (
+                      ""
+                    )}
+                    Register
                   </Button>
                   <Button variant="outline" className="w-full">
                     Login with Google

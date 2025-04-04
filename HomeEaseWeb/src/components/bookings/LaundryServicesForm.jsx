@@ -7,19 +7,24 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export default function LaundryServicesForm() {
+export default function LaundryServicesForm({ handleChange }) {
   return (
     <>
       <div className="space-y-4">
         <div className="space-y-4">
           <div className="space-y-2">
             <label className="text-sm">Service Type</label>
-            <Select>
+            <Select
+              onValueChange={(value) =>
+                handleChange("laundryService", "type", value)
+              }
+              required
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Select Laundry Service" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="wash-fold">
+                <SelectItem value="Standard Wash & Fold">
                   🏠 Standard Wash & Fold
                 </SelectItem>
               </SelectContent>
@@ -28,7 +33,12 @@ export default function LaundryServicesForm() {
 
           <div className="space-y-2">
             <label className="text-sm">Weight of Laundry (kg)</label>
-            <Select>
+            <Select
+              onValueChange={(value) =>
+                handleChange("laundryService", "weight", value)
+              }
+              required
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Select Weight" />
               </SelectTrigger>

@@ -7,11 +7,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export default function SpecializedCleaningForm() {
+export default function SpecializedCleaningForm({ handleChange }) {
   const [service, setService] = useState("");
 
   const handleValueChange = (value) => {
     setService(value);
+    handleChange("specializedCleaning", "type", value);
   };
 
   return (
@@ -20,28 +21,34 @@ export default function SpecializedCleaningForm() {
         <div className="space-y-4">
           <div className="space-y-2">
             <label className="text-sm">Type of Cleaning</label>
-            <Select value={service} onValueChange={handleValueChange}>
+            <Select onValueChange={handleValueChange} required>
               <SelectTrigger>
                 <SelectValue placeholder="Select Cleaning Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="carpet">🧼 Carpet Cleaning</SelectItem>
-                <SelectItem value="window">🪟 Window Washing</SelectItem>
-                <SelectItem value="post-construction">
-                  🛠 Post-Construction Cleaning
+                <SelectItem value="Carpet-Cleaning">
+                  🧼 Carpet Cleaning
                 </SelectItem>
-                <SelectItem value="vehicle">
-                  🚗 Vehicle Interior Cleaning
+                <SelectItem value="Window-Cleaning">
+                  🪟 Window Washing
+                </SelectItem>
+                <SelectItem value="Post-construction-Cleaning">
+                  🛠 Post-Construction Cleaning
                 </SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           {/*Carpert cleaning*/}
-          {service === "carpet" && (
+          {service === "Carpet-Cleaning" && (
             <div className="space-y-2">
               <label className="text-sm">Area Size (m²)</label>
-              <Select>
+              <Select
+                onValueChange={(value) =>
+                  handleChange("specializedCleaning", "size", value)
+                }
+                required
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select Area Size" />
                 </SelectTrigger>
@@ -55,53 +62,49 @@ export default function SpecializedCleaningForm() {
           )}
 
           {/*Windows cleaning*/}
-          {service === "window" && (
+          {service === "Window-Cleaning" && (
             <div className="space-y-2">
               <label className="text-sm">Number of Windows</label>
-              <Select>
+              <Select
+                onValueChange={(value) =>
+                  handleChange("specializedCleaning", "size", value)
+                }
+                required
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select Number of Windows" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="1-5">1-5 Windows</SelectItem>
-                  <SelectItem value="6-10">6-10 Windows</SelectItem>
-                  <SelectItem value="11-20">11-20 Windows</SelectItem>
-                  <SelectItem value="20+">20+ Windows</SelectItem>
+                  <SelectItem value="1-5 Windows">1-5 Windows</SelectItem>
+                  <SelectItem value="6-10 Windows">6-10 Windows</SelectItem>
+                  <SelectItem value="11-20 Windows">11-20 Windows</SelectItem>
+                  <SelectItem value="20+ Windows">20+ Windows</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           )}
 
           {/*Post-Construction cleaning*/}
-          {service === "post-construction" && (
+          {service === "Post-construction-Cleaning" && (
             <div className="space-y-2">
               <label className="text-sm">Area Size (sq. meters)</label>
-              <Select>
+              <Select
+                onValueChange={(value) =>
+                  handleChange("specializedCleaning", "size", value)
+                }
+                required
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select Area Size" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="small">Small (Up to 20m²)</SelectItem>
-                  <SelectItem value="medium">Medium (20m² - 50m²)</SelectItem>
-                  <SelectItem value="large">Large (50m²+)</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          )}
-
-          {/*Vehicle cleaning*/}
-          {service === "vehicle" && (
-            <div className="space-y-2">
-              <label className="text-sm">Vehicle Type</label>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select Vehicle Type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="sedan">Sedan</SelectItem>
-                  <SelectItem value="suv">SUV</SelectItem>
-                  <SelectItem value="van">Van</SelectItem>
-                  <SelectItem value="truck">Truck</SelectItem>
+                  <SelectItem value="small (Up to 20m²)">
+                    Small (Up to 20m²)
+                  </SelectItem>
+                  <SelectItem value="medium (20m² - 50m²)">
+                    Medium (20m² - 50m²)
+                  </SelectItem>
+                  <SelectItem value="large (50m²+)">Large (50m²+)</SelectItem>
                 </SelectContent>
               </Select>
             </div>

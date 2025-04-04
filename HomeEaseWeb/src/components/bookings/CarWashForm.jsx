@@ -7,35 +7,45 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export default function CarWash() {
+export default function CarWash({ handleChange }) {
   return (
     <>
       <div className="space-y-4">
         <div className="space-y-4">
           <div className="space-y-2">
             <label className="text-sm">Car Type</label>
-            <Select>
+            <Select
+              onValueChange={(value) =>
+                handleChange("carWashService", "vehicleType", value)
+              }
+              required
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Select Car Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="sedan">🚗 Sedan</SelectItem>
-                <SelectItem value="suv">🚙 SUV</SelectItem>
-                <SelectItem value="pickup">🛻 Van</SelectItem>
+                <SelectItem value="Sedan">🚗 Sedan</SelectItem>
+                <SelectItem value="Suv">🚙 SUV</SelectItem>
+                <SelectItem value="Van">🛻 Van</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="space-y-2">
             <label className="text-sm">Service Type</label>
-            <Select>
+            <Select
+              onValueChange={(value) =>
+                handleChange("carWashService", "type", value)
+              }
+              required
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Select Service Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="exterior">🚿 Exterior Wash</SelectItem>
-                <SelectItem value="interior">🏠 Interior Detailing</SelectItem>
-                <SelectItem value="full-detail">
+                <SelectItem value="Exterior">🚿 Exterior Wash</SelectItem>
+                <SelectItem value="Interior">🏠 Interior Detailing</SelectItem>
+                <SelectItem value="Full-detail">
                   🛠️ Full Car Detailing
                 </SelectItem>
               </SelectContent>

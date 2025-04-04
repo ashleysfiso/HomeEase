@@ -650,6 +650,7 @@
           "customerId",
           "serviceId",
           "serviceProviderId",
+          "time",
           "totalCost"
         ],
         "type": "object",
@@ -668,7 +669,11 @@
           },
           "bookingDate": {
             "type": "string",
-            "format": "date-time"
+            "format": "date"
+          },
+          "time": {
+            "minLength": 1,
+            "type": "string"
           },
           "totalCost": {
             "type": "number",
@@ -865,7 +870,7 @@
         "properties": {
           "bookingDate": {
             "type": "string",
-            "format": "date-time"
+            "format": "date"
           },
           "status": {
             "minLength": 1,

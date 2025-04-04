@@ -76,9 +76,13 @@ export default function Header() {
   return (
     <header className="w-full px-4 md:px-6 lg:px-8 max-w-7xl mx-auto z-40 fixed top-0 left-0 bg-background">
       <div className="relative mx-auto min-h-10 flex sm:gap-4 flex-row lg:grid lg:grid-cols-3 items-center">
-        <div className="flex items-center lg:justify-start">
-          <h3 className="text-2xl  tracking-wide leading-tight p-4 font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
-            <Link>HomeEase</Link>
+        <div className="flex items-center justify-start">
+          <img
+            src="/images/HomeEase.png"
+            className="w-12 h-12 object-contain pt-2"
+          />
+          <h3 className="flex items-center text-xl pt-2 leading-tight font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+            <Link to="/">HomeEase</Link>
           </h3>
         </div>
         <div className="justify-center items-center gap-4 lg:flex hidden flex-row">
@@ -132,7 +136,7 @@ export default function Header() {
                                   <MoveRight className="w-4 h-4 text-muted-foreground" />
                                 </Link>
                               ) : (
-                                console.log("Dont show item")
+                                console.log("")
                               )
                             )}
                           </div>
@@ -202,7 +206,7 @@ export default function Header() {
                               <MoveRight className="w-4 h-4 text-muted-foreground" />
                             </Link>
                           ) : (
-                            console.log("Dont display")
+                            console.log("")
                           )
                         ) : subItem.roles.length === 3 ? (
                           <Link
@@ -216,7 +220,7 @@ export default function Header() {
                             <MoveRight className="w-4 h-4 stroke-1" />
                           </Link>
                         ) : (
-                          console.log("Dont show")
+                          console.log("")
                         )
                       )}
                   </div>

@@ -7,14 +7,19 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export default function LawnCareForm() {
+export default function LawnCareForm({ handleChange }) {
   return (
     <>
       <div className="space-y-4">
         <div className="space-y-4">
           <div className="space-y-2">
             <label className="text-sm">Lawn Care Service Needed</label>
-            <Select>
+            <Select
+              onValueChange={(value) =>
+                handleChange("lawnCareService", "type", value)
+              }
+              required
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Select Lawn Care Service" />
               </SelectTrigger>
@@ -36,15 +41,26 @@ export default function LawnCareForm() {
 
           <div className="space-y-2">
             <label className="text-sm">Property Size (Square Meters)</label>
-            <Select>
+            <Select
+              onValueChange={(value) =>
+                handleChange("lawnCareService", "propertySize", value)
+              }
+              required
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Select Property Size" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="small">Small (Up to 50 m²)</SelectItem>
-                <SelectItem value="medium">Medium (50 - 200 m²)</SelectItem>
-                <SelectItem value="large">Large (200 - 500 m²)</SelectItem>
-                <SelectItem value="extra-large">
+                <SelectItem value="small (Up to 50 m²)">
+                  Small (Up to 50 m²)
+                </SelectItem>
+                <SelectItem value="medium (Up to 50 m²)">
+                  Medium (Up to 50 m²)
+                </SelectItem>
+                <SelectItem value="large (200 - 500 m²)">
+                  Large (200 - 500 m²)
+                </SelectItem>
+                <SelectItem value="extra-large (500+ m²)">
                   Extra Large (500+ m²)
                 </SelectItem>
               </SelectContent>

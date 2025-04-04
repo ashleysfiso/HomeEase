@@ -19,9 +19,11 @@ namespace HomeEase.Mappers
         {
             return new ServiceDto
             {
+                Id = serviceModel.Id,
                 Name = serviceModel.Name,
                 Description = serviceModel.Description,
-                BasePrice = serviceModel.BasePrice
+                BasePrice = serviceModel.BasePrice,
+                IsDeleted = serviceModel.isDeleted,
             };
         }
     }

@@ -2,8 +2,8 @@ import axios from "axios";
 import handleAxiosError from "./utils";
 
 const baseURL = "https://localhost:7234/api/";
-
-export async function loginUser(creds) {
+// Account Fuctions
+export async function LoginUser(creds) {
   let data;
   await axios
     .post(`${baseURL}Account/login`, {
@@ -24,7 +24,7 @@ export async function loginUser(creds) {
   return data;
 }
 
-export async function registerUser(creds) {
+export async function RegisterUser(creds) {
   let data;
 
   await axios
@@ -47,8 +47,8 @@ export async function registerUser(creds) {
 
   return data;
 }
-
-export async function getServices() {
+// Service offerings functions
+export async function GetServiceOfferings() {
   let data;
   await axios
     .get(`${baseURL}ServiceOfferings`)
@@ -65,7 +65,7 @@ export async function getServices() {
   return data;
 }
 
-export async function getServiceById(spId, sId) {
+export async function GetServiceById(spId, sId) {
   let service;
   await axios
     .get(`${baseURL}ServiceOfferings/${spId}/${sId}`)
@@ -82,7 +82,8 @@ export async function getServiceById(spId, sId) {
   return service;
 }
 
-export async function createBooking(bookingInfo) {
+// Bookings functions
+export async function CreateBooking(bookingInfo) {
   let result;
   await axios
     .post(`${baseURL}Bookings`, {
@@ -90,12 +91,13 @@ export async function createBooking(bookingInfo) {
       serviceId: bookingInfo.serviceId,
       serviceProviderId: bookingInfo.serviceProviderId,
       bookingDate: bookingInfo.date,
+      time: bookingInfo.time,
       totalCost: bookingInfo.totalPrice,
       address: bookingInfo.address,
       additionalInformation: bookingInfo.additionalInfo,
     })
     .then((res) => {
-      result = res;
+      result = res.data;
     })
     .catch((err) => {
       const errorMessage = handleAxiosError(err);
@@ -122,4 +124,37 @@ export async function GetBookingByCustomerId(customerId) {
     });
 
   return bookings;
+}
+
+// Services functions
+export async function GetAvailableServices() {
+  return await axios
+    .get(`${baseURL}Services`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      const errorMessage = handleAxiosError(err);
+      throw {
+        message: errorMessage,
+      };
+    });
+}
+
+export async function AddNewService(service) {
+  return await axios
+    .post(`${baseURL}Services`, {
+      name: service.name,
+      description: service.description,
+      basePrice: service.basePrice,
+    })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      const errorMessage = handleAxiosError(err);
+      throw {
+        message: errorMessage,
+      };
+    });
 }

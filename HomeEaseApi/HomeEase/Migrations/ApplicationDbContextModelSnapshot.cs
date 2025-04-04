@@ -102,8 +102,8 @@ namespace HomeEase.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("BookingDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("BookingDate")
+                        .HasColumnType("date");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -118,6 +118,10 @@ namespace HomeEase.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Time")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -325,19 +329,19 @@ namespace HomeEase.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "db976054-7d93-49c2-9e37-f6514740c670",
+                            Id = "a8e60e6c-af78-416c-89e2-8aca0d289a82",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "34ad5fb5-58ad-4ed7-aa5c-3f1404595130",
+                            Id = "0b3d4f18-a7ab-4dd9-b356-3fed551d8754",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "ca461194-390e-4f9f-b76a-8b33f242d765",
+                            Id = "43013a19-a811-481e-9339-0317d492e14b",
                             Name = "ServiceProvider",
                             NormalizedName = "SERVICEPROVIDER"
                         });

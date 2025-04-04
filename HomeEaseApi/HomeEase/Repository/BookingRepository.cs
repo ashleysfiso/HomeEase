@@ -17,11 +17,12 @@ namespace HomeEase.Repository
         public async Task<Booking?> CreateAsync(Booking booking)
         {
             
-            await _context.Bookings.AddAsync(booking);
+            var result = await _context.Bookings.AddAsync(booking);
             await _context.SaveChangesAsync();
 
-            return booking;
+            return result.Entity;
         }
+
 
         public async Task<List<Booking>> GetAllAsync()
         {

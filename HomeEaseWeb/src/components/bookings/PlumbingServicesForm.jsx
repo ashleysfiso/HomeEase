@@ -7,14 +7,19 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export default function PlumbingServicesForm() {
+export default function PlumbingServicesForm({ handleChange }) {
   return (
     <>
       <div className="space-y-4">
         <div className="space-y-4">
           <div className="space-y-2">
             <label className="text-sm">Plumbing Issue Type:</label>
-            <Select>
+            <Select
+              onValueChange={(value) =>
+                handleChange("plumbingService", "type", value)
+              }
+              required
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Select Plumbing Issue" />
               </SelectTrigger>

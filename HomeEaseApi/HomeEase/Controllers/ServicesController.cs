@@ -18,7 +18,7 @@ namespace HomeEase.Controllers
         public async Task<IActionResult> GetAll()
         {
             var sevices = await _serviceRepo.GetServicesAsync();
-            return Ok(sevices);
+            return Ok(sevices.Select(s => s.ToServiceDto()));
         }
         [HttpGet]
         [Route("{id}")]
@@ -31,7 +31,7 @@ namespace HomeEase.Controllers
                 return NotFound("Invalid Id");
             }
 
-            return Ok(service);
+            return Ok(service.ToServiceDto());
         }
 
         [HttpPost]

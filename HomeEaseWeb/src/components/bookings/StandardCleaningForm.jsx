@@ -12,6 +12,7 @@ export default function StandardCleaningForm({
   handleToggle,
   extras,
   selectedTasks,
+  handleChange,
 }) {
   return (
     <>
@@ -19,12 +20,17 @@ export default function StandardCleaningForm({
         <div className="space-y-4">
           <div className="space-y-2">
             <label className="text-sm">Service Type:</label>
-            <Select>
+            <Select
+              onValueChange={(value) =>
+                handleChange("homeCleaning", "type", value)
+              }
+              required
+            >
               <SelectTrigger>
-                <SelectValue placeholder="Standard Cleaning" />
+                <SelectValue placeholder="Select Service Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Standard Cleanin">
+                <SelectItem value="Standard Cleaning">
                   Standard Cleaning
                 </SelectItem>
                 <SelectItem value="Deep Cleaning">Deep Cleaning</SelectItem>
@@ -38,9 +44,14 @@ export default function StandardCleaningForm({
           <div className="flex space-x-2">
             <div className="space-y-2">
               <label className="text-sm">Number of Bedrooms</label>
-              <Select>
+              <Select
+                onValueChange={(value) =>
+                  handleChange("homeCleaning", "numberOfBedrooms", value)
+                }
+                required
+              >
                 <SelectTrigger>
-                  <SelectValue placeholder="1 Bedrooms" />
+                  <SelectValue placeholder="Select # of bedrooms" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="1 Bedrooms">1 Bedroom</SelectItem>
@@ -55,9 +66,14 @@ export default function StandardCleaningForm({
             </div>
             <div className="space-y-2">
               <label className="text-sm"> Number of Bathrooms</label>
-              <Select>
+              <Select
+                onValueChange={(value) =>
+                  handleChange("homeCleaning", "numberOfBathrooms", value)
+                }
+                required
+              >
                 <SelectTrigger>
-                  <SelectValue placeholder="1 Bathroom" />
+                  <SelectValue placeholder="Select # of bathrooms" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="1 Bathroom">1 Bathroom</SelectItem>

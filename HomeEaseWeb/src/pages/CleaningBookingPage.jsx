@@ -199,7 +199,6 @@ export default function CleaningBookingPage() {
                         <div className="flex justify-center">
                           <Select
                             name="duration"
-                            value={formData.duration}
                             required
                             onValueChange={(value) =>
                               setFormData((prev) => ({

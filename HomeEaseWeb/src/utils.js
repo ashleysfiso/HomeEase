@@ -4,8 +4,19 @@ import axios from "axios";
 export function requireAuth() {
   const storedUser = localStorage.getItem("user");
   if (!storedUser) {
-    console.log("Do give access");
+    //console.log("Do give access");
     throw redirect("/login");
+  }
+}
+
+export function checkUserRole() {
+  const storedUser = localStorage.getItem("user");
+  if (storedUser) {
+    const user = JSON.parse(storedUser);
+    if (user.role.includes("ServiceProvider")) {
+      throw redirect("/dashboard");
+    }
+    //console.log(user.role);
   }
 }
 

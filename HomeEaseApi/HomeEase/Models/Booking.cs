@@ -3,7 +3,8 @@
     public class Booking
     {
         public int Id { get; set; }
-        public DateTime BookingDate { get; set; }
+        public DateOnly BookingDate { get; set; }
+        public string Time { get; set; }
         public string Status { get; set; } = "Pending";
         public string Address { get; set; }
         public string? AdditionalInformation {  get; set; }

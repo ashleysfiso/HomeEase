@@ -14,12 +14,14 @@ namespace HomeEase.Mappers
                 ServiceName = booking.ServiceOffering.Service.Name,
                 CompanyName = booking.ServiceOffering.ServiceProvider.CompanyName,
                 BookingDate = booking.BookingDate,
+                Time = booking.Time,
                 Status = booking.Status,
                 TotalCost = booking.TotalCost,
                 CreatedAt = booking.CreatedAt,
                 UpdatedAt = booking.UpdatedAt,
                 AdditionalInformation = booking.AdditionalInformation,
                 Address = booking.Address,
+
             };
         }
 
@@ -31,6 +33,7 @@ namespace HomeEase.Mappers
                 ServiceId = bookingDto.ServiceId,
                 ServiceProviderId = bookingDto.ServiceProviderId,
                 BookingDate = bookingDto.BookingDate,
+                Time = bookingDto.Time,
                 TotalCost = bookingDto.TotalCost,
                 AdditionalInformation = bookingDto.AdditionalInformation,
                 Address = bookingDto.Address,

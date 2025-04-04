@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./Layouts/Layout";
+import Dashboard from "./Layouts/Dashboard";
 import Home from "./pages/Home";
-import Services from "./pages/Services";
 import ServicesPage from "./pages/ServicesPage";
 import ContactPage from "./pages/ContactPage";
 import AboutPage from "./pages/AboutUsPage";
@@ -11,17 +11,25 @@ import Login from "./pages/account/Login";
 import { action as loginAction } from "./pages/account/Login";
 import FileNotFound from "./pages/404Page";
 import ServicesErrorPage from "./pages/ServicesErrorPage";
-import CleaningBookingPage, {
-  action as bookingAction,
-} from "./pages/CleaningBookingPage";
-import BookingPage from "./pages/BookingPage";
+import BookingPage, { action as bookingAction } from "./pages/BookingPage";
+import BookingsPage from "./pages/BookingsPage";
+import BookingSuccess from "./pages/BookingSuccess";
+import { AdminDashboard } from "./pages/dashboard/AdminDashboard";
+import { ProviderDashboard } from "./pages/dashboard/ProviderDashboard";
+import { ManageProvidersPage } from "./pages/dashboard/ManageProvidersPage";
+import { ManageServicesPage } from "./pages/dashboard/ManageServicesPage";
+import { ManageBookingsPage } from "./pages/dashboard/ManageBookingsPage";
+import DashboardPage from "./pages/dashboard/DashboardPage";
 import { requireAuth } from "./utils";
-import BExample from "./pages/BExample";
+import { checkUserRole } from "./utils";
+import { action as ManageServiceAction } from "./pages/dashboard/ManageServicesPage";
+import { Toaster } from "@/components/ui/toaster";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
+    loader: checkUserRole,
     children: [
       {
         path: "/",
@@ -42,7 +50,7 @@ const router = createBrowserRouter([
       },
       {
         path: "bookings",
-        element: <ServiceBookingPage />,
+        element: <BookingsPage />,
       },
       {
         path: "services/booking/:sId/:spId",
@@ -50,16 +58,44 @@ const router = createBrowserRouter([
         action: bookingAction,
         loader: requireAuth,
       },
+      {
+        path: "services/booking/success",
+        element: <BookingSuccess />,
+        loader: requireAuth,
+      },
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: <Dashboard />,
+    children: [
+      {
+        path: "",
+        element: <DashboardPage />,
+      },
+      {
+        path: "provider",
+        element: <ProviderDashboard />,
+      },
+      {
+        path: "manage-service-providers",
+        element: <ManageProvidersPage />,
+      },
+      {
+        path: "manage-services",
+        element: <ManageServicesPage />,
+        action: ManageServiceAction,
+      },
+      {
+        path: "manage-bookings",
+        element: <ManageBookingsPage />,
+      },
     ],
   },
   {
     path: "/login",
     element: <Login />,
     action: loginAction,
-  },
-  {
-    path: "/Be",
-    element: <BExample />,
   },
   {
     path: "/register",
@@ -73,7 +109,12 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+      <Toaster />
+    </>
+  );
 }
 
 export default App;
