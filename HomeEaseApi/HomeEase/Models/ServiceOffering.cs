@@ -13,10 +13,12 @@
         public string Availability { get; set; }
         public string Description { get; set; }
         public string? ImgURL {  get; set; }
+        public string Status { get; set; } = "Pending";
         public bool isDeleted = false;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public List<Booking> Bookings { get; set; } = new List<Booking>();
         public List<Review> Reiviews { get; set; } = new List<Review>();
+        public List<ServiceOfferingPricingOption> PricingOptions { get; set; } = new List<ServiceOfferingPricingOption>();
 
     }
 }

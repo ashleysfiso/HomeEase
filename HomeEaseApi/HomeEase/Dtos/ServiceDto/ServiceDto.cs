@@ -1,4 +1,7 @@
-﻿namespace HomeEase.Dtos.ServiceDto
+﻿using HomeEase.Dtos.ServiceTypeDtos;
+using HomeEase.Models;
+
+namespace HomeEase.Dtos.ServiceDto
 {
     public class ServiceDto
     {
@@ -7,5 +10,6 @@
         public string Description { get; set; } = string.Empty;
         public decimal BasePrice { get; set; }
         public bool IsDeleted { get; set; }
+        public List<ServiceTypeDto> ServiceTypes { get; set; } = new List<ServiceTypeDto>();
     }
 }

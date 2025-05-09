@@ -141,7 +141,7 @@ namespace HomeEase.Controllers
                 return BadRequest("Invalid data");
             }
 
-            var user = await _userManager.Users.Include(u => u.Customer).FirstOrDefaultAsync(u => u.Email == loginDto.Email);
+            var user = await _userManager.Users.Include(u => u.Customer).Include(u => u.ServiceProvider).FirstOrDefaultAsync(u => u.Email == loginDto.Email);
             if(user == null)
             {
                 return Unauthorized("Invalid username");
@@ -164,6 +164,7 @@ namespace HomeEase.Controllers
                     UserId = user.Id,
                     Role = role,
                     CustomerID = user.Customer?.Id,
+                    ProviderId = user.ServiceProvider?.Id,
                 });
         }
         

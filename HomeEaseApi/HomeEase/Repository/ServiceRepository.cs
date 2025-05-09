@@ -23,13 +23,15 @@ namespace HomeEase.Repository
 
         public async Task<Service?> DeleteServiceAsync(int id)
         {
-            var serviceModel = await _context.Services.FirstOrDefaultAsync(s => s.Id == id);
+            var serviceModel = await _context.Services.Include(s => s.ServiceTypes)
+                                                      .ThenInclude(st => st.PricingOptions)
+                                                      .FirstOrDefaultAsync(s => s.Id == id);
             if(serviceModel == null)
             {
                 return null;
             }
 
-            _context.Services.Remove(serviceModel);
+            serviceModel.isDeleted = true;
             await _context.SaveChangesAsync();
 
             return serviceModel;
@@ -42,12 +44,12 @@ namespace HomeEase.Repository
 
         public async Task<List<Service>> GetServicesAsync()
         {
-            return await _context.Services.ToListAsync();
+            return await _context.Services.Where(s => s.isDeleted == false).Include(s => s.ServiceTypes).ThenInclude(st => st.PricingOptions).ToListAsync();
         }
 
         public async Task<Service?> UpdateServiceAsync(int id, UpdateServiceDto updateServiceDto)
         {
-            var service = await _context.Services.FirstOrDefaultAsync(s => s.Id == id);
+            var service = await _context.Services.Include(s => s.ServiceTypes).ThenInclude(st => st.PricingOptions).FirstOrDefaultAsync(s => s.Id == id);
             if (service == null)
             {
                 return null;

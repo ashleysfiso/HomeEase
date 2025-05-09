@@ -24,6 +24,7 @@ namespace HomeEase.Mappers
                 Description = serviceModel.Description,
                 BasePrice = serviceModel.BasePrice,
                 IsDeleted = serviceModel.isDeleted,
+                ServiceTypes = serviceModel.ServiceTypes.Select(st => st.ToServiceTypeDto()).ToList(),
             };
         }
     }

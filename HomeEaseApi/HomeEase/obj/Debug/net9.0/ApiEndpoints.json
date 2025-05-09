@@ -153,6 +153,132 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "HomeEase.Controllers.PendingApprovalController",
+    "Method": "GetAll",
+    "RelativePath": "api/PendingApproval",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.PendingApprovalController",
+    "Method": "Create",
+    "RelativePath": "api/PendingApproval",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "createPendingApproval",
+        "Type": "HomeEase.Dtos.PendingApprovalsDtos.CreatePendingApprovalDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.PendingApprovalController",
+    "Method": "GetById",
+    "RelativePath": "api/PendingApproval/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.PendingApprovalController",
+    "Method": "Update",
+    "RelativePath": "api/PendingApproval/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "updatePendingApprovalDto",
+        "Type": "HomeEase.Dtos.PendingApprovalsDtos.UpdatePendingApprovalDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.PricingOptionController",
+    "Method": "GetAll",
+    "RelativePath": "api/PricingOption",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.PricingOptionController",
+    "Method": "Create",
+    "RelativePath": "api/PricingOption",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "createPricingOptionDto",
+        "Type": "HomeEase.Dtos.PricingOptionDtos.CreatePricingOptionDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.PricingOptionController",
+    "Method": "GetById",
+    "RelativePath": "api/PricingOption/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.PricingOptionController",
+    "Method": "Update",
+    "RelativePath": "api/PricingOption/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "updatePricingOptionDto",
+        "Type": "HomeEase.Dtos.PricingOptionDtos.UpdatePricingOptionDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "HomeEase.Controllers.ReviewsController",
     "Method": "GetAll",
     "RelativePath": "api/Reviews",
@@ -243,6 +369,22 @@
   },
   {
     "ContainingType": "HomeEase.Controllers.ServiceOfferingsController",
+    "Method": "GetAllByServiceProviderId",
+    "RelativePath": "api/ServiceOfferings/{serviceProviderId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "serviceProviderId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.ServiceOfferingsController",
     "Method": "GetById",
     "RelativePath": "api/ServiceOfferings/{serviceProviderId}/{serviceId}",
     "HttpMethod": "GET",
@@ -304,6 +446,37 @@
       {
         "Name": "serviceId",
         "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.ServiceProvidersController",
+    "Method": "GetAll",
+    "RelativePath": "api/ServiceProviders",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.ServiceProvidersController",
+    "Method": "Update",
+    "RelativePath": "api/ServiceProviders/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "updateDto",
+        "Type": "HomeEase.Dtos.ServiceProviderDtos.UpdateServiceProvicerDto",
         "IsRequired": true
       }
     ],
@@ -376,6 +549,90 @@
     "ContainingType": "HomeEase.Controllers.ServicesController",
     "Method": "Delete",
     "RelativePath": "api/Services/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.ServiceTypeController",
+    "Method": "GetAll",
+    "RelativePath": "api/ServiceType",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.ServiceTypeController",
+    "Method": "Create",
+    "RelativePath": "api/ServiceType",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "createServiceType",
+        "Type": "HomeEase.Dtos.ServiceTypeDtos.CreateServiceTypeDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.ServiceTypeController",
+    "Method": "GetById",
+    "RelativePath": "api/ServiceType/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "id",
+        "Type": "",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.ServiceTypeController",
+    "Method": "Update",
+    "RelativePath": "api/ServiceType/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "updateServiceType",
+        "Type": "HomeEase.Dtos.ServiceTypeDtos.UpdateServiceTypeDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.ServiceTypeController",
+    "Method": "Delete",
+    "RelativePath": "api/ServiceType/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,

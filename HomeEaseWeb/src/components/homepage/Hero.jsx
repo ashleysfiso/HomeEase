@@ -37,15 +37,15 @@ export default function Home() {
         {/* Buttons */}
         <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
           <Link to="/services">
-            <Button size="lg" className="gap-2">
+            <Button size="lg" variant="outline" className="gap-2">
               Book a Service
               <ArrowRight className="h-4 w-4" />
             </Button>
           </Link>
 
-          <Link to="/contact">
-            <Button size="lg" variant="outline" className="gap-2">
-              Contact Us
+          <Link to="/becomeaprovider">
+            <Button size="lg" className="gap-2">
+              Become a Provider
               <ArrowRight className="h-4 w-4" />
             </Button>
           </Link>

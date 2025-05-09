@@ -44,6 +44,10 @@ builder.Services.AddScoped<IServiceOfferingRepository, ServiceOfferingRepository
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IPendingApprovalRepository, PendingApprovalRepository>();
+builder.Services.AddScoped<IServiceProviderRepository, ServiceProviderRepository>();
+builder.Services.AddScoped<IServiceTypeRepository, ServiceTypeRepository>();
+builder.Services.AddScoped<IPricingOptionRepository, PricingOptionRepository>();
 
 
 var app = builder.Build();

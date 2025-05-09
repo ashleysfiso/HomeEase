@@ -1,5 +1,6 @@
 ﻿using System.Reflection.Emit;
 using HomeEase.Models;
+using HomeEase.Utility;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,11 @@ namespace HomeEase.Data
         public DbSet<Review> Reviews => Set<Review>();
         public DbSet<Models.ServiceProvider> ServiceProviders => Set<Models.ServiceProvider>();
         public DbSet<ServiceOffering> ServiceOfferings => Set<ServiceOffering>();
+        public DbSet<PendingApproval> PendingApprovals => Set<PendingApproval>();
+        public DbSet<Subscription> Subscriptions => Set<Subscription>();
+        public DbSet<ServiceType> ServiceTypes => Set<ServiceType>();
+        public DbSet<PricingOption> PricingOptions => Set<PricingOption>();
+        public DbSet<ServiceOfferingPricingOption> ServiceOfferingPricings => Set<ServiceOfferingPricingOption>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -27,18 +33,21 @@ namespace HomeEase.Data
             builder.Entity<IdentityRole>().HasData(
                 new IdentityRole
                 {
+                    Id = IdentityRoles.ADMIN_ROLE_ID,
                     Name = "Admin",
                     NormalizedName = "ADMIN",
                 },
 
                 new IdentityRole
                 {
+                    Id = IdentityRoles.CUSTOMER_ROLE_ID,
                     Name = "Customer",
                     NormalizedName = "CUSTOMER",
                 },
 
                 new IdentityRole
                 {
+                    Id = IdentityRoles.SERVICE_PROVIDER_ROLE_ID,
                     Name = "ServiceProvider",
                     NormalizedName = "SERVICEPROVIDER",
                 }
@@ -48,6 +57,8 @@ namespace HomeEase.Data
             builder.Entity<ServiceOffering>()
             .HasKey(so => new { so.ServiceProviderId, so.ServiceId });
 
+            builder.Entity<ServiceOfferingPricingOption>()
+            .HasKey(sop => new { sop.ServiceProviderId, sop.ServiceId, sop.PricingOptionId });
 
             builder.Entity<ServiceOffering>()
                 .HasOne(so => so.ServiceProvider)
@@ -72,6 +83,24 @@ namespace HomeEase.Data
                 .WithMany(so => so.Reiviews)
                 .HasForeignKey(r => new { r.ServiceProviderId, r.ServiceId })
                 .HasPrincipalKey(so => new { so.ServiceProviderId, so.ServiceId })
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Review>()
+                .HasOne(r => r.ServiceProvider)
+                .WithMany(sp => sp.Reviews)
+                .HasForeignKey(r => r.ServiceProviderId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<ServiceOfferingPricingOption>()
+                .HasOne(sop => sop.ServiceOffering)
+                .WithMany(so => so.PricingOptions)
+                .HasForeignKey(sop => new { sop.ServiceProviderId, sop.ServiceId })
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<ServiceOfferingPricingOption>()
+                .HasOne(sop => sop.PricingOption)
+                .WithMany()
+                .HasForeignKey(sop => sop.PricingOptionId)
                 .OnDelete(DeleteBehavior.Restrict);
 
         }

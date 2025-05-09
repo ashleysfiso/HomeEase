@@ -23,7 +23,10 @@ import DashboardPage from "./pages/dashboard/DashboardPage";
 import { requireAuth } from "./utils";
 import { checkUserRole } from "./utils";
 import { action as ManageServiceAction } from "./pages/dashboard/ManageServicesPage";
-import { Toaster } from "@/components/ui/toaster";
+import BecomeProviderPage from "./pages/BecomeProviderPage";
+import { action as BecomeProviderAction } from "./pages/BecomeProviderPage";
+import BecomeProviderSuccessPage from "./pages/BecomeProviderSuccessPage";
+import MyServices from "./pages/dashboard/MyServices";
 
 const router = createBrowserRouter([
   {
@@ -63,6 +66,15 @@ const router = createBrowserRouter([
         element: <BookingSuccess />,
         loader: requireAuth,
       },
+      {
+        path: "becomeaprovider",
+        element: <BecomeProviderPage />,
+        action: BecomeProviderAction,
+      },
+      {
+        path: "becomeaprovider/success",
+        element: <BecomeProviderSuccessPage />,
+      },
     ],
   },
   {
@@ -90,6 +102,10 @@ const router = createBrowserRouter([
         path: "manage-bookings",
         element: <ManageBookingsPage />,
       },
+      {
+        path: "my-services",
+        element: <MyServices />,
+      },
     ],
   },
   {
@@ -112,7 +128,6 @@ function App() {
   return (
     <>
       <RouterProvider router={router} />
-      <Toaster />
     </>
   );
 }

@@ -17,7 +17,10 @@ namespace HomeEase.Repository
 
         public async Task<ServiceOffering?> CreateAsync(ServiceOffering serviceOffering)
         {
-            if(await Exist(serviceOffering.ServiceId, serviceOffering.ServiceProviderId))
+            if(!await _context.Services.AnyAsync(s=>s.Id == serviceOffering.ServiceId) || 
+               !await _context.ServiceProviders.AnyAsync(sp => sp.Id == serviceOffering.ServiceProviderId) ||
+                await _context.ServiceOfferings.AnyAsync(so => so.ServiceProviderId == serviceOffering.ServiceProviderId &&
+                                                               so.ServiceId == serviceOffering.ServiceId))                                            
             {
                 return null;
             }
@@ -49,6 +52,14 @@ namespace HomeEase.Repository
                                                   .ToListAsync(); 
         }
 
+        public async Task<List<ServiceOffering>> GetAllByServiceProviderId(int ServiceProviderId)
+        {
+            return await _context.ServiceOfferings.Include(so => so.Service)
+                                                  .Include(so => so.ServiceProvider)
+                                                  .Where(so => so.ServiceProviderId == ServiceProviderId)
+                                                  .ToListAsync();
+        }
+
         public async Task<ServiceOffering?> GetByIdAsync(int ServiceProviderId, int ServiceId)
         {
             return await _context.ServiceOfferings.Include(so => so.Service)
@@ -73,20 +84,6 @@ namespace HomeEase.Repository
             await _context.SaveChangesAsync();
 
             return serviceOffering;
-        }
-
-        public async Task<bool> Exist(int ServiceId, int ServiceProviderId)
-        {
-            var existingOffering = await _context.ServiceOfferings
-                                                  .Include(so => so.Service)
-                                                  .Include(so => so.ServiceProvider)
-                                                  .FirstOrDefaultAsync(so => so.ServiceProviderId == ServiceProviderId && so.ServiceId == ServiceId);
-            if(existingOffering == null)
-            {
-                return false;
-            }
-
-            return true;
         }
     }
 }

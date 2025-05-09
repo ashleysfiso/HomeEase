@@ -15,5 +15,6 @@ namespace HomeEase.Dtos.ServiceOfferingDtos
         [Required]
         public string Description { get; set; }
         public string? ImgURL {  get; set; }
+        public string Status { get; set; }
     }
 }

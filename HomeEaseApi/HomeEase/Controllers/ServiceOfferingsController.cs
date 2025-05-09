@@ -24,6 +24,15 @@ namespace HomeEase.Controllers
             return Ok(serviceOfferings.Select(so => so.ToServiceOfferingDto()));
         }
 
+        [HttpGet("{serviceProviderId:int}")]
+
+        public async Task<IActionResult> GetAllByServiceProviderId([FromRoute] int serviceProviderId)
+        {
+            var serviceOfferings = await _serviceOfferingRepo.GetAllByServiceProviderId(serviceProviderId);
+
+            return Ok(serviceOfferings.Select(so => so.ToServiceOfferingDto()));
+        }
+
         [HttpGet("{serviceProviderId:int}/{serviceId:int}")]
         public async Task<IActionResult> GetById([FromRoute] int serviceProviderId, [FromRoute] int serviceId)
         {
@@ -53,7 +62,7 @@ namespace HomeEase.Controllers
             var createdServiceOffering = await _serviceOfferingRepo.CreateAsync(createServiceOfferingDto.ToServiceOffering());
             if(createdServiceOffering == null)
             {
-                return BadRequest("Service offering already exists. Please check the details and try again.");
+                return BadRequest("Service offering already exists, or the specified service/service provider does not exist. Please verify the details and try again.");
             }
             return CreatedAtAction(nameof(GetById), new { ServiceId = createdServiceOffering.ServiceId, ServiceProviderId = createdServiceOffering.ServiceProviderId }, createdServiceOffering);
         }

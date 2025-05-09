@@ -7,5 +7,6 @@
         public string? UserId { get; set; }
         public IList<string> Role { get; set; }
         public int? CustomerID { get; set; }
+        public int? ProviderId { get; set; }
     }
 }

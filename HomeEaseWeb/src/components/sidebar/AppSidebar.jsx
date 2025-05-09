@@ -15,6 +15,7 @@ import {
   Users,
   ClipboardList,
   Briefcase,
+  Hammer,
 } from "lucide-react";
 
 import { NavMain } from "./MainNav";
@@ -63,6 +64,11 @@ const data = {
       title: "Bookings",
       url: "/dashboard/manage-bookings",
       icon: Briefcase,
+    },
+    {
+      title: "My Services",
+      url: "/dashboard/my-services",
+      icon: Hammer,
     },
   ],
 };

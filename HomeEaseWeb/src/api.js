@@ -2,6 +2,7 @@ import axios from "axios";
 import handleAxiosError from "./utils";
 
 const baseURL = "https://localhost:7234/api/";
+//===================================================================================================================
 // Account Fuctions
 export async function LoginUser(creds) {
   let data;
@@ -47,6 +48,7 @@ export async function RegisterUser(creds) {
 
   return data;
 }
+//===================================================================================================================
 // Service offerings functions
 export async function GetServiceOfferings() {
   let data;
@@ -82,6 +84,42 @@ export async function GetServiceById(spId, sId) {
   return service;
 }
 
+export async function GetSOByServiceProviderId(spId) {
+  return await axios
+    .get(`${baseURL}ServiceOfferings/${spId}`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      const errorMessage = handleAxiosError(err);
+      throw {
+        message: errorMessage,
+      };
+    });
+}
+
+export async function CreateServiceOffering(details) {
+  return await axios
+    .post(`${baseURL}ServiceOfferings`, {
+      serviceId: details.serviceId,
+      serviceProviderId: details.serviceProviderId,
+      rate: details.rate,
+      availability: details.availability,
+      description:
+        "This is a placeholder description for the service. Please update this section with detailed and accurate information about the service being offered, including what is provided, any limitations or requirements, pricing details if applicable, and any other relevant notes. This description should be written and maintained by the service provider to ensure clarity and transparency for potential customers.",
+    })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      const errorMessage = handleAxiosError(err);
+      throw {
+        message: errorMessage,
+      };
+    });
+}
+
+//===================================================================================================================
 // Bookings functions
 export async function CreateBooking(bookingInfo) {
   let result;
@@ -125,7 +163,7 @@ export async function GetBookingByCustomerId(customerId) {
 
   return bookings;
 }
-
+//===================================================================================================================
 // Services functions
 export async function GetAvailableServices() {
   return await axios
@@ -147,6 +185,137 @@ export async function AddNewService(service) {
       name: service.name,
       description: service.description,
       basePrice: service.basePrice,
+    })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      const errorMessage = handleAxiosError(err);
+      throw {
+        message: errorMessage,
+      };
+    });
+}
+
+export async function UpdateService(service) {
+  return axios
+    .put(`${baseURL}Services/${service.id}`, {
+      name: service.name,
+      description: service.description,
+      basePrice: service.basePrice,
+    })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      const errorMessage = handleAxiosError(err);
+      throw {
+        message: errorMessage,
+      };
+    });
+}
+
+export async function DeleteService(id) {
+  return await axios
+    .delete(`${baseURL}Services/${id}`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      const errorMessage = handleAxiosError(err);
+      throw {
+        message: errorMessage,
+      };
+    });
+}
+//===================================================================================================================
+//Service Providers Functions
+
+export async function GetServiceProviders() {
+  return await axios
+    .get(`${baseURL}ServiceProviders`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      const errorMessage = handleAxiosError(err);
+      throw {
+        message: errorMessage,
+      };
+    });
+}
+
+export async function UpdateStatus(id, status) {
+  return await axios
+    .put(`${baseURL}ServiceProviders/${id}`, { status: status })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      const errorMessage = handleAxiosError(err);
+      throw {
+        message: errorMessage,
+      };
+    });
+}
+//===================================================================================================================
+//Pending Approvals functions
+export async function CreateServiceProviderApplication(details) {
+  return await axios
+    .post(`${baseURL}PendingApproval`, {
+      fullName: details.fullName,
+      email: details.email,
+      phoneNumber: details.phoneNumber,
+      companyName: details.companyName,
+      experience: details.experience,
+    })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      const errorMessage = handleAxiosError(err);
+      throw {
+        message: errorMessage,
+      };
+    });
+}
+
+export async function GetPendingApprovals() {
+  return await axios
+    .get(`${baseURL}PendingApproval`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      const errorMessage = handleAxiosError(err);
+      throw {
+        message: errorMessage,
+      };
+    });
+}
+
+export async function UpdatePendingApprovalStatus(id, status) {
+  return await axios
+    .put(`${baseURL}PendingApproval/${id}`, { status: status })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      const errorMessage = handleAxiosError(err);
+      throw {
+        message: errorMessage,
+      };
+    });
+}
+
+export async function ApproveServiceProviderApplication(details) {
+  return await axios
+    .post(`${baseURL}Account/register/service-providers`, {
+      username: details.email,
+      email: details.email,
+      phoneNumber: details.phoneNumber,
+      password: "Provider@123",
+      companyName: details.companyName,
     })
     .then((res) => {
       return res.data;

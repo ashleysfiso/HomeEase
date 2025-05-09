@@ -208,7 +208,6 @@ export default function BookingPage() {
   extras = selectedTasks;
   customerId = user?.customerID;
   serviceName = service?.serviceName;
-  customerId = user?.customerID;
 
   useEffect(() => {
     const fetchService = async () => {

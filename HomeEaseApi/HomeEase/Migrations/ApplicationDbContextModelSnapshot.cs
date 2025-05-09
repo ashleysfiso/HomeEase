@@ -169,6 +169,71 @@ namespace HomeEase.Migrations
                     b.ToTable("Customers");
                 });
 
+            modelBuilder.Entity("HomeEase.Models.PendingApproval", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CompanyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Experience")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PendingApprovals");
+                });
+
+            modelBuilder.Entity("HomeEase.Models.PricingOption", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ServiceTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UnitLabel")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServiceTypeId");
+
+                    b.ToTable("PricingOptions");
+                });
+
             modelBuilder.Entity("HomeEase.Models.Review", b =>
                 {
                     b.Property<int>("Id")
@@ -227,6 +292,9 @@ namespace HomeEase.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.ToTable("Services");
@@ -257,11 +325,36 @@ namespace HomeEase.Migrations
                     b.Property<decimal>("Rate")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("ServiceProviderId", "ServiceId");
 
                     b.HasIndex("ServiceId");
 
                     b.ToTable("ServiceOfferings");
+                });
+
+            modelBuilder.Entity("HomeEase.Models.ServiceOfferingPricingOption", b =>
+                {
+                    b.Property<int>("ServiceProviderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PricingOptionId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("ServiceProviderId", "ServiceId", "PricingOptionId");
+
+                    b.HasIndex("PricingOptionId");
+
+                    b.ToTable("ServiceOfferingPricings");
                 });
 
             modelBuilder.Entity("HomeEase.Models.ServiceProvider", b =>
@@ -282,8 +375,15 @@ namespace HomeEase.Migrations
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("bit");
 
-                    b.Property<decimal>("Rating")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("ReviewsId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SubscriptionId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -298,6 +398,55 @@ namespace HomeEase.Migrations
                         .IsUnique();
 
                     b.ToTable("ServiceProviders");
+                });
+
+            modelBuilder.Entity("HomeEase.Models.ServiceType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("ServiceTypes");
+                });
+
+            modelBuilder.Entity("HomeEase.Models.Subscription", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ServiceProviderId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServiceProviderId");
+
+                    b.ToTable("Subscriptions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -329,19 +478,19 @@ namespace HomeEase.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "a8e60e6c-af78-416c-89e2-8aca0d289a82",
+                            Id = "ad9c1a25-fba9-4a4a-a123-f0b3b3e9f23e",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "0b3d4f18-a7ab-4dd9-b356-3fed551d8754",
+                            Id = "5b86e0fc-c4a0-4bdf-ae25-e60b6b1e6e5a",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "43013a19-a811-481e-9339-0317d492e14b",
+                            Id = "849cd2f5-f16c-42b3-9aa1-b4e8cfb5fc0e",
                             Name = "ServiceProvider",
                             NormalizedName = "SERVICEPROVIDER"
                         });
@@ -456,7 +605,7 @@ namespace HomeEase.Migrations
             modelBuilder.Entity("HomeEase.Models.Booking", b =>
                 {
                     b.HasOne("HomeEase.Models.Customer", "Customer")
-                        .WithMany("Booking")
+                        .WithMany("Bookings")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -483,12 +632,29 @@ namespace HomeEase.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("HomeEase.Models.PricingOption", b =>
+                {
+                    b.HasOne("HomeEase.Models.ServiceType", "ServiceType")
+                        .WithMany("PricingOptions")
+                        .HasForeignKey("ServiceTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ServiceType");
+                });
+
             modelBuilder.Entity("HomeEase.Models.Review", b =>
                 {
                     b.HasOne("HomeEase.Models.Customer", "Customer")
                         .WithMany("Reviews")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HomeEase.Models.ServiceProvider", "ServiceProvider")
+                        .WithMany("Reviews")
+                        .HasForeignKey("ServiceProviderId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("HomeEase.Models.ServiceOffering", "ServiceOffering")
@@ -500,6 +666,8 @@ namespace HomeEase.Migrations
                     b.Navigation("Customer");
 
                     b.Navigation("ServiceOffering");
+
+                    b.Navigation("ServiceProvider");
                 });
 
             modelBuilder.Entity("HomeEase.Models.ServiceOffering", b =>
@@ -521,6 +689,25 @@ namespace HomeEase.Migrations
                     b.Navigation("ServiceProvider");
                 });
 
+            modelBuilder.Entity("HomeEase.Models.ServiceOfferingPricingOption", b =>
+                {
+                    b.HasOne("HomeEase.Models.PricingOption", "PricingOption")
+                        .WithMany()
+                        .HasForeignKey("PricingOptionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HomeEase.Models.ServiceOffering", "ServiceOffering")
+                        .WithMany("PricingOptions")
+                        .HasForeignKey("ServiceProviderId", "ServiceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("PricingOption");
+
+                    b.Navigation("ServiceOffering");
+                });
+
             modelBuilder.Entity("HomeEase.Models.ServiceProvider", b =>
                 {
                     b.HasOne("HomeEase.Models.AppUser", "User")
@@ -530,6 +717,28 @@ namespace HomeEase.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HomeEase.Models.ServiceType", b =>
+                {
+                    b.HasOne("HomeEase.Models.Service", "Service")
+                        .WithMany("ServiceTypes")
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Service");
+                });
+
+            modelBuilder.Entity("HomeEase.Models.Subscription", b =>
+                {
+                    b.HasOne("HomeEase.Models.ServiceProvider", "ServiceProvider")
+                        .WithMany("Subscriptions")
+                        .HasForeignKey("ServiceProviderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ServiceProvider");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -592,7 +801,7 @@ namespace HomeEase.Migrations
 
             modelBuilder.Entity("HomeEase.Models.Customer", b =>
                 {
-                    b.Navigation("Booking");
+                    b.Navigation("Bookings");
 
                     b.Navigation("Reviews");
                 });
@@ -600,18 +809,31 @@ namespace HomeEase.Migrations
             modelBuilder.Entity("HomeEase.Models.Service", b =>
                 {
                     b.Navigation("ServiceProviderServices");
+
+                    b.Navigation("ServiceTypes");
                 });
 
             modelBuilder.Entity("HomeEase.Models.ServiceOffering", b =>
                 {
                     b.Navigation("Bookings");
 
+                    b.Navigation("PricingOptions");
+
                     b.Navigation("Reiviews");
                 });
 
             modelBuilder.Entity("HomeEase.Models.ServiceProvider", b =>
                 {
+                    b.Navigation("Reviews");
+
                     b.Navigation("ServiceProviderServices");
+
+                    b.Navigation("Subscriptions");
+                });
+
+            modelBuilder.Entity("HomeEase.Models.ServiceType", b =>
+                {
+                    b.Navigation("PricingOptions");
                 });
 #pragma warning restore 612, 618
         }

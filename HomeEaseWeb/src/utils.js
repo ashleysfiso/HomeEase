@@ -45,4 +45,21 @@ const handleAxiosError = (error) => {
   return "An unexpected error occurred. Please try again.";
 };
 
+export function formatReadableDate(isoString) {
+  if (!isoString) return "";
+
+  const date = new Date(isoString);
+
+  const options = {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  };
+
+  return date.toLocaleString("en-GB", options);
+}
+
 export default handleAxiosError;

@@ -15,5 +15,7 @@
         public int ServiceProviderId { get; set; }
         // Navigation property
         public ServiceOffering ServiceOffering { get; set; }
+
+        public ServiceProvider ServiceProvider { get; set; }
     } 
 }

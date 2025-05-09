@@ -17,6 +17,7 @@ namespace HomeEase.Mappers
                 Availability = serviceOffering.Availability,
                 Description = serviceOffering.Service.Description,
                 ImgURL = serviceOffering.ImgURL,
+                Status = serviceOffering.Status,
             };
         }
 

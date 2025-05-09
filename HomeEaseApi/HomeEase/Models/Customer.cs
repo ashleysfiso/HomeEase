@@ -12,7 +12,7 @@
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; }
         
-        public List<Booking> Booking { get; set; } = new List<Booking>();
+        public List<Booking> Bookings { get; set; } = new List<Booking>();
         public List<Review> Reviews { get; set; } = new List<Review>();
     }
 }
