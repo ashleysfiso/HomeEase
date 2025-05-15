@@ -327,3 +327,50 @@ export async function ApproveServiceProviderApplication(details) {
       };
     });
 }
+
+//===================================================================================================================
+//Service Types
+export async function CreateServiceType(serviceType) {
+  return await axios
+    .post(`${baseURL}ServiceType`, {
+      serviceId: serviceType.serviceId,
+      name: serviceType.name,
+    })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      const errorMessage = handleAxiosError(err);
+      throw {
+        message: errorMessage,
+      };
+    });
+}
+
+export async function UpdateServiceType(id, status) {
+  return await axios
+    .put(`${baseURL}ServiceType/${id}`, { status: status })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      const errorMessage = handleAxiosError(err);
+      throw {
+        message: errorMessage,
+      };
+    });
+}
+
+export async function DeleteServiceType(id) {
+  return await axios
+    .delete(`${baseURL}ServiceType/${id}`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      const errorMessage = handleAxiosError(err);
+      throw {
+        message: errorMessage,
+      };
+    });
+}

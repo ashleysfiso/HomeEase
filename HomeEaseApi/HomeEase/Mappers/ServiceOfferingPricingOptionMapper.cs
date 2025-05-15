@@ -20,6 +20,7 @@ namespace HomeEase.Mappers
         {
             return new SOPricingOptionDto
             {
+                PricingOptionId = soPricingOption.PricingOptionId,
                 ServiceTypeName = soPricingOption.PricingOption.ServiceType.Name,
                 PricingOptionName = soPricingOption.PricingOption.Name,
                 UnitLabel = soPricingOption.PricingOption.UnitLabel,

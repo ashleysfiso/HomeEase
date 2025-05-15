@@ -1,4 +1,5 @@
 ﻿using HomeEase.Dtos.ServiceOfferingDtos;
+using HomeEase.Dtos.ServiceTypeDtos;
 using HomeEase.Models;
 
 namespace HomeEase.Mappers
@@ -18,6 +19,19 @@ namespace HomeEase.Mappers
                 Description = serviceOffering.Service.Description,
                 ImgURL = serviceOffering.ImgURL,
                 Status = serviceOffering.Status,
+                PricingOptions = serviceOffering.PricingOptions.GroupBy(po => new {po.PricingOption.ServiceType.Name, po.PricingOption.UnitLabel})
+                                                               .Select(group => new PricingOptionGroup2
+                                                               {
+                                                                   ServiceTypeName = group.Key.Name,
+                                                                   LabelUnit = group.Key.UnitLabel,
+                                                                   Options = group.Select(item => new PricingOptionItem2
+                                                                   {
+                                                                       ServiceTypeId = item.PricingOption.ServiceTypeId,
+                                                                       PricingOptionId = item.PricingOptionId,
+                                                                       PricingOptionName = item.PricingOption.Name,
+                                                                       Price = item.Price,
+                                                                   }).ToList()
+                                                               }).ToList(),
             };
         }
 
@@ -30,7 +44,12 @@ namespace HomeEase.Mappers
                 ServiceProviderId = serviceOfferingDto.ServiceProviderId,
                 Rate = serviceOfferingDto.Rate,
                 Availability = serviceOfferingDto.Availability,
-                Description = serviceOfferingDto.Description
+                Description = serviceOfferingDto.Description,
+                PricingOptions = serviceOfferingDto.pricingOptionsToSO.Select(item => new ServiceOfferingPricingOption
+                {
+                    PricingOptionId = item.PricingOptionId,
+                    Price = item.Price,
+                }).ToList()
             };
         }
     }

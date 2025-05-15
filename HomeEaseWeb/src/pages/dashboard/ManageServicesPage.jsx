@@ -28,6 +28,7 @@ import { Form, useActionData, useNavigation } from "react-router-dom";
 import { AddNewService, UpdateService, DeleteService } from "@/api";
 import { useToast } from "@/hooks/use-toast";
 import { MyPagination } from "@/components/Pagination";
+import AssignServiceTypes from "@/components/heservices/manageservicepage/AssignServiceTypes";
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -186,15 +187,15 @@ export function ManageServicesPage() {
         <TabsList>
           <TabsTrigger value="all-services">All Services</TabsTrigger>
           <TabsTrigger value="add-new-service">Add New Service</TabsTrigger>
+          <TabsTrigger value="assign-service-type">
+            Assign Service Type
+          </TabsTrigger>
           <TabsTrigger
             value="update-service"
             className="pointer-events-none opacity-50"
           >
             Update Service
           </TabsTrigger>
-          {/*<TabsTrigger value="service-categories">
-            Service Categories
-          </TabsTrigger>*/}
         </TabsList>
 
         {/* All Services Tab */}
@@ -478,6 +479,13 @@ export function ManageServicesPage() {
               </Form>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="assign-service-type" className="space-y-4">
+          <AssignServiceTypes
+            services={services}
+            setSubmitTrigger={setSubmitTrigger}
+          />
         </TabsContent>
 
         {/* Service Categories Tab */}

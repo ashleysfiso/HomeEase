@@ -48,6 +48,7 @@ builder.Services.AddScoped<IPendingApprovalRepository, PendingApprovalRepository
 builder.Services.AddScoped<IServiceProviderRepository, ServiceProviderRepository>();
 builder.Services.AddScoped<IServiceTypeRepository, ServiceTypeRepository>();
 builder.Services.AddScoped<IPricingOptionRepository, PricingOptionRepository>();
+builder.Services.AddScoped<IServiceOfferingPricingOptionRepository, ServiceOfferingPricingOptionRepository>();
 
 
 var app = builder.Build();

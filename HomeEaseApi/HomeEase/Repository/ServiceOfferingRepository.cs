@@ -24,6 +24,21 @@ namespace HomeEase.Repository
             {
                 return null;
             }
+
+            var pricingOptionIds = serviceOffering.PricingOptions.Select(p => p.PricingOptionId).ToList();
+
+            var existingIds = await _context.PricingOptions
+                                    .Where(p => pricingOptionIds.Contains(p.Id))
+                                    .Select(p => p.Id)
+                                    .ToListAsync();
+
+            var missingIds = pricingOptionIds.Except(existingIds).ToList();
+
+            if (missingIds.Any())
+            {
+                return null;
+            }
+
             await _context.ServiceOfferings.AddAsync(serviceOffering);
             await _context.SaveChangesAsync();
             return serviceOffering;
@@ -34,13 +49,16 @@ namespace HomeEase.Repository
             var serviceOffering = await _context.ServiceOfferings
                                                   .Include(so => so.Service)
                                                   .Include(so => so.ServiceProvider)
+                                                  .Include (so => so.PricingOptions)
+                                                  .ThenInclude(sopo => sopo.PricingOption)
+                                                  .ThenInclude(po => po.ServiceType)
                                                   .FirstOrDefaultAsync(so => so.ServiceProviderId == ServiceProviderId && so.ServiceId == ServiceId);
 
             if (serviceOffering == null)
             {
                 return null;
             }
-            _context.Remove(serviceOffering);
+            //_context.Remove(serviceOffering);
             await _context.SaveChangesAsync();
             return serviceOffering;
         }
@@ -49,6 +67,9 @@ namespace HomeEase.Repository
         {
             return await _context.ServiceOfferings.Include(so => so.Service)
                                                   .Include(so => so.ServiceProvider)
+                                                  .Include(so => so.PricingOptions)
+                                                  .ThenInclude(sopo => sopo.PricingOption)
+                                                  .ThenInclude(po => po.ServiceType)
                                                   .ToListAsync(); 
         }
 
@@ -56,6 +77,9 @@ namespace HomeEase.Repository
         {
             return await _context.ServiceOfferings.Include(so => so.Service)
                                                   .Include(so => so.ServiceProvider)
+                                                  .Include(so => so.PricingOptions)
+                                                  .ThenInclude(sopo => sopo.PricingOption)
+                                                  .ThenInclude(po => po.ServiceType)
                                                   .Where(so => so.ServiceProviderId == ServiceProviderId)
                                                   .ToListAsync();
         }
@@ -64,6 +88,9 @@ namespace HomeEase.Repository
         {
             return await _context.ServiceOfferings.Include(so => so.Service)
                                                   .Include(so => so.ServiceProvider)
+                                                  .Include(so => so.PricingOptions)
+                                                  .ThenInclude(sopo => sopo.PricingOption)
+                                                  .ThenInclude(po => po.ServiceType)
                                                   .FirstOrDefaultAsync(so => so.ServiceProviderId == ServiceProviderId && so.ServiceId == ServiceId);
         }
 
@@ -71,6 +98,9 @@ namespace HomeEase.Repository
         {
             var serviceOffering = await _context.ServiceOfferings.Include(so => so.Service)
                                                                  .Include(so => so.ServiceProvider)
+                                                                 .Include(so => so.PricingOptions)
+                                                                 .ThenInclude(sopo => sopo.PricingOption)
+                                                                 .ThenInclude(po => po.ServiceType)
                                                                  .FirstOrDefaultAsync(so => so.ServiceProviderId == ServiceProviderId && so.ServiceId == ServiceId);
             if (serviceOffering == null)
             {

@@ -14,9 +14,21 @@ namespace HomeEase.Repository
         {
             _context = context;
         }
-        public Task<ServiceOfferingPricingOption?> CreateAsync(ServiceOfferingPricingOption serviceOfferingPricingOption)
+        public async Task<ServiceOfferingPricingOption?> CreateAsync(ServiceOfferingPricingOption serviceOfferingPricingOption)
         {
-            throw new NotImplementedException();
+            if(!await _context.ServiceOfferings.AnyAsync(so => so.ServiceProviderId == serviceOfferingPricingOption.ServiceProviderId &&
+                                                                     so.ServiceId == serviceOfferingPricingOption.ServiceId) ||
+               !await _context.PricingOptions.AnyAsync(po => po.Id == serviceOfferingPricingOption.PricingOptionId) ||
+                await _context.ServiceOfferingPricings.AnyAsync(sopo => sopo.ServiceProviderId == serviceOfferingPricingOption.ServiceProviderId &&
+                                                                        sopo.ServiceId == serviceOfferingPricingOption.ServiceId &&
+                                                                        sopo.PricingOptionId == serviceOfferingPricingOption.PricingOptionId))
+            {
+                return null;
+            }
+
+            var result = await _context.ServiceOfferingPricings.AddAsync(serviceOfferingPricingOption);
+            await _context.SaveChangesAsync();
+            return result.Entity;
         }
 
         public async Task<List<ServiceOfferingPricingOption>> GetAllAsync()
@@ -28,9 +40,24 @@ namespace HomeEase.Repository
             return serviceOfferingPricings;
         }
 
-        public Task<ServiceOfferingPricingOption?> UpdateAsync(UpdateSOPricingOption updateSOPricingOption)
+        public async  Task<ServiceOfferingPricingOption?> UpdateAsync(UpdateSOPricingOption updateSOPricingOption)
         {
-            throw new NotImplementedException();
+            var soPricingOption = await _context.ServiceOfferingPricings
+                                                .Include(sop => sop.PricingOption)
+                                                .ThenInclude(sop => sop.ServiceType)
+                                                .FirstOrDefaultAsync(sopo => sopo.ServiceId == updateSOPricingOption.ServiceId &&
+                                                                             sopo.ServiceProviderId == updateSOPricingOption.ServiceProviderId &&
+                                                                             sopo.PricingOptionId == updateSOPricingOption.PricingOptionId);
+            if(soPricingOption == null)
+            {
+                return null;
+            }
+
+            soPricingOption.Price = updateSOPricingOption.Price;
+
+            await _context.SaveChangesAsync();
+
+            return soPricingOption;
         }
     }
 }

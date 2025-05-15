@@ -571,6 +571,76 @@
         }
       }
     },
+    "/api/ServiceOfferingPricingOption": {
+      "get": {
+        "tags": [
+          "ServiceOfferingPricingOption"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "ServiceOfferingPricingOption"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSOPricingOption"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSOPricingOption"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSOPricingOption"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "ServiceOfferingPricingOption"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSOPricingOption"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSOPricingOption"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSOPricingOption"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/ServiceOfferings": {
       "get": {
         "tags": [
@@ -1074,6 +1144,24 @@
   },
   "components": {
     "schemas": {
+      "AddPricingOptionsToSO": {
+        "required": [
+          "price",
+          "pricingOptionId"
+        ],
+        "type": "object",
+        "properties": {
+          "pricingOptionId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
       "CreateBookingDto": {
         "required": [
           "address",
@@ -1210,6 +1298,34 @@
         },
         "additionalProperties": false
       },
+      "CreateSOPricingOption": {
+        "required": [
+          "price",
+          "pricingOptionId",
+          "serviceId",
+          "serviceProviderId"
+        ],
+        "type": "object",
+        "properties": {
+          "serviceProviderId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "serviceId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pricingOptionId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
       "CreateServiceDto": {
         "required": [
           "basePrice",
@@ -1237,6 +1353,7 @@
         "required": [
           "availability",
           "description",
+          "pricingOptionsToSO",
           "rate",
           "serviceId",
           "serviceProviderId"
@@ -1262,6 +1379,12 @@
           "description": {
             "minLength": 1,
             "type": "string"
+          },
+          "pricingOptionsToSO": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AddPricingOptionsToSO"
+            }
           }
         },
         "additionalProperties": false
@@ -1429,6 +1552,34 @@
           "comment": {
             "minLength": 1,
             "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateSOPricingOption": {
+        "required": [
+          "price",
+          "pricingOptionId",
+          "serviceId",
+          "serviceProviderId"
+        ],
+        "type": "object",
+        "properties": {
+          "serviceProviderId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "serviceId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pricingOptionId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false

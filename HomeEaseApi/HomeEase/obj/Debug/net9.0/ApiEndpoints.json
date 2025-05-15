@@ -342,6 +342,48 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "HomeEase.Controllers.ServiceOfferingPricingOptionController",
+    "Method": "GetAll",
+    "RelativePath": "api/ServiceOfferingPricingOption",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.ServiceOfferingPricingOptionController",
+    "Method": "Create",
+    "RelativePath": "api/ServiceOfferingPricingOption",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "createSOPricingOption",
+        "Type": "HomeEase.Dtos.ServiceOfferingPricingOptionDtos.CreateSOPricingOption",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.ServiceOfferingPricingOptionController",
+    "Method": "Update",
+    "RelativePath": "api/ServiceOfferingPricingOption",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "updateSOPricingOption",
+        "Type": "HomeEase.Dtos.ServiceOfferingPricingOptionDtos.UpdateSOPricingOption",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "HomeEase.Controllers.ServiceOfferingsController",
     "Method": "GetAll",
     "RelativePath": "api/ServiceOfferings",

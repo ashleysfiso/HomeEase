@@ -52,7 +52,7 @@ namespace HomeEase.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateServiceOfferingDto createServiceOfferingDto)
+        public async Task<IActionResult> Create([FromBody] CreateServiceOfferingDto createServiceOfferingDto)
         {
             if (!ModelState.IsValid)
             {
@@ -62,7 +62,7 @@ namespace HomeEase.Controllers
             var createdServiceOffering = await _serviceOfferingRepo.CreateAsync(createServiceOfferingDto.ToServiceOffering());
             if(createdServiceOffering == null)
             {
-                return BadRequest("Service offering already exists, or the specified service/service provider does not exist. Please verify the details and try again.");
+                return BadRequest("Service offering already exists, or the specified service/service provider does not exist, or on of the pricing option does not exist. Please verify the details and try again.");
             }
             return CreatedAtAction(nameof(GetById), new { ServiceId = createdServiceOffering.ServiceId, ServiceProviderId = createdServiceOffering.ServiceProviderId }, createdServiceOffering);
         }
