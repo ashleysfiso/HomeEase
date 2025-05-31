@@ -46,6 +46,14 @@ namespace HomeEase.Controllers
             return Ok(bookingsDto);
         }
 
+        [HttpGet("provider/{providerId:int}")]
+        public async Task<IActionResult> GetByProviderId([FromRoute] int providerId)
+        {
+            var bookings = await _bookingRepo.GetByServiceProviderIdAsync(providerId);
+            var bookingsDto = bookings.Select(b => b.ToBookingDto());
+            return Ok(bookingsDto);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create(CreateBookingDto createBookingDto)
         {
@@ -56,6 +64,11 @@ namespace HomeEase.Controllers
 
             var booking = await _bookingRepo.CreateAsync(createBookingDto.ToBookingModel());
 
+            if(booking == null)
+            {
+                return NotFound("Service offering does not exists or invalid customer Id. Please check the details and try again");
+            }
+
             return CreatedAtAction(nameof(GetById), new {id = booking.Id}, booking);
         }
 
@@ -65,6 +78,13 @@ namespace HomeEase.Controllers
             if(!ModelState.IsValid)
             {
                 return BadRequest("Invalid data submitted. Please check the details and try again.");
+            }
+            if(updateBookingDto.Status != null)
+            {
+                if(updateBookingDto.Status != "Cancelled" && updateBookingDto.Status != "Completed")
+                {
+                    return BadRequest("Invalid Status submitted. Please check the details and try again.");
+                }
             }
 
             var booking = await _bookingRepo.UpdateAsync(updateBookingDto, id);

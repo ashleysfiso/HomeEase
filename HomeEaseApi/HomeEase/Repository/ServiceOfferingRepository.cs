@@ -39,9 +39,9 @@ namespace HomeEase.Repository
                 return null;
             }
 
-            await _context.ServiceOfferings.AddAsync(serviceOffering);
+            var result = await _context.ServiceOfferings.AddAsync(serviceOffering);
             await _context.SaveChangesAsync();
-            return serviceOffering;
+            return result.Entity;
         }
 
         public async Task<ServiceOffering?> DeleteAsync(int ServiceProviderId, int ServiceId)
@@ -58,7 +58,7 @@ namespace HomeEase.Repository
             {
                 return null;
             }
-            //_context.Remove(serviceOffering);
+            serviceOffering.IsDeleted = !serviceOffering.IsDeleted;
             await _context.SaveChangesAsync();
             return serviceOffering;
         }
@@ -110,6 +110,25 @@ namespace HomeEase.Repository
             serviceOffering.Rate = serviceOfferingDto.Rate;
             serviceOffering.Availability = serviceOfferingDto.Availability;
             serviceOffering.Description = serviceOfferingDto.Description;
+
+            await _context.SaveChangesAsync();
+
+            return serviceOffering;
+        }
+
+        public async Task<ServiceOffering?> UpdateStatusAsync(string status, int ServiceProviderId, int ServiceId)
+        {
+            var serviceOffering = await _context.ServiceOfferings.Include(so => so.Service)
+                                                                 .Include(so => so.ServiceProvider)
+                                                                 .Include(so => so.PricingOptions)
+                                                                 .ThenInclude(sopo => sopo.PricingOption)
+                                                                 .ThenInclude(po => po.ServiceType)
+                                                                 .FirstOrDefaultAsync(so => so.ServiceProviderId == ServiceProviderId && so.ServiceId == ServiceId);
+            if (serviceOffering == null)
+            {
+                return null;
+            }
+            serviceOffering.Status = status;
 
             await _context.SaveChangesAsync();
 

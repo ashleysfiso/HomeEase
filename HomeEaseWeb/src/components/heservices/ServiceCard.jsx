@@ -7,21 +7,41 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogFooter,
-  DialogClose,
-} from "@/components/ui/dialog";
 import { StatusBadge } from "./StatusBadge";
 import { Button } from "../ui/button";
-import { Pencil, XCircle } from "lucide-react";
+import { Undo, Trash2 } from "lucide-react";
 import { EditService } from "./EditService";
+import { EditPricingOptions } from "./myservices/EditPricingOptions";
+import { ServicDeletedBedge } from "./ServiceDeletedBadge";
+import { DeleteServiceOffering } from "@/api";
+import MyLoader from "../MyLoader";
+import { useToast } from "@/hooks/use-toast";
 
-export function ServiceCard({ service }) {
+export function ServiceCard({ service, setSubmitTrigger, serviceProviderId }) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
+
+  const handleServiceOfferingDelete = async () => {
+    setIsSubmitting(true);
+    try {
+      const result = await DeleteServiceOffering(
+        serviceProviderId,
+        service.serviceId
+      );
+      toast({
+        description: "Service Offering has been updated successfully.",
+      });
+      setSubmitTrigger((prev) => !prev);
+      setIsSubmitting(false);
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: error.message,
+      });
+      setIsSubmitting(false);
+    }
+  };
   return (
     <Card>
       <CardHeader className="pb-2">
@@ -32,27 +52,35 @@ export function ServiceCard({ service }) {
         <CardDescription className="text-xs">
           {service.companyName}
         </CardDescription>
+        <ServicDeletedBedge isDeleted={service.isDeleted} />
       </CardHeader>
       <CardContent className="pb-2">
         <div className="grid grid-cols-2 gap-1 text-sm mb-2">
-          <div className="text-muted-foreground">Rate:</div>
-          <div className="font-medium">R{service.rate}/hr</div>
+          <div className="text-muted-foreground">Base Price:</div>
+          <div className="font-medium">R{service.rate}</div>
           <div className="text-muted-foreground">Available:</div>
           <div>{service.availability}</div>
         </div>
         <p className="text-xs text-muted-foreground">{service.description}</p>
       </CardContent>
       <CardFooter className="p-2 gap-2">
-        <EditService
+        <EditPricingOptions
           service={service}
-          onSave={(updated) => {
-            // Save logic here: call API or update local state
-            console.log("Updated Service:", updated);
-          }}
+          setSubmitTrigger={setSubmitTrigger}
         />
-        <Button variant="outline" size="sm" className="flex-1">
-          <XCircle className="h-3.5 w-3.5 mr-1" />
-          Unlist
+        <Button
+          variant={service.isDeleted ? "outline" : "destructive"}
+          onClick={handleServiceOfferingDelete}
+          className="flex items-center gap-2"
+          disabled={isSubmitting}
+        >
+          {isSubmitting && <MyLoader />}
+          {service.isDeleted ? (
+            <Undo className="w-4 h-4" />
+          ) : (
+            <Trash2 className="w-4 h-4" />
+          )}
+          {service.isDeleted ? "Restore" : "Delete"}
         </Button>
       </CardFooter>
     </Card>

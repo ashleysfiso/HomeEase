@@ -320,3 +320,4 @@ C:\Users\ashle\OneDrive\Documents\HomeEase\HomeEaseApi\HomeEase\obj\Debug\net9.0
 C:\Users\ashle\OneDrive\Documents\HomeEase\HomeEaseApi\HomeEase\obj\Debug\net9.0\HomeEase.pdb
 C:\Users\ashle\OneDrive\Documents\HomeEase\HomeEaseApi\HomeEase\obj\Debug\net9.0\HomeEase.genruntimeconfig.cache
 C:\Users\ashle\OneDrive\Documents\HomeEase\HomeEaseApi\HomeEase\obj\Debug\net9.0\ref\HomeEase.dll
+C:\Users\ashle\OneDrive\Documents\HomeEase\HomeEaseApi\HomeEase\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

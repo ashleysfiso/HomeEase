@@ -16,7 +16,12 @@ namespace HomeEase.Repository
 
         public async Task<Booking?> CreateAsync(Booking booking)
         {
-            
+            if(!await _context.ServiceOfferings.AnyAsync(so=> so.ServiceProviderId == booking.ServiceProviderId &&
+                                                              so.ServiceId == booking.ServiceId) ||
+               !await _context.Customers.AnyAsync(c => c.Id == booking.CustomerId))
+            {
+                return null;
+            }
             var result = await _context.Bookings.AddAsync(booking);
             await _context.SaveChangesAsync();
 
@@ -62,9 +67,14 @@ namespace HomeEase.Repository
             {
                 return null;
             }
-
-            booking.Status = updateBookingDto.Status;
-            booking.BookingDate = updateBookingDto.BookingDate;
+            if (updateBookingDto.Status != null)
+            {
+                booking.Status = updateBookingDto.Status;
+            }
+            if (updateBookingDto.BookingDate != null)
+            {
+                booking.BookingDate = (DateOnly)updateBookingDto.BookingDate;
+            }
             booking.UpdatedAt = DateTime.Now;
 
             await _context.SaveChangesAsync();

@@ -70,13 +70,19 @@ namespace HomeEase.Data
                 .WithMany(s => s.ServiceProviderServices)
                 .HasForeignKey(so => so.ServiceId);
 
-            // Configure relationship between Booking and ServiceOffering
+            
             builder.Entity<Booking>()
                 .HasOne(b => b.ServiceOffering)
                 .WithMany(so => so.Bookings)
-                .HasForeignKey(b => new { b.ServiceProviderId, b.ServiceId }) // Foreign key in Booking
+                .HasForeignKey(b => new { b.ServiceProviderId, b.ServiceId }) 
                 .HasPrincipalKey(so => new { so.ServiceProviderId, so.ServiceId })
-                .OnDelete(DeleteBehavior.Restrict); // Principal key in ServiceOffering
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Booking>()
+                .HasOne(b => b.Review)
+                .WithOne(r => r.Booking)
+                .HasForeignKey<Review>(r => r.BookingId)
+                .OnDelete(DeleteBehavior.Restrict); 
 
             builder.Entity<Review>()
                 .HasOne(r => r.ServiceOffering)
@@ -90,6 +96,11 @@ namespace HomeEase.Data
                 .WithMany(sp => sp.Reviews)
                 .HasForeignKey(r => r.ServiceProviderId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Review>()
+                .HasOne(r => r.Booking)
+                .WithOne(b => b.Review)
+                .HasForeignKey<Review>(r => r.BookingId);
 
             builder.Entity<ServiceOfferingPricingOption>()
                 .HasOne(sop => sop.ServiceOffering)

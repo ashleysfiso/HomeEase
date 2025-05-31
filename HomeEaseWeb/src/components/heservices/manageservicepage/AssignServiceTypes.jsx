@@ -18,27 +18,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
-import { CreateServiceType } from "@/api";
+import { CreateServiceType, DeleteServiceType } from "@/api";
 import EmptyState from "@/components/EmptyState";
 import MyLoader from "@/components/MyLoader";
+import DeleteAlertDialog from "@/components/DeleteAlertDialog";
 
 export default function AssignServiceTypes({ services, setSubmitTrigger }) {
   const [service, setService] = useState(null);
   const [serviceTypeName, setServiceTypeName] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (service) {
+      const found = services.find((s) => s.id === service.id);
+      setService(found ?? null);
+    }
+  }, [services]);
 
   const handleAssignServiceType = async () => {
     setIsSubmitting(true);
@@ -78,12 +75,32 @@ export default function AssignServiceTypes({ services, setSubmitTrigger }) {
     }
   };
 
+  const handleDeleteServcieType = async (id) => {
+    setIsSubmitting(true);
+    try {
+      const res = await DeleteServiceType(id);
+      toast({
+        description: `Service type ${res.name} has been deleted successfully.`,
+      });
+      setIsSubmitting(false);
+      setSubmitTrigger((prev) => !prev);
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: error.message,
+      });
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Assign Service Type</CardTitle>
+        <CardTitle>Assign Service Types</CardTitle>
         <CardDescription>
-          Assign service types to selected service.
+          Link specific service types to a selected service for better
+          categorization and management.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -114,6 +131,7 @@ export default function AssignServiceTypes({ services, setSubmitTrigger }) {
             <div className="space-y-2">
               <label className="text-sm font-medium">Service Type Name</label>
               <Input
+                placeholder="Enter service type name (e.g., DeepCleaning, ElectricalRepair)"
                 value={serviceTypeName}
                 onChange={(e) => {
                   setServiceTypeName(e.target.value);
@@ -140,13 +158,11 @@ export default function AssignServiceTypes({ services, setSubmitTrigger }) {
                       </div>
                     </div>
                     <Badge>{service.name}</Badge>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="text-red-500"
-                    >
-                      Remove
-                    </Button>
+                    <DeleteAlertDialog
+                      isLoading={isSubmitting}
+                      handelAction={handleDeleteServcieType}
+                      id={type.id}
+                    />
                   </div>
                 ))
               )}

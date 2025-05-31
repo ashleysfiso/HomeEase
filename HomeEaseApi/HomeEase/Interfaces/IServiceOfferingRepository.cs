@@ -10,8 +10,8 @@ namespace HomeEase.Interfaces
         public Task<List<ServiceOffering>> GetAllByServiceProviderId(int ServiceProviderId); 
         public Task<ServiceOffering?> CreateAsync(ServiceOffering serviceOffering);
         public Task<ServiceOffering?> UpdateAsync(UpdateServiceOfferingDto serviceOfferingDto, int ServiceProviderId, int ServiceId);
+        public Task<ServiceOffering?> UpdateStatusAsync(string status, int ServiceProviderId, int ServiceId);
         public Task<ServiceOffering?> DeleteAsync(int ServiceProviderId, int ServiceId);
-
         
     }
 }

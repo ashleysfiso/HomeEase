@@ -23,21 +23,18 @@ import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ServiceCard } from "@/components/heservices/ServiceCard";
 import { useAuth } from "@/contexts/AuthContext";
-import { GetAvailableServices } from "@/api";
-import { Form } from "react-router-dom";
+import {
+  GetAvailableServices,
+  GetServiceProviderServiceOfferings,
+} from "@/api";
+import PricingInputs from "@/components/heservices/myservices/PricingInputs";
+import EmptyState from "@/components/EmptyState";
 
 const servicess = [
   {
@@ -78,51 +75,16 @@ const servicess = [
   },
 ];
 
-const serviceTemplates = [
-  {
-    id: 1,
-    name: "Home Cleaning",
-    description:
-      "Regular cleaning services for residential homes including dusting, vacuuming, and bathroom cleaning.",
-  },
-  {
-    id: 2,
-    name: "Office Cleaning",
-    description:
-      "Professional cleaning for office spaces and commercial buildings.",
-  },
-  {
-    id: 3,
-    name: "Deep Cleaning",
-    description:
-      "Thorough cleaning service for homes that need extra attention to detail.",
-  },
-  {
-    id: 4,
-    name: "Move-in/Move-out Cleaning",
-    description:
-      "Comprehensive cleaning service for when you're moving in or out of a property.",
-  },
-  {
-    id: 5,
-    name: "Window Cleaning",
-    description: "Professional window cleaning for homes and businesses.",
-  },
-  {
-    id: 6,
-    name: "Carpet Cleaning",
-    description:
-      "Deep cleaning for carpets to remove stains, dirt, and allergens.",
-  },
-];
-
 export default function MyServices() {
   const [isServicesLoading, setIsServicesLoading] = useState(true);
   const [services, setServices] = useState([]);
-  const [openPopoverId, setOpenPopoverId] = useState(null);
+  const [serviceOfferings, setServiceOfferings] = useState([]);
+  const [service, setService] = useState(null);
   const [serviceId, setServiceId] = useState(null);
   const [rate, setRate] = useState();
   const [availability, setAvailablility] = useState();
+  const [activeTab, setActiveTab] = useState("my-services");
+  const [submitTrigger, setSubmitTrigger] = useState(false);
   const { user } = useAuth();
 
   const serviceProviderId = user?.providerId;
@@ -141,15 +103,28 @@ export default function MyServices() {
       }
     };
 
-    if (serviceProviderId) {
-      fetchAvailableServices();
-      console.log(serviceProviderId);
-    }
-  }, [serviceProviderId]);
+    const fetchServiceOfferings = async () => {
+      try {
+        const result = await GetServiceProviderServiceOfferings(
+          serviceProviderId
+        );
+        setServiceOfferings(result);
+        setIsServicesLoading(false);
+      } catch (error) {
+        console.log(error);
+        setIsServicesLoading(false);
+      }
+    };
 
-  const handleAddServiceClick = (id) => {
-    setOpenPopoverId(id);
-    setServiceId(id);
+    if (serviceProviderId) {
+      fetchServiceOfferings();
+      fetchAvailableServices();
+    }
+  }, [serviceProviderId, submitTrigger]);
+
+  const handleAddServiceClick = (service) => {
+    setService(service);
+    setActiveTab("service-details");
   };
 
   return (
@@ -161,7 +136,12 @@ export default function MyServices() {
         </p>
       </div>
 
-      <Tabs defaultValue="my-services" className="w-full">
+      <Tabs
+        defaultValue="my-services"
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className="w-full"
+      >
         <TabsList className="grid w-full grid-cols-2 mb-6">
           <TabsTrigger value="my-services">My Services</TabsTrigger>
           <TabsTrigger value="add-service">Add Service</TabsTrigger>
@@ -172,17 +152,20 @@ export default function MyServices() {
             <div className="flex justify-center">
               <Loader2 className="animate-spin h-5 w-5 mr-2" />
             </div>
-          ) : servicess.length > 0 ? (
+          ) : serviceOfferings.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {servicess.map((service) => (
-                <ServiceCard key={service.serviceId} service={service} />
+              {serviceOfferings.map((service) => (
+                <ServiceCard
+                  key={service.serviceId}
+                  service={service}
+                  setSubmitTrigger={setSubmitTrigger}
+                  serviceProviderId={serviceProviderId}
+                />
               ))}
             </div>
           ) : (
             <div className="text-center py-12 border rounded-lg">
-              <p className="text-muted-foreground">
-                You haven't added any services yet.
-              </p>
+              <EmptyState message="You haven't added any services yet." />
               <Button className="mt-4" variant="outline">
                 Add Your First Service
               </Button>
@@ -212,106 +195,15 @@ export default function MyServices() {
                   <CardHeader className="pb-2">
                     <div className="flex items-center justify-between">
                       <CardTitle className="text-lg">{service.name}</CardTitle>
-                      <Popover
-                        open={openPopoverId === service.id}
-                        onOpenChange={(open) => {
-                          if (!open) {
-                            //setPopoverOpen(false);
-                            //(null);
-                            setOpenPopoverId(null);
-                            setServiceId(null);
-                            setAvailablility(null);
-                            //setRate(null);
-                          }
-                        }}
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="flex items-center gap-1"
+                        onClick={() => handleAddServiceClick(service)}
                       >
-                        <PopoverTrigger asChild>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="flex items-center gap-1"
-                            onClick={() => handleAddServiceClick(service.id)}
-                          >
-                            <Plus className="h-4 w-4" />
-                            Add
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-80 p-4" align="end">
-                          <div className="space-y-4">
-                            <div className="space-y-2">
-                              <h4 className="font-bold leading-none">
-                                Add {service.name}
-                              </h4>
-                              <p className="text-sm text-muted-foreground">
-                                Provide additional details to add this service.
-                              </p>
-                            </div>
-                            <div className="space-y-4">
-                              <div>
-                                <label className="block mb-1 text-sm font-medium">
-                                  Base Price (R)
-                                </label>
-                                <div className="relative">
-                                  <DollarSign className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                  <Input
-                                    className="pl-9"
-                                    type="Number"
-                                    value={rate}
-                                    placeholder="e.g., 200"
-                                    required
-                                    onChange={(e) => setRate(e.target.value)}
-                                  />
-                                </div>
-                              </div>
-
-                              <Select
-                                value={availability}
-                                onValueChange={(value) => {
-                                  setAvailablility(value);
-                                }}
-                              >
-                                <SelectTrigger className="w-full">
-                                  <Calendar className="h-4 w-4 text-muted-foreground" />
-                                  <SelectValue placeholder="Select availability (e.g., Mon-Fri, 8am-5pm)" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="mon-fri-8-5">
-                                    Mon–Fri, 8am–5pm
-                                  </SelectItem>
-                                  <SelectItem value="mon-sat-9-6">
-                                    Mon–Sat, 9am–6pm
-                                  </SelectItem>
-                                  <SelectItem value="mon-sun-9-6">
-                                    Mon–Sun, 9am–6pm
-                                  </SelectItem>
-                                  <SelectItem value="weekends-10-4">
-                                    Weekends, 10am–4pm
-                                  </SelectItem>
-                                </SelectContent>
-                              </Select>
-
-                              <div className="flex justify-end gap-2">
-                                <Button
-                                  type="button"
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => {
-                                    setOpenPopoverId(null);
-                                    setServiceId(null);
-                                    setAvailablility(null);
-                                    //setRate(null);
-                                  }}
-                                >
-                                  Cancel
-                                </Button>
-                                <Button type="button" size="sm">
-                                  Add Service
-                                </Button>
-                              </div>
-                            </div>
-                          </div>
-                        </PopoverContent>
-                      </Popover>
+                        <Plus className="h-4 w-4" />
+                        Add
+                      </Button>
                     </div>
                   </CardHeader>
                   <CardContent>
@@ -323,6 +215,17 @@ export default function MyServices() {
               ))
             )}
           </div>
+        </TabsContent>
+
+        <TabsContent value="service-details">
+          {service && (
+            <PricingInputs
+              service={service}
+              serviceProviderId={serviceProviderId}
+              setSubmitTrigger={setSubmitTrigger}
+              setActiveTab={setActiveTab}
+            />
+          )}
         </TabsContent>
       </Tabs>
     </div>

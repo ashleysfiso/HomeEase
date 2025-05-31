@@ -6,19 +6,13 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  CardFooter,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CheckSquare, XSquare, UserPlus, Link, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -41,6 +35,9 @@ import {
 } from "@/api";
 import { GetPendingApprovals } from "@/api";
 import { formatReadableDate } from "@/utils";
+import EmptyState from "@/components/EmptyState";
+import AssignServiceOfferings from "@/components/heservices/manageproviders/AssignServiceOfferings";
+import { ScrollRestoration } from "react-router-dom";
 
 export function ManageProvidersPage({ section }) {
   const [serviceProviders, setServiceProviders] = useState([]);
@@ -99,6 +96,7 @@ export function ManageProvidersPage({ section }) {
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
+    window.scrollTo(0, 0);
   };
 
   const handleUpdateStatus = async (id, status) => {
@@ -380,12 +378,14 @@ export function ManageProvidersPage({ section }) {
                   </table>
                 </div>
               )}
+            </CardContent>
+            <CardFooter>
               <MyPagination
                 currentPage={currentPage}
                 totalPages={totalPages}
                 onPageChange={handlePageChange}
               />
-            </CardContent>
+            </CardFooter>
           </Card>
         </TabsContent>
 
@@ -404,6 +404,8 @@ export function ManageProvidersPage({ section }) {
                   <div className="flex justify-center">
                     <Loader2 className="animate-spin h-5 w-5 mr-2" />
                   </div>
+                ) : pendingApprovals.length === 0 ? (
+                  <EmptyState message="There are currently no new service provider applications awaiting review or approval. Please check back later." />
                 ) : (
                   pendingApprovals.map((application) => (
                     <Card key={application.id} className="overflow-hidden">
@@ -558,238 +560,9 @@ export function ManageProvidersPage({ section }) {
 
         {/* Assign Services Tab */}
         <TabsContent value="assign-services" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Assign Services</CardTitle>
-              <CardDescription>
-                Assign services to qualified providers.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="w-full space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">
-                      Select Provider
-                    </label>
-                    <Select>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a provider" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {providersData
-                          .filter((provider) => provider.status === "Active")
-                          .map((provider) => (
-                            <SelectItem
-                              key={provider.id}
-                              value={provider.id.toString()}
-                            >
-                              {provider.name}
-                            </SelectItem>
-                          ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">
-                      Select Service
-                    </label>
-                    <Select>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a service" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {servicesData.map((service) => (
-                          <SelectItem
-                            key={service.id}
-                            value={service.id.toString()}
-                          >
-                            {service.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                <div className="border rounded-md p-4 bg-muted/20">
-                  <h4 className="font-medium mb-2">Current Assignments</h4>
-                  <div className="space-y-4">
-                    {serviceAssignments.map((assignment, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center justify-between border-b pb-2 last:border-0 last:pb-0"
-                      >
-                        <div className="flex items-center space-x-2">
-                          <Avatar className="h-8 w-8">
-                            <AvatarImage src="/placeholder.svg" />
-                            <AvatarFallback>
-                              {assignment.providerInitials}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div>
-                            <p className="font-medium">
-                              {assignment.providerName}
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                              {assignment.providerEmail}
-                            </p>
-                          </div>
-                        </div>
-                        <Badge>{assignment.service}</Badge>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="text-red-500"
-                        >
-                          Remove
-                        </Button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="flex justify-end">
-                  <Button>
-                    <Link className="mr-2 h-4 w-4" />
-                    Assign Service
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <AssignServiceOfferings />
         </TabsContent>
       </Tabs>
     </div>
   );
 }
-
-// Sample data for providers
-const providersData = [
-  {
-    id: 1,
-    name: "John Smith",
-    initials: "JS",
-    email: "john.smith@example.com",
-    services: ["House Cleaning", "Deep Cleaning"],
-    rating: 4.8,
-    reviewCount: 124,
-    status: "Active",
-  },
-  {
-    id: 2,
-    name: "Robert Davis",
-    initials: "RD",
-    email: "robert.davis@example.com",
-    services: ["Plumbing Repair"],
-    rating: 4.6,
-    reviewCount: 87,
-    status: "Active",
-  },
-  {
-    id: 3,
-    name: "David Miller",
-    initials: "DM",
-    email: "david.miller@example.com",
-    services: ["Electrical Work"],
-    rating: 4.9,
-    reviewCount: 56,
-    status: "Active",
-  },
-  {
-    id: 4,
-    name: "Lisa Anderson",
-    initials: "LA",
-    email: "lisa.anderson@example.com",
-    services: ["Gardening"],
-    rating: 4.7,
-    reviewCount: 42,
-    status: "Inactive",
-  },
-  {
-    id: 5,
-    name: "Thomas Wilson",
-    initials: "TW",
-    email: "thomas.wilson@example.com",
-    services: ["Plumbing Services"],
-    rating: 0,
-    reviewCount: 0,
-    status: "Pending",
-  },
-];
-
-// Sample data for pending applications
-const pendingApplications = [
-  {
-    id: 1,
-    name: "Thomas Wilson",
-    initials: "TW",
-    email: "thomas.wilson@example.com",
-    service: "Plumbing Services",
-    date: "2 days ago",
-    experience:
-      "5 years of experience as a licensed plumber with expertise in residential and commercial plumbing systems.",
-    qualifications:
-      "Licensed Plumber, Certified by National Plumbing Association",
-  },
-  {
-    id: 2,
-    name: "Jessica Martinez",
-    initials: "JM",
-    email: "jessica.martinez@example.com",
-    service: "House Cleaning",
-    date: "3 days ago",
-    experience:
-      "3 years working with a professional cleaning company and 2 years of independent house cleaning services.",
-    qualifications: "Certified in eco-friendly cleaning techniques",
-  },
-  {
-    id: 3,
-    name: "Daniel Johnson",
-    initials: "DJ",
-    email: "daniel.johnson@example.com",
-    service: "Electrical Services",
-    date: "5 days ago",
-    experience:
-      "7 years as an electrician working on residential and commercial projects.",
-    qualifications:
-      "Licensed Electrician, Certified in Smart Home Installation",
-  },
-];
-
-// Sample data for service assignments
-const serviceAssignments = [
-  {
-    providerName: "John Smith",
-    providerInitials: "JS",
-    providerEmail: "john.smith@example.com",
-    service: "House Cleaning",
-  },
-  {
-    providerName: "John Smith",
-    providerInitials: "JS",
-    providerEmail: "john.smith@example.com",
-    service: "Deep Cleaning",
-  },
-  {
-    providerName: "Robert Davis",
-    providerInitials: "RD",
-    providerEmail: "robert.davis@example.com",
-    service: "Plumbing Repair",
-  },
-  {
-    providerName: "David Miller",
-    providerInitials: "DM",
-    providerEmail: "david.miller@example.com",
-    service: "Electrical Work",
-  },
-];
-
-// Sample data for services
-const servicesData = [
-  { id: 1, name: "House Cleaning" },
-  { id: 2, name: "Deep Cleaning" },
-  { id: 3, name: "Plumbing Repair" },
-  { id: 4, name: "Electrical Work" },
-  { id: 5, name: "Gardening" },
-];

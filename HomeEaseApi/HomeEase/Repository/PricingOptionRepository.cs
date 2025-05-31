@@ -27,6 +27,18 @@ namespace HomeEase.Repository
             return result.Entity;
         }
 
+        public async Task<PricingOption?> DeleteById(int id)
+        {
+            var pricingOption = await _context.PricingOptions.FirstOrDefaultAsync(st => st.Id == id);
+            if (pricingOption == null)
+            {
+                return null;
+            }
+            pricingOption.IsDeleted = true;
+            await _context.SaveChangesAsync();
+            return pricingOption;
+        }
+
         public async Task<List<PricingOption>> GetAll()
         {
             var pricingOptions = await _context.PricingOptions.Include(po => po.ServiceType).ToListAsync();

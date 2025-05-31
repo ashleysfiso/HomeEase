@@ -29,6 +29,7 @@ import { AddNewService, UpdateService, DeleteService } from "@/api";
 import { useToast } from "@/hooks/use-toast";
 import { MyPagination } from "@/components/Pagination";
 import AssignServiceTypes from "@/components/heservices/manageservicepage/AssignServiceTypes";
+import AssignPricingOptions from "@/components/heservices/manageservicepage/AssignPricingOptions";
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -189,6 +190,9 @@ export function ManageServicesPage() {
           <TabsTrigger value="add-new-service">Add New Service</TabsTrigger>
           <TabsTrigger value="assign-service-type">
             Assign Service Type
+          </TabsTrigger>
+          <TabsTrigger value="assign-pricing-option">
+            Assign Pricing Option
           </TabsTrigger>
           <TabsTrigger
             value="update-service"
@@ -483,6 +487,13 @@ export function ManageServicesPage() {
 
         <TabsContent value="assign-service-type" className="space-y-4">
           <AssignServiceTypes
+            services={services}
+            setSubmitTrigger={setSubmitTrigger}
+          />
+        </TabsContent>
+
+        <TabsContent value="assign-pricing-option" className="space-y-4">
+          <AssignPricingOptions
             services={services}
             setSubmitTrigger={setSubmitTrigger}
           />

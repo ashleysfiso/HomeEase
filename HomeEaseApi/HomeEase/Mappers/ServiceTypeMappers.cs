@@ -20,7 +20,7 @@ namespace HomeEase.Mappers
             {
                 Id = serviceType.Id,
                 Name = serviceType.Name,
-                PricingOptions = serviceType.PricingOptions.GroupBy(x => new { x.ServiceTypeId, x.UnitLabel })
+                PricingOptions = serviceType.PricingOptions.Where(po => po.IsDeleted == false).GroupBy(x => new { x.ServiceTypeId, x.UnitLabel })
                                 .Select(group => new PricingOptionGroup
                                 {
                                     ServiceTypeId = group.Key.ServiceTypeId,

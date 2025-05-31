@@ -7,9 +7,9 @@
         public string Time { get; set; }
         public string Status { get; set; } = "Pending";
         public string Address { get; set; }
-        public string? AdditionalInformation {  get; set; }
+        public string ServiceTypeName {  get; set; }
         public decimal TotalCost { get; set; }
-        public bool isDeleted = false;
+        
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
@@ -19,7 +19,10 @@
         public int ServiceProviderId { get; set; }
         public int ServiceId { get; set; }
 
-        // Navigation property
+      
         public ServiceOffering ServiceOffering { get; set; }
+
+        public int ReviewId { get; set; }
+        public Review Review { get; set; }
     }
 }

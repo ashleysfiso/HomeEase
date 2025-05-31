@@ -33,7 +33,7 @@ namespace HomeEase.Controllers
 
             var appUser = new AppUser
             {
-                UserName = registerDto.Username,
+               
                 Email = registerDto.Email,
                 PhoneNumber = registerDto.PhoneNumber,
 
@@ -112,7 +112,7 @@ namespace HomeEase.Controllers
                         return Ok(
                             new NewUserDto
                             {
-                                UserName = appUser.UserName,
+                               
                                 Email = appUser.Email,
                                 UserId = user.Id,
                                 Role = role

@@ -84,7 +84,7 @@ export async function GetServiceById(spId, sId) {
   return service;
 }
 
-export async function GetSOByServiceProviderId(spId) {
+export async function GetServiceProviderServiceOfferings(spId) {
   return await axios
     .get(`${baseURL}ServiceOfferings/${spId}`)
     .then((res) => {
@@ -104,10 +104,60 @@ export async function CreateServiceOffering(details) {
       serviceId: details.serviceId,
       serviceProviderId: details.serviceProviderId,
       rate: details.rate,
-      availability: details.availability,
+      availability: "Mon-Sun",
       description:
         "This is a placeholder description for the service. Please update this section with detailed and accurate information about the service being offered, including what is provided, any limitations or requirements, pricing details if applicable, and any other relevant notes. This description should be written and maintained by the service provider to ensure clarity and transparency for potential customers.",
+      pricingOptionsToSO: details.options,
     })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      const errorMessage = handleAxiosError(err);
+      throw {
+        message: errorMessage,
+      };
+    });
+}
+
+export async function UpdatePricingOption(option) {
+  return axios
+    .put(`${baseURL}ServiceOfferingPricingOption`, {
+      serviceProviderId: option.serviceProviderId,
+      serviceId: option.serviceId,
+      pricingOptionId: option.pricingOptionId,
+      price: option.price,
+    })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      const errorMessage = handleAxiosError(err);
+      throw {
+        message: errorMessage,
+      };
+    });
+}
+
+export async function UpdateServiceOfferingStatus(details) {
+  return axios
+    .put(
+      `${baseURL}ServiceOfferings/${details.spId}/${details.sId}/${details.status}`
+    )
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      const errorMessage = handleAxiosError(err);
+      throw {
+        message: errorMessage,
+      };
+    });
+}
+
+export async function DeleteServiceOffering(spId, sId) {
+  return await axios
+    .delete(`${baseURL}ServiceOfferings/${spId}/${sId}`)
     .then((res) => {
       return res.data;
     })
@@ -148,11 +198,10 @@ export async function CreateBooking(bookingInfo) {
 }
 
 export async function GetBookingByCustomerId(customerId) {
-  let bookings;
-  await axios
+  return await axios
     .get(`${baseURL}Bookings/customer/${customerId}`)
     .then((res) => {
-      bookings = res.data;
+      return res.data;
     })
     .catch((err) => {
       const errorMessage = handleAxiosError(err);
@@ -160,9 +209,52 @@ export async function GetBookingByCustomerId(customerId) {
         message: errorMessage,
       };
     });
-
-  return bookings;
 }
+
+export async function GetAllBookings() {
+  return await axios
+    .get(`${baseURL}Bookings`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      const errorMessage = handleAxiosError(err);
+      throw {
+        message: errorMessage,
+      };
+    });
+}
+
+export async function GetBookingByProviderId(providerId) {
+  return await axios
+    .get(`${baseURL}Bookings/provider/${providerId}`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      const errorMessage = handleAxiosError(err);
+      throw {
+        message: errorMessage,
+      };
+    });
+}
+
+export async function UpdateBooking(booking) {
+  return axios
+    .put(`${baseURL}Bookings/${booking.id}`, {
+      status: booking.status,
+    })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      const errorMessage = handleAxiosError(err);
+      throw {
+        message: errorMessage,
+      };
+    });
+}
+
 //===================================================================================================================
 // Services functions
 export async function GetAvailableServices() {
@@ -364,6 +456,40 @@ export async function UpdateServiceType(id, status) {
 export async function DeleteServiceType(id) {
   return await axios
     .delete(`${baseURL}ServiceType/${id}`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      const errorMessage = handleAxiosError(err);
+      throw {
+        message: errorMessage,
+      };
+    });
+}
+
+//===================================================================================================================
+//Pricing Options
+export async function CreatePricingOption(option) {
+  return await axios
+    .post(`${baseURL}PricingOption`, {
+      serviceTypeId: option.serviceTypeId,
+      name: option.name,
+      unitLabel: option.unitLabel,
+    })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      const errorMessage = handleAxiosError(err);
+      throw {
+        message: errorMessage,
+      };
+    });
+}
+
+export async function DeletePricingOption(id) {
+  return await axios
+    .delete(`${baseURL}PricingOption/${id}`)
     .then((res) => {
       return res.data;
     })

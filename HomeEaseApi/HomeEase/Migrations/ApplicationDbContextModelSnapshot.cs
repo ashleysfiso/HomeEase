@@ -41,6 +41,14 @@ namespace HomeEase.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -63,6 +71,12 @@ namespace HomeEase.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RefreshTokenExpiryTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -95,9 +109,6 @@ namespace HomeEase.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AdditionalInformation")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -111,11 +122,18 @@ namespace HomeEase.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
+                    b.Property<int>("ReviewId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ServiceId")
                         .HasColumnType("int");
 
                     b.Property<int>("ServiceProviderId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ServiceTypeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -217,6 +235,9 @@ namespace HomeEase.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -243,6 +264,9 @@ namespace HomeEase.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("BookingId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Comment")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -252,6 +276,9 @@ namespace HomeEase.Migrations
 
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Rating")
                         .HasColumnType("int");
@@ -263,6 +290,9 @@ namespace HomeEase.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BookingId")
+                        .IsUnique();
 
                     b.HasIndex("CustomerId");
 
@@ -322,6 +352,9 @@ namespace HomeEase.Migrations
 
                     b.Property<string>("ImgURL")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<decimal>("Rate")
                         .HasColumnType("decimal(18,2)");
@@ -646,6 +679,12 @@ namespace HomeEase.Migrations
 
             modelBuilder.Entity("HomeEase.Models.Review", b =>
                 {
+                    b.HasOne("HomeEase.Models.Booking", "Booking")
+                        .WithOne("Review")
+                        .HasForeignKey("HomeEase.Models.Review", "BookingId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("HomeEase.Models.Customer", "Customer")
                         .WithMany("Reviews")
                         .HasForeignKey("CustomerId")
@@ -663,6 +702,8 @@ namespace HomeEase.Migrations
                         .HasForeignKey("ServiceProviderId", "ServiceId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Booking");
 
                     b.Navigation("Customer");
 
@@ -798,6 +839,12 @@ namespace HomeEase.Migrations
                     b.Navigation("Customer");
 
                     b.Navigation("ServiceProvider");
+                });
+
+            modelBuilder.Entity("HomeEase.Models.Booking", b =>
+                {
+                    b.Navigation("Review")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("HomeEase.Models.Customer", b =>

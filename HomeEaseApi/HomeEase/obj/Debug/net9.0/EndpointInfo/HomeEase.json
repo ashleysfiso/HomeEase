@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "HomeEase",
-    "version": "1.0"
+    "title": "My API",
+    "version": "v1"
   },
   "paths": {
     "/api/Account/register/customers": {
@@ -91,6 +91,123 @@
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Auth/register": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Auth/refresh": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Auth/logout": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Auth/secret": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -210,6 +327,29 @@
         "parameters": [
           {
             "name": "customerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Bookings/provider/{providerId}": {
+      "get": {
+        "tags": [
+          "Bookings"
+        ],
+        "parameters": [
+          {
+            "name": "providerId",
             "in": "path",
             "required": true,
             "schema": {
@@ -460,6 +600,27 @@
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "PricingOption"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -790,6 +951,46 @@
           "ServiceOfferings"
         ],
         "parameters": [
+          {
+            "name": "serviceProviderId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "serviceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/ServiceOfferings/{serviceProviderId}/{serviceId}/{status}": {
+      "put": {
+        "tags": [
+          "ServiceOfferings"
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "serviceProviderId",
             "in": "path",
@@ -1169,6 +1370,7 @@
           "customerId",
           "serviceId",
           "serviceProviderId",
+          "serviceTypeName",
           "time",
           "totalCost"
         ],
@@ -1186,6 +1388,10 @@
             "type": "integer",
             "format": "int32"
           },
+          "serviceTypeName": {
+            "minLength": 1,
+            "type": "string"
+          },
           "bookingDate": {
             "type": "string",
             "format": "date"
@@ -1201,10 +1407,6 @@
           "address": {
             "minLength": 1,
             "type": "string"
-          },
-          "additionalInformation": {
-            "type": "string",
-            "nullable": true
           }
         },
         "additionalProperties": false
@@ -1463,13 +1665,18 @@
       "RegisterDto": {
         "required": [
           "email",
+          "firsName",
+          "lastName",
           "password",
-          "phoneNumber",
-          "username"
+          "phoneNumber"
         ],
         "type": "object",
         "properties": {
-          "username": {
+          "firsName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "lastName": {
             "minLength": 1,
             "type": "string"
           },
@@ -1490,19 +1697,16 @@
         "additionalProperties": false
       },
       "UpdateBookingDto": {
-        "required": [
-          "bookingDate",
-          "status"
-        ],
         "type": "object",
         "properties": {
           "bookingDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "status": {
-            "minLength": 1,
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -1653,6 +1857,19 @@
         },
         "additionalProperties": false
       }
+    },
+    "securitySchemes": {
+      "JWT-Cookie": {
+        "type": "apiKey",
+        "description": "JWT Authorization via Cookie. Example: accessToken",
+        "name": "Cookie",
+        "in": "cookie"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "JWT-Cookie": [ ]
+    }
+  ]
 }

@@ -19,6 +19,7 @@ namespace HomeEase.Mappers
                 Description = serviceOffering.Service.Description,
                 ImgURL = serviceOffering.ImgURL,
                 Status = serviceOffering.Status,
+                IsDeleted = serviceOffering.IsDeleted,
                 PricingOptions = serviceOffering.PricingOptions.GroupBy(po => new {po.PricingOption.ServiceType.Name, po.PricingOption.UnitLabel})
                                                                .Select(group => new PricingOptionGroup2
                                                                {

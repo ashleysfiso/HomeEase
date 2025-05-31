@@ -64,7 +64,7 @@ namespace HomeEase.Controllers
             {
                 return BadRequest("Service offering already exists, or the specified service/service provider does not exist, or on of the pricing option does not exist. Please verify the details and try again.");
             }
-            return CreatedAtAction(nameof(GetById), new { ServiceId = createdServiceOffering.ServiceId, ServiceProviderId = createdServiceOffering.ServiceProviderId }, createdServiceOffering);
+            return Ok($"Service Offering with serviceId: {createdServiceOffering.ServiceId} serviceProviderId: {createdServiceOffering.ServiceProviderId} has been created successfully.");
         }
 
         [HttpPut("{serviceProviderId:int}/{serviceId:int}")]
@@ -78,6 +78,24 @@ namespace HomeEase.Controllers
             var updatedServiceOffering = await _serviceOfferingRepo.UpdateAsync(updateServiceOfferingDto, serviceProviderId, serviceId);
 
             if(updatedServiceOffering == null)
+            {
+                return NotFound("Service offering does not exists. Please check the details and try again");
+            }
+
+            return Ok(updatedServiceOffering.ToServiceOfferingDto());
+        }
+
+        [HttpPut("{serviceProviderId:int}/{serviceId:int}/{status}")]
+        public async Task<IActionResult> UpdateStatus([FromRoute] string status, [FromRoute] int serviceProviderId, [FromRoute] int serviceId)
+        {
+            if (status != "Approved" && status != "Rejected")
+            {
+                return BadRequest("Invalid data submitted. Please check the details and try again.");
+            }
+
+            var updatedServiceOffering = await _serviceOfferingRepo.UpdateStatusAsync(status, serviceProviderId, serviceId);
+
+            if (updatedServiceOffering == null)
             {
                 return NotFound("Service offering does not exists. Please check the details and try again");
             }

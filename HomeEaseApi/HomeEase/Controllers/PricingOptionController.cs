@@ -22,7 +22,7 @@ namespace HomeEase.Controllers
         {
             var pricingOptions = await _repo.GetAll();
 
-            var result = pricingOptions.Select(po => po.ToPricingOptionDto()).ToList();
+            var result = pricingOptions.Where(po => po.IsDeleted == false).Select(po => po.ToPricingOptionDto()).ToList();
 
             var grouped = result.GroupBy(x => new { x.ServiceTypeName, x.UnitLabel })
                                 .Select(group => new
@@ -82,5 +82,16 @@ namespace HomeEase.Controllers
             return Ok(pricingOption.ToPricingOptionDto());
         }
 
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            var pricingOption = await _repo.DeleteById(id);
+            if (pricingOption == null)
+            {
+                return BadRequest("Service Type does not exists. Please check the details and try again");
+            }
+
+            return Ok(pricingOption);
+        }
     }
 }

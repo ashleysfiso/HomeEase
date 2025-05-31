@@ -9,6 +9,7 @@ namespace HomeEase.Interfaces
         public Task<PricingOption?> GetById(int id);
         public Task<PricingOption?> Create(PricingOption pricingOption);
         public Task<PricingOption?> Update(int id, UpdatePricingOptionDto updatePricingOptionDto);
+        public Task<PricingOption?> DeleteById(int id);
 
     }
 }
