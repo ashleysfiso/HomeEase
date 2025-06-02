@@ -27,13 +27,17 @@ export async function action({ request }) {
   const formData = await request.formData();
   const email = formData.get("email");
   const password = formData.get("password");
-  const username = formData.get("username");
-  const phoneNumber = formData.get("email");
-  console.log(formData);
+  const firsName = formData.get("firstName");
+  const lastName = formData.get("lastName");
+  const phoneNumber = formData.get("phone");
+  console.log(
+    `${firsName}, ${lastName}, ${email}, ${phoneNumber}, ${password},`
+  );
 
   try {
     const data = await RegisterUser({
-      username,
+      firsName,
+      lastName,
       email,
       phoneNumber,
       password,
@@ -42,8 +46,8 @@ export async function action({ request }) {
     //setUserInsideAction(data);
     return redirect("/login");
   } catch (error) {
-    const [{ description }] = error.message;
-    return description;
+    //return error.message;
+    console.log(error);
   }
 }
 
@@ -71,16 +75,30 @@ export default function Register() {
             <CardContent>
               <Form method="post" replace>
                 <div className="flex flex-col gap-6">
-                  <div className="grid gap-2">
-                    <Label htmlFor="username">Username</Label>
-                    <Input
-                      id="username"
-                      name="username"
-                      type="text"
-                      placeholder="Username"
-                      required
-                    />
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <Label htmlFor="firstName">First Name</Label>
+                      <Input
+                        id="firstName"
+                        name="firstName"
+                        type="text"
+                        placeholder="First Name"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="lastName">Last Name</Label>
+                      <Input
+                        id="lastName"
+                        name="lastName"
+                        type="text"
+                        placeholder="Last Name"
+                        required
+                      />
+                    </div>
                   </div>
+
                   <div className="grid gap-2">
                     <Label htmlFor="email">Email</Label>
                     <Input

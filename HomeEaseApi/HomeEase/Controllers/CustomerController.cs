@@ -29,7 +29,7 @@ namespace HomeEase.Controllers
 
             if (customer == null)
             {
-                return BadRequest("Review does not exists. Please check the details and try again");
+                return BadRequest("Customer does not exists. Please check the details and try again");
             }
 
             return Ok(customer);

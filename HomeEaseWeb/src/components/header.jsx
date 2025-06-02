@@ -9,9 +9,9 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Menu, MoveRight, X } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import UserProfile from "./UserProfile";
+import { Link } from "react-router-dom";
 import { ModeToggle } from "./ModeToogle";
 
 export default function Header() {
@@ -82,7 +82,7 @@ export default function Header() {
             className="w-12 h-12 object-contain pt-2"
           />
           <h3 className="flex items-center text-xl pt-2 leading-tight font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
-            <Link to="/">HomeEase</Link>
+            <Link href="/">HomeEase</Link>
           </h3>
         </div>
         <div className="justify-center items-center gap-4 lg:flex hidden flex-row">
@@ -92,9 +92,9 @@ export default function Header() {
                 <NavigationMenuItem key={item.title}>
                   {item.href ? (
                     <>
-                      <Link to={item.href}>
+                      <NavigationMenuLink href={item.href}>
                         <Button variant="ghost">{item.title}</Button>
-                      </Link>
+                      </NavigationMenuLink>
                     </>
                   ) : (
                     <>
@@ -115,26 +115,26 @@ export default function Header() {
                             {item.items?.map((subItem) =>
                               isLoggedIn ? (
                                 subItem.roles.includes(user.role[0]) ? (
-                                  <Link
-                                    to={subItem.href}
+                                  <NavigationMenuLink
+                                    href={subItem.href}
                                     key={subItem.title}
                                     className="flex flex-row justify-between items-center hover:bg-muted py-2 px-4 rounded"
                                   >
                                     <span>{subItem.title}</span>
                                     <MoveRight className="w-4 h-4 text-muted-foreground" />
-                                  </Link>
+                                  </NavigationMenuLink>
                                 ) : (
                                   console.log("")
                                 )
                               ) : subItem.roles.length === 3 ? (
-                                <Link
-                                  to={subItem.href}
+                                <NavigationMenuLink
+                                  href={subItem.href}
                                   key={subItem.title}
                                   className="flex flex-row justify-between items-center hover:bg-muted py-2 px-4 rounded"
                                 >
                                   <span>{subItem.title}</span>
                                   <MoveRight className="w-4 h-4 text-muted-foreground" />
-                                </Link>
+                                </NavigationMenuLink>
                               ) : (
                                 console.log("")
                               )

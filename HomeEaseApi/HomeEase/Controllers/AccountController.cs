@@ -56,7 +56,7 @@ namespace HomeEase.Controllers
                         await _context.SaveChangesAsync();
                         var role = await _userManager.GetRolesAsync(user);
                         return Ok(
-                            new NewUserDto
+                            new UserDto
                             {
                                 UserName = appUser.UserName,
                                 Email = appUser.Email,
@@ -88,7 +88,7 @@ namespace HomeEase.Controllers
 
             var appUser = new AppUser
             {
-                UserName = serviceProviderDto.Username,
+                UserName = serviceProviderDto.FirsName,
                 Email = serviceProviderDto.Email,
                 PhoneNumber = serviceProviderDto.PhoneNumber,
 
@@ -110,7 +110,7 @@ namespace HomeEase.Controllers
                         await _context.SaveChangesAsync();
                         var role = await _userManager.GetRolesAsync(user);
                         return Ok(
-                            new NewUserDto
+                            new UserDto
                             {
                                
                                 Email = appUser.Email,
@@ -157,7 +157,7 @@ namespace HomeEase.Controllers
             var role = await _userManager.GetRolesAsync(user);
 
             return Ok(
-                new NewUserDto
+                new UserDto
                 {
                     Email = user.Email,
                     UserName = user.UserName,

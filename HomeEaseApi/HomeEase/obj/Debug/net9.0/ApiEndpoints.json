@@ -75,24 +75,28 @@
   },
   {
     "ContainingType": "HomeEase.Controllers.AuthController",
+    "Method": "Me",
+    "RelativePath": "api/Auth/me",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.AuthController",
     "Method": "Refresh",
     "RelativePath": "api/Auth/refresh",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
-    "Parameters": [
-      {
-        "Name": "refreshToken",
-        "Type": "System.String",
-        "IsRequired": true
-      }
-    ],
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
     "ContainingType": "HomeEase.Controllers.AuthController",
     "Method": "Register",
-    "RelativePath": "api/Auth/register",
+    "RelativePath": "api/Auth/register/customer",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -107,12 +111,18 @@
   },
   {
     "ContainingType": "HomeEase.Controllers.AuthController",
-    "Method": "Secret",
-    "RelativePath": "api/Auth/secret",
-    "HttpMethod": "GET",
+    "Method": "RegisterProvider",
+    "RelativePath": "api/Auth/register/provider",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "HomeEase.Dtos.AccountDtos.NewServiceProviderDto",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {

@@ -98,7 +98,7 @@
         }
       }
     },
-    "/api/Auth/register": {
+    "/api/Auth/register/customer": {
       "post": {
         "tags": [
           "Auth"
@@ -118,6 +118,37 @@
             "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/RegisterDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Auth/register/provider": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewServiceProviderDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewServiceProviderDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewServiceProviderDto"
               }
             }
           }
@@ -165,25 +196,6 @@
         "tags": [
           "Auth"
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "string"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "type": "string"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "type": "string"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK"
@@ -203,7 +215,7 @@
         }
       }
     },
-    "/api/Auth/secret": {
+    "/api/Auth/me": {
       "get": {
         "tags": [
           "Auth"
@@ -1632,13 +1644,18 @@
         "required": [
           "companyName",
           "email",
+          "firsName",
+          "lastName",
           "password",
-          "phoneNumber",
-          "username"
+          "phoneNumber"
         ],
         "type": "object",
         "properties": {
-          "username": {
+          "firsName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "lastName": {
             "minLength": 1,
             "type": "string"
           },

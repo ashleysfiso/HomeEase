@@ -7,7 +7,7 @@ const baseURL = "https://localhost:7234/api/";
 export async function LoginUser(creds) {
   let data;
   await axios
-    .post(`${baseURL}Account/login`, {
+    .post(`${baseURL}Auth/login`, {
       email: creds.email,
       password: creds.password,
     })
@@ -29,8 +29,9 @@ export async function RegisterUser(creds) {
   let data;
 
   await axios
-    .post(`${baseURL}Account/register/customers`, {
-      username: creds.username,
+    .post(`${baseURL}Auth/register/customer`, {
+      firsName: creds.firsName,
+      lastName: creds.lastName,
       email: creds.email,
       phoneNumber: creds.phoneNumber,
       password: creds.password,
