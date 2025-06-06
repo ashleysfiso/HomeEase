@@ -11,7 +11,8 @@ namespace HomeEase.Mappers
             {
                 CompanyName = createPendingApprovalDto.CompanyName,
                 Email = createPendingApprovalDto.Email,
-                FullName = createPendingApprovalDto.FullName,
+                FirstName = createPendingApprovalDto.FirstName,
+                LastName = createPendingApprovalDto.LastName,
                 PhoneNumber = createPendingApprovalDto.PhoneNumber,
                 Experience = createPendingApprovalDto.Experience,
             };

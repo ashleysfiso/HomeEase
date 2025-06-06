@@ -18,7 +18,8 @@ import { useNavigation, redirect } from "react-router-dom";
 
 export async function action({ request }) {
   const formData = await request.formData();
-  const fullName = formData.get("fullName");
+  const firstName = formData.get("firstName");
+  const lastName = formData.get("lastName");
   const email = formData.get("email");
   const phoneNumber = formData.get("phoneNumber");
   const companyName = formData.get("companyName");
@@ -26,7 +27,8 @@ export async function action({ request }) {
 
   try {
     const result = await CreateServiceProviderApplication({
-      fullName: fullName,
+      firstName: firstName,
+      lastName: lastName,
       email: email,
       phoneNumber: phoneNumber,
       companyName: companyName,
@@ -36,6 +38,7 @@ export async function action({ request }) {
     return redirect("/becomeaprovider/success");
   } catch (error) {
     console.log(error);
+    window.alert(error.message);
   }
 }
 
@@ -66,14 +69,28 @@ export default function BecomeProviderPage() {
                 <div className="grid gap-6 md:grid-cols-2">
                   <div>
                     <label className="block text-sm font-medium mb-1">
-                      Full Name
+                      First Name
                     </label>
                     <div className="relative">
                       <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                       <Input
-                        name="fullName"
+                        name="firstName"
                         className="pl-9"
-                        placeholder="John Doe"
+                        placeholder="John"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-1">
+                      Last Name
+                    </label>
+                    <div className="relative">
+                      <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        name="lastName"
+                        className="pl-9"
+                        placeholder="Doe"
                         required
                       />
                     </div>

@@ -11,14 +11,20 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogOut, User, Bell } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Link, redirect } from "react-router-dom";
+import axiosInstance from "@/axiosInstance";
 
 export default function UserProfile() {
   const { setUser, user, setIsLoggedIn } = useAuth();
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    setUser(null);
-    setIsLoggedIn(false);
-    return redirect("/");
+  const handleLogout = async () => {
+    try {
+      const res = await axiosInstance.post("Auth/logout");
+      localStorage.removeItem("user");
+      setUser(null);
+      setIsLoggedIn(false);
+      return redirect("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <DropdownMenu>

@@ -166,7 +166,11 @@ export default function MyServices() {
           ) : (
             <div className="text-center py-12 border rounded-lg">
               <EmptyState message="You haven't added any services yet." />
-              <Button className="mt-4" variant="outline">
+              <Button
+                onClick={() => setActiveTab("add-service")}
+                className="mt-4"
+                variant="outline"
+              >
                 Add Your First Service
               </Button>
             </div>

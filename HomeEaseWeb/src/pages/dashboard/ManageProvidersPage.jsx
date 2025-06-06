@@ -415,14 +415,13 @@ export function ManageProvidersPage({ section }) {
                             <Avatar>
                               <AvatarImage src="/placeholder.svg" />
                               <AvatarFallback>
-                                {application.fullName
-                                  .split(" ")
-                                  .map((s) => s[0])}
+                                {application.firstName[0]}
+                                {application.lastName[0]}
                               </AvatarFallback>
                             </Avatar>
                             <div>
                               <h4 className="font-semibold">
-                                {application.fullName}
+                                {application.firstName} {application.lastName}
                               </h4>
                               <p className="text-sm text-muted-foreground">
                                 {application.email}
@@ -533,9 +532,14 @@ export function ManageProvidersPage({ section }) {
                               <AlertDialogCancel>Cancel</AlertDialogCancel>
                               <AlertDialogAction
                                 onClick={() => {
+                                  console.log(
+                                    "This is from approve button",
+                                    application.firstName
+                                  );
                                   handleApprovePendingApproval(
                                     {
-                                      fullName: application.fullName,
+                                      firstName: application.firstName,
+                                      lastName: application.lastName,
                                       email: application.email,
                                       phoneNumber: application.phoneNumber,
                                       companyName: application.companyName,

@@ -43,7 +43,7 @@ namespace HomeEase.Controllers
             var user = new AppUser
             {
                 UserName = dto.Email,
-                FirstName = dto.FirsName,
+                FirstName = dto.FirstName,
                 LastName = dto.LastName,
                 PhoneNumber = dto.PhoneNumber,
                 Email = dto.Email,
@@ -109,7 +109,7 @@ namespace HomeEase.Controllers
             var user = new AppUser
             {
                 UserName = dto.Email,
-                FirstName = dto.FirsName,
+                FirstName = dto.FirstName,
                 LastName = dto.LastName,
                 PhoneNumber = dto.PhoneNumber,
                 Email = dto.Email,
@@ -179,7 +179,8 @@ namespace HomeEase.Controllers
                 HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.Strict,
-                Expires = DateTime.UtcNow.AddMinutes(15)
+                Expires = DateTime.UtcNow.AddMinutes(15),
+                Path = "/"
             });
 
             Response.Cookies.Append("refreshToken", refreshToken, new CookieOptions
@@ -187,7 +188,8 @@ namespace HomeEase.Controllers
                 HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.Strict,
-                Expires = DateTime.UtcNow.AddDays(7)
+                Expires = DateTime.UtcNow.AddDays(7),
+                Path = "/"
             });
             var role = await _userManager.GetRolesAsync(user);
             return Ok(
@@ -227,7 +229,7 @@ namespace HomeEase.Controllers
                 HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.Strict,
-                Expires = DateTime.UtcNow.AddMinutes(15)
+                Expires = DateTime.UtcNow.AddMinutes(15),
             });
 
             Response.Cookies.Append("refreshToken", newRefreshToken, new CookieOptions
@@ -235,7 +237,7 @@ namespace HomeEase.Controllers
                 HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.Strict,
-                Expires = DateTime.UtcNow.AddDays(7)
+                Expires = DateTime.UtcNow.AddDays(7),
             });
 
             return Ok("You are authorized!");

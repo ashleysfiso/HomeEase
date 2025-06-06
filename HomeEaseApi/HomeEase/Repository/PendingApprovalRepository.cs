@@ -2,6 +2,7 @@
 using HomeEase.Dtos.PendingApprovalsDtos;
 using HomeEase.Interfaces;
 using HomeEase.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeEase.Repository
@@ -9,12 +10,19 @@ namespace HomeEase.Repository
     public class PendingApprovalRepository : IPendingApprovalRepository
     {
         private readonly ApplicationDbContext _context;
-        public PendingApprovalRepository(ApplicationDbContext context) 
+        private readonly UserManager<AppUser> _userManager;
+        public PendingApprovalRepository(ApplicationDbContext context, UserManager<AppUser> userManager) 
         {
             _context = context;
+            _userManager = userManager;
         }
-        public async Task<PendingApproval> CreateAsync(PendingApproval pendingApproval)
+        public async Task<PendingApproval?> CreateAsync(PendingApproval pendingApproval)
         {
+            var user = await _userManager.FindByEmailAsync(pendingApproval.Email);
+            if (user != null)
+            {
+                return null;
+            }
             var result = await _context.PendingApprovals.AddAsync(pendingApproval);
             await _context.SaveChangesAsync();
 

@@ -15,8 +15,6 @@ export default function AuthProvider({ children }) {
     const loadUser = async () => {
       try {
         const res = await axiosInstance.get("Auth/me");
-        setUser(res.data);
-        setIsLoggedIn(true);
       } catch (err) {
         setUser(null);
         setIsLoggedIn(false);
@@ -24,6 +22,17 @@ export default function AuthProvider({ children }) {
       }
     };
     loadUser();
+  }, []);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (e) {
+        console.error("Failed to parse user from localStorage:", e);
+      }
+    }
   }, []);
 
   useEffect(() => {

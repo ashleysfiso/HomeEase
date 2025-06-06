@@ -7,7 +7,7 @@ namespace HomeEase.Interfaces
     {
         public Task<List<PendingApproval>> GetAllAsync();
         public Task<PendingApproval?> GetByIdAsync(int id);
-        public Task<PendingApproval> CreateAsync(PendingApproval pendingApproval);
+        public Task<PendingApproval?> CreateAsync(PendingApproval pendingApproval);
         public Task<PendingApproval?> UpdateAsync(int id, UpdatePendingApprovalDto updatePendingApprovalDto);
     }
 }

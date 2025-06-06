@@ -44,6 +44,10 @@ namespace HomeEase.Controllers
             }
 
             var pendingApproval = await _repo.CreateAsync(createPendingApproval.ToPendingApproval());
+            if(pendingApproval == null)
+            {
+                return BadRequest("Email already exists.");
+            }
 
             return CreatedAtAction(nameof(GetById), new { id = pendingApproval.Id }, pendingApproval);
         }

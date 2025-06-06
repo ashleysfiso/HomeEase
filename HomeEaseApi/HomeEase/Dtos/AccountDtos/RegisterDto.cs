@@ -5,7 +5,7 @@ namespace HomeEase.Dtos.AccountDtos
     public class RegisterDto
     {
         [Required]
-        public string FirsName { get; set; }
+        public string FirstName { get; set; }
         [Required]
         public string LastName { get; set; }
         [Required]

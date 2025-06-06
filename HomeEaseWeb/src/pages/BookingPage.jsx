@@ -34,16 +34,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/contexts/AuthContext";
 import { Form, useParams } from "react-router-dom";
 import { GetServiceById } from "@/api";
-import StandardCleaningForm from "@/components/bookings/StandardCleaningForm";
-import OfficeCommercialCleaningForm from "@/components/bookings/OfficeCommercialCleaningForm";
-import SpecializedCleaningForm from "@/components/bookings/SpecializedCleaningForm";
-import PlumbingServicesForm from "@/components/bookings/PlumbingServicesForm";
-import LawnCareForm from "@/components/bookings/LawnCareForm";
-import HandymanForm from "@/components/bookings/HandymanForm";
-import LaundryServicesForm from "@/components/bookings/LaundryServicesForm";
-import PestControlForm from "@/components/bookings/PestControlForm";
-import ApplianceRepairForm from "@/components/bookings/ApplianceRepairForm";
-import CarWash from "@/components/bookings/CarWashForm";
 import { BookingPageSkeleton } from "@/components/SkeletonLoader/BookingPageSkeleton";
 import { CreateBooking } from "@/api";
 import { redirect, useNavigation } from "react-router-dom";
@@ -87,56 +77,6 @@ export async function action({ request }) {
   }
 }
 
-const filterEmptyServices = (services) => {
-  const filteredServices = Object.values(services)
-    .map((service) => {
-      // Remove empty properties from each service
-      const cleanedService = Object.fromEntries(
-        Object.entries(service).filter(([_, v]) => v !== "" && v !== undefined)
-      );
-      return cleanedService;
-    })
-    .filter((service) => Object.keys(service).length > 0); // Remove empty services
-
-  // Format non-empty services into strings
-  return filteredServices
-    .map((service) => {
-      const formattedType = service.type?.replace(/ /g, "") || "";
-      const otherProps = Object.entries(service)
-        .filter(([k]) => k !== "type")
-        .map(([k, v]) => `${k}: ${v}`);
-
-      return [formattedType, ...otherProps].filter(Boolean).join(", ");
-    })
-    .join(", ");
-};
-
-const extraTasks = [
-  {
-    id: "Inside Fridge",
-    label: "Inside Fridge",
-    price: 50,
-    icon: Refrigerator,
-  },
-  { id: "Inside Oven", label: "Inside Oven", price: 75, icon: Oven },
-  { id: "Inside Cabinets", label: "Inside Cabinets", price: 60, icon: Cabinet },
-  {
-    id: "Interior Windows",
-    label: "Interior Windows",
-    price: 80,
-    icon: Window,
-  },
-  {
-    id: "Interior Walls",
-    label: "Interior Walls",
-    price: 100,
-    icon: PaintBucket,
-  },
-  { id: "Water Plants", label: "Water Plants", price: 30, icon: Flower2 },
-  { id: "ironing", label: "Ironing", price: 85, icon: Iron },
-  { id: "laundry", label: "Laundry", price: 70, icon: Shirt },
-];
-
 export default function BookingPage() {
   const { user } = useAuth();
   const navigation = useNavigation();
@@ -146,61 +86,8 @@ export default function BookingPage() {
   const [baseRate, setBaseRate] = useState(0);
   const [duration, setDuration] = useState(10);
   const [selectedTasks, setSelectedTasks] = useState([]);
-  const [bookingDetails, setBookingDetails] = useState({
-    specializedCleaning: {
-      type: "",
-      size: "",
-    },
-    laundryService: {
-      type: "",
-      weight: "",
-    },
-    carWash: {
-      type: "",
-      vehicleType: "",
-    },
-    homeCleaning: {
-      type: "", // "Standard Cleaning", "Deep Cleaning", "Move-in/Move-out Cleaning"
-      numberOfBedrooms: "",
-      numberOfBathrooms: "",
-    },
-    officeCleaning: {
-      type: "", // "Office Cleaning", "Industrial Cleaning", "Retail Store Cleaning"
-      officeSize: "",
-    },
-    plumbingService: {
-      type: "", // "Leaky Faucet", "Clogged Drain", etc.
-      //urgency: "", // "Standard", "Emergency"
-    },
-    electricalService: {
-      type: "", // "Light Fixture Installation", "Outlet/Switch Repair", etc.
-      urgency: "",
-    },
-    lawnCareService: {
-      type: "", // "Mowing & Trimming", "Garden Maintenance", etc.
-      propertySize: "",
-    },
-    handymanService: {
-      type: "", // "Furniture Assembly", "Door & Window Repairs", etc.
-      propertyValue: "",
-    },
-    pestControlService: {
-      type: "", // "Ants", "Rodents", "Spiders", etc.
-      propertySize: "",
-    },
-    applianceRepair: {
-      type: "", // "Refrigerator", "Washing Machine", etc.
-      issue: "",
-    },
-    carWashService: {
-      type: "", // "Exterior Wash", "Interior Detailing", etc.
-      vehicleType: "",
-    },
-    paintingService: {
-      type: "", // "Interior Painting", "Exterior Painting", etc.
-      areaSize: "",
-    },
-  });
+  const [pricingOptions, setPricingOptions] = useState(null);
+  const [options, setOptions] = useState(null);
 
   serviceId = sId;
   serviceProviderId = spId;
@@ -215,6 +102,8 @@ export default function BookingPage() {
         const service = await GetServiceById(spId, sId);
         setService(service);
         setBaseRate(service.rate);
+        setPricingOptions(service.pricingOptions);
+        console.log(service.pricingOptions);
         setIsLoading(false);
       } catch (error) {
         console.log(error);
@@ -244,6 +133,17 @@ export default function BookingPage() {
     );
   };
 
+  const handleServiceTypeChange = (value) => {
+    const serviceTypeOptions = service.pricingOptions.filter(
+      (po) => po.serviceTypeName === value
+    );
+    setOptions(serviceTypeOptions);
+  };
+
+  const handleSeletedPricing = (unit, price) => {
+    console.log(`Unit: ${unit}  price: ${price}`);
+  };
+
   const PriceSection = () => (
     <div className="bg-primary text-primary-foreground p-4 rounded-lg flex justify-between items-center">
       <div>
@@ -257,79 +157,10 @@ export default function BookingPage() {
     </div>
   );
 
-  const handleChange = (category, field, value) => {
-    setBookingDetails((prev) => ({
-      ...prev,
-      // Reset other service categories when selecting one
-      homeCleaning:
-        category === "homeCleaning"
-          ? prev.homeCleaning
-          : { type: "", numberOfBedrooms: "", numberOfBathrooms: "" },
-      officeCleaning:
-        category === "officeCleaning"
-          ? prev.officeCleaning
-          : {
-              type: "",
-              officeSize: "",
-              specialRequirements: "",
-              preferredTime: "",
-            },
-      plumbingService:
-        category === "plumbingService"
-          ? prev.plumbingService
-          : { type: "", urgency: "" },
-      electricalService:
-        category === "electricalService"
-          ? prev.electricalService
-          : { type: "", urgency: "" },
-      lawnCareService:
-        category === "lawnCareService"
-          ? prev.lawnCareService
-          : { type: "", propertySize: "" },
-      handymanService:
-        category === "handymanService"
-          ? prev.handymanService
-          : { type: "", propertyValue: "" },
-      pestControlService:
-        category === "pestControlService"
-          ? prev.pestControlService
-          : { type: "", propertySize: "" },
-      applianceRepair:
-        category === "applianceRepair"
-          ? prev.applianceRepair
-          : { type: "", issue: "" },
-      carWashService:
-        category === "carWashService"
-          ? prev.carWashService
-          : { type: "", vehicleType: "" },
-      paintingService:
-        category === "paintingService"
-          ? prev.paintingService
-          : { type: "", areaSize: "" },
-      specializedCleaning:
-        category === "specializedCleaning"
-          ? prev.specializedCleaning
-          : { type: "", size: "" },
-      laundryService:
-        category === "laundryService"
-          ? prev.laundryService
-          : { type: "", weight: "" },
-      vehicleService:
-        category === "vehicleService"
-          ? prev.vehicleService
-          : { type: "", vehicleType: "" },
-      [category]: {
-        ...prev[category],
-        [field]: value,
-      },
-    }));
-  };
-
   const BookingDetailsComponent = () => (
     <div className="space-y-4">
       <h3 className="text-xl font-bold">{service.serviceName}</h3>
       <div className="border-t pt-4">
-        <p className="text-muted-foreground">{service.description}</p>
         <div className="flex items-center space-x-4 mb-3">
           <span className="text-muted-foreground">By</span>
           <Avatar>
@@ -380,77 +211,11 @@ export default function BookingPage() {
                   <h1 className="text-2xl font-bold">
                     {service.serviceName} Booking
                   </h1>
-                  <p className="text-muted-foreground">
-                    Effortless home services at your fingertips—book trusted
-                    experts for a seamless experience!
-                  </p>
+                  <p className="text-muted-foreground">{service.description}</p>
                 </div>
                 <h2 className="font-semibold">
                   Add details about your booking
                 </h2>
-                <Textarea
-                  name="serviceDetails"
-                  value={JSON.stringify(filterEmptyServices(bookingDetails))}
-                  onChange={(e) => {
-                    // Access the value of the textarea using e.target.value
-                  }}
-                  className="hidden"
-                />
-
-                {/*Standard cleaning booking form*/}
-                {service.serviceName === "Home Cleaning" && (
-                  <StandardCleaningForm
-                    handleToggle={toggleTask}
-                    handleChange={handleChange}
-                    extras={extraTasks}
-                    selectedTasks={selectedTasks}
-                  />
-                )}
-
-                {/*Office/Commercial cleaning booking form*/}
-                {service.serviceName === "Office Cleaning" && (
-                  <OfficeCommercialCleaningForm handleChange={handleChange} />
-                )}
-
-                {/* Specialized cleaning booking form*/}
-                {service.serviceName === "Specialized Cleaning" && (
-                  <SpecializedCleaningForm handleChange={handleChange} />
-                )}
-
-                {/*Plumbing service booking form */}
-                {service.serviceName === "Plumbing Services" && (
-                  <PlumbingServicesForm handleChange={handleChange} />
-                )}
-
-                {/*Lawn care booking form */}
-                {service.serviceName === "Lawn Care Services" && (
-                  <LawnCareForm handleChange={handleChange} />
-                )}
-
-                {/** Laundry booking form */}
-                {service.serviceName === "Laundry & Dry Cleaning" && (
-                  <LaundryServicesForm handleChange={handleChange} />
-                )}
-
-                {/** Handyman booking form */}
-                {service.serviceName === "Handyman Services" && (
-                  <HandymanForm handleChange={handleChange} />
-                )}
-
-                {/**Pest control booking form */}
-                {service.serviceName === "Pest Control Services" && (
-                  <PestControlForm handleChange={handleChange} />
-                )}
-
-                {/**Appliance repairs booking form */}
-                {service.serviceName === "Appliance Repair" && (
-                  <ApplianceRepairForm handleChange={handleChange} />
-                )}
-
-                {/**Car wash booking form */}
-                {service.serviceName === "Car Wash & Detailing" && (
-                  <CarWash handleChange={handleChange} />
-                )}
 
                 <div className="space-y-6">
                   {/*<div className="space-y-4">
@@ -504,6 +269,61 @@ export default function BookingPage() {
                         </PopoverContent>
                       </Popover>
                     </div>*/}
+
+                    {pricingOptions && (
+                      <div className="space-y-2">
+                        <label className="text-sm">Select Service Type:</label>
+                        <Select onValueChange={handleServiceTypeChange}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select Service Type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {Array.from(
+                              new Set(
+                                pricingOptions.map(
+                                  (option) => option.serviceTypeName
+                                )
+                              )
+                            ).map((type, index) => (
+                              <SelectItem key={index} value={type}>
+                                {type}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )}
+
+                    {options &&
+                      options.map((option) => (
+                        <div className="space-y-2">
+                          <label className="text-sm">
+                            Select {option.labelUnit}
+                          </label>
+                          <Select
+                            onValueChange={(value) =>
+                              handleSeletedPricing(option.labelUnit, value)
+                            }
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {option.options.map((o, index) => (
+                                <SelectItem
+                                  key={index}
+                                  value={o.price.toString()}
+                                >
+                                  {o.pricingOptionName}
+                                  <span className="ml-8 text-muted-foreground">
+                                    + R{o.price}
+                                  </span>
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      ))}
 
                     <div>
                       <Label className="flex " htmlFor="date">

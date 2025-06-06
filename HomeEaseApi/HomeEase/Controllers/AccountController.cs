@@ -88,7 +88,7 @@ namespace HomeEase.Controllers
 
             var appUser = new AppUser
             {
-                UserName = serviceProviderDto.FirsName,
+                UserName = serviceProviderDto.FirstName,
                 Email = serviceProviderDto.Email,
                 PhoneNumber = serviceProviderDto.PhoneNumber,
 

@@ -17,12 +17,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
-        policy =>
+        builder =>
         {
-            policy.WithOrigins("http://localhost:5173") 
-                  .AllowAnyHeader()
-                  .AllowAnyMethod()
-                  .AllowCredentials(); // If using cookies or authentication
+            builder.WithOrigins("https://localhost:5173")
+                   .AllowCredentials()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
         });
 });
 
@@ -95,6 +95,7 @@ builder.Services.AddAuthentication(options =>
         {
             // Read from cookie
             context.Token = context.Request.Cookies["access_token"];
+
             return Task.CompletedTask;
         }
     };
@@ -131,7 +132,7 @@ app.UseCors("AllowFrontend");
  
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+app.UseAuthorization(); 
 
 app.MapControllers();
 

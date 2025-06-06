@@ -1428,18 +1428,24 @@
           "companyName",
           "email",
           "experience",
-          "fullName",
+          "firstName",
+          "lastName",
           "phoneNumber"
         ],
         "type": "object",
         "properties": {
-          "fullName": {
+          "firstName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "lastName": {
             "minLength": 1,
             "type": "string"
           },
           "email": {
             "minLength": 1,
-            "type": "string"
+            "type": "string",
+            "format": "email"
           },
           "phoneNumber": {
             "minLength": 1,
@@ -1644,14 +1650,14 @@
         "required": [
           "companyName",
           "email",
-          "firsName",
+          "firstName",
           "lastName",
           "password",
           "phoneNumber"
         ],
         "type": "object",
         "properties": {
-          "firsName": {
+          "firstName": {
             "minLength": 1,
             "type": "string"
           },
@@ -1682,14 +1688,14 @@
       "RegisterDto": {
         "required": [
           "email",
-          "firsName",
+          "firstName",
           "lastName",
           "password",
           "phoneNumber"
         ],
         "type": "object",
         "properties": {
-          "firsName": {
+          "firstName": {
             "minLength": 1,
             "type": "string"
           },

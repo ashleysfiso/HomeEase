@@ -7,15 +7,21 @@ const baseURL = "https://localhost:7234/api/";
 export async function LoginUser(creds) {
   let data;
   await axios
-    .post(`${baseURL}Auth/login`, {
-      email: creds.email,
-      password: creds.password,
-    })
+    .post(
+      `${baseURL}Auth/login`,
+      {
+        email: creds.email,
+        password: creds.password,
+      },
+      {
+        withCredentials: true, // ✅ THIS IS REQUIRED
+      }
+    )
     .then((res) => {
-      console.log(res.data);
       data = res.data;
     })
     .catch((err) => {
+      console.log(err);
       const errorMessage = handleAxiosError(err);
       throw {
         message: errorMessage,
@@ -30,7 +36,7 @@ export async function RegisterUser(creds) {
 
   await axios
     .post(`${baseURL}Auth/register/customer`, {
-      firsName: creds.firsName,
+      firstName: creds.firstName,
       lastName: creds.lastName,
       email: creds.email,
       phoneNumber: creds.phoneNumber,
@@ -356,7 +362,8 @@ export async function UpdateStatus(id, status) {
 export async function CreateServiceProviderApplication(details) {
   return await axios
     .post(`${baseURL}PendingApproval`, {
-      fullName: details.fullName,
+      firstName: details.firstName,
+      lastName: details.lastName,
       email: details.email,
       phoneNumber: details.phoneNumber,
       companyName: details.companyName,
@@ -403,8 +410,9 @@ export async function UpdatePendingApprovalStatus(id, status) {
 
 export async function ApproveServiceProviderApplication(details) {
   return await axios
-    .post(`${baseURL}Account/register/service-providers`, {
-      username: details.email,
+    .post(`${baseURL}Auth/register/provider`, {
+      firstName: details.firstName,
+      lastName: details.lastName,
       email: details.email,
       phoneNumber: details.phoneNumber,
       password: "Provider@123",
