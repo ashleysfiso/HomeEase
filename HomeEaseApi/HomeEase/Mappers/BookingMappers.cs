@@ -33,6 +33,7 @@ namespace HomeEase.Mappers
                 ServiceId = bookingDto.ServiceId,
                 ServiceProviderId = bookingDto.ServiceProviderId,
                 ServiceTypeName = bookingDto.ServiceTypeName,
+                Size = bookingDto.Size,
                 BookingDate = bookingDto.BookingDate,
                 Time = bookingDto.Time,
                 TotalCost = bookingDto.TotalCost,

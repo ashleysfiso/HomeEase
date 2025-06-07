@@ -13,6 +13,8 @@ namespace HomeEase.Dtos.BookingDtos
         [Required]
         public string ServiceTypeName { get; set; }
         [Required]
+        public string Size { get; set; }
+        [Required]
         public DateOnly BookingDate { get; set; }
         [Required]
         public string Time { get; set; }

@@ -185,11 +185,12 @@ export async function CreateBooking(bookingInfo) {
       customerId: bookingInfo.customerId,
       serviceId: bookingInfo.serviceId,
       serviceProviderId: bookingInfo.serviceProviderId,
+      serviceTypeName: bookingInfo.serviceTypeName,
+      size: bookingInfo.sizes,
       bookingDate: bookingInfo.date,
       time: bookingInfo.time,
       totalCost: bookingInfo.totalPrice,
       address: bookingInfo.address,
-      additionalInformation: bookingInfo.additionalInfo,
     })
     .then((res) => {
       result = res.data;

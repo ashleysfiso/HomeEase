@@ -42,19 +42,15 @@ let customerId;
 let serviceId;
 let serviceProviderId;
 let totalPrice;
-let extras;
-let serviceName;
+let serviceTypeName;
+let sizes = "";
 
 export async function action({ request }) {
   const formData = await request.formData();
   const date = formData.get("date");
   const time = formData.get("time");
   const address = formData.get("address");
-  const serviceDetails = formData.get("serviceDetails");
-  const extrasInfo = [...(extras ?? [])].filter(Boolean).join(",");
-  const additionalInfo = `${serviceDetails.replace(/"/g, "")} ${extrasInfo}`;
-  console.log(additionalInfo);
-
+  const safeSize = originalValue.replace(/[^\x00-\xFF]/g, "");
   {
     try {
       const result = await CreateBooking({
@@ -65,11 +61,12 @@ export async function action({ request }) {
         time,
         totalPrice,
         address,
-        additionalInfo,
+        serviceTypeName,
+        sizes,
       });
       console.log("Result from post request", result);
       return redirect(
-        `/services/booking/success?id=${result.id}&date=${result.bookingDate}&time=${result.time}&address=${result.address}&service=${serviceName}&details=${additionalInfo}&total=${result.totalCost}`
+        `/services/booking/success?id=${result.id}&date=${result.bookingDate}&time=${result.time}&address=${result.address}&service=${result.serviceTypeName}&details=${sizes}&total=${result.totalCost}`
       );
     } catch (error) {
       console.log(error);
@@ -84,17 +81,19 @@ export default function BookingPage() {
   const [service, setService] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [baseRate, setBaseRate] = useState(0);
-  const [duration, setDuration] = useState(10);
-  const [selectedTasks, setSelectedTasks] = useState([]);
   const [pricingOptions, setPricingOptions] = useState(null);
   const [options, setOptions] = useState(null);
+  const [extraCosts, setExtraCosts] = useState({});
+  const [totalCost, setTotalCost] = useState(0);
+  const [typeName, setTypeName] = useState("");
+  const [size, setSize] = useState({});
 
   serviceId = sId;
   serviceProviderId = spId;
-  totalPrice = baseRate;
-  extras = selectedTasks;
+  totalPrice = totalCost;
   customerId = user?.customerID;
-  serviceName = service?.serviceName;
+  serviceTypeName = typeName;
+  sizes = JSON.stringify(size).slice(1, -1);
 
   useEffect(() => {
     const fetchService = async () => {
@@ -116,43 +115,49 @@ export default function BookingPage() {
     }
   }, [customerId]);
 
-  const calculateTotal = () => {
-    const basePrice = baseRate;
-    const extraTasksTotal = selectedTasks.reduce((total, taskId) => {
-      const task = extraTasks.find((t) => t.id === taskId);
-      return total + (task?.price || 0);
-    }, 0);
-    return basePrice + extraTasksTotal;
-  };
-
-  const toggleTask = (taskId) => {
-    setSelectedTasks((prev) =>
-      prev.includes(taskId)
-        ? prev.filter((id) => id !== taskId)
-        : [...prev, taskId]
-    );
-  };
-
   const handleServiceTypeChange = (value) => {
     const serviceTypeOptions = service.pricingOptions.filter(
       (po) => po.serviceTypeName === value
     );
+    setTypeName(value);
+    setOptions(null);
     setOptions(serviceTypeOptions);
+    setSize({});
   };
 
   const handleSeletedPricing = (unit, price) => {
-    console.log(`Unit: ${unit}  price: ${price}`);
+    setExtraCosts((prev) => ({ ...prev, [unit]: price }));
+    //Setting up selected size
+    const pricingOption = pricingOptions.find(
+      (po) => po.serviceTypeName === typeName && po.labelUnit === unit
+    );
+    if (pricingOption) {
+      const option = pricingOption.options.find(
+        (o) => o.price.toString() === price
+      );
+      if (option) {
+        console.log("Unit inside option: ", unit);
+        console.log(sizes);
+        setSize((prev) => ({ ...prev, [unit]: option.pricingOptionName }));
+      }
+    }
   };
+
+  useEffect(() => {
+    let total = 0;
+    Object.values(extraCosts).forEach((value) => {
+      total += parseFloat(value) || 0;
+    });
+    setTotalCost(baseRate + total);
+  }, [extraCosts, baseRate]);
 
   const PriceSection = () => (
     <div className="bg-primary text-primary-foreground p-4 rounded-lg flex justify-between items-center">
       <div>
-        <div className="text-3xl font-bold">{duration}</div>
-        <div className="text-sm">Est. Hours</div>
+        <div className="text-3xl font-bold">Total</div>
       </div>
       <div className="text-right">
-        <div className="text-3xl font-bold">R{calculateTotal()}</div>
-        <div className="text-sm">Est. Price</div>
+        <div className="text-3xl font-bold">R{totalCost}</div>
       </div>
     </div>
   );
@@ -273,7 +278,10 @@ export default function BookingPage() {
                     {pricingOptions && (
                       <div className="space-y-2">
                         <label className="text-sm">Select Service Type:</label>
-                        <Select onValueChange={handleServiceTypeChange}>
+                        <Select
+                          onValueChange={handleServiceTypeChange}
+                          required
+                        >
                           <SelectTrigger>
                             <SelectValue placeholder="Select Service Type" />
                           </SelectTrigger>
@@ -295,8 +303,8 @@ export default function BookingPage() {
                     )}
 
                     {options &&
-                      options.map((option) => (
-                        <div className="space-y-2">
+                      options.map((option, index) => (
+                        <div key={index} className="space-y-2">
                           <label className="text-sm">
                             Select {option.labelUnit}
                           </label>
@@ -304,6 +312,8 @@ export default function BookingPage() {
                             onValueChange={(value) =>
                               handleSeletedPricing(option.labelUnit, value)
                             }
+                            required
+                            key={option.serviceTypeName}
                           >
                             <SelectTrigger>
                               <SelectValue placeholder="Select" />
@@ -311,7 +321,7 @@ export default function BookingPage() {
                             <SelectContent>
                               {option.options.map((o, index) => (
                                 <SelectItem
-                                  key={index}
+                                  key={o.pricingOptionId}
                                   value={o.price.toString()}
                                 >
                                   {o.pricingOptionName}
@@ -327,7 +337,7 @@ export default function BookingPage() {
 
                     <div>
                       <Label className="flex " htmlFor="date">
-                        Select Day
+                        Select Date
                       </Label>
                       <div className="flex mt-1 items-center">
                         <Input
@@ -343,13 +353,24 @@ export default function BookingPage() {
                       <label className="text-sm">Select start time:</label>
                       <Select name="time" required>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select start time" />
+                          <SelectValue placeholder="Select Time" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="07:00">07:00 - 07:30</SelectItem>
-                          <SelectItem value="07:30">07:30 - 08:00</SelectItem>
-                          <SelectItem value="08:00">08:00 - 08:30</SelectItem>
-                          <SelectItem value="08:30">08:30 - 09:00</SelectItem>
+                          <SelectItem value="08:00">08:00</SelectItem>
+                          <SelectItem value="08:30">08:30</SelectItem>
+                          <SelectItem value="09:00">09:00</SelectItem>
+                          <SelectItem value="09:30">09:30</SelectItem>
+                          <SelectItem value="10:00">10:00</SelectItem>
+                          <SelectItem value="10:30">10:30</SelectItem>
+                          <SelectItem value="11:00">11:00</SelectItem>
+                          <SelectItem value="11:30">11:30</SelectItem>
+                          <SelectItem value="12:00">12:00</SelectItem>
+                          <SelectItem value="12:30">12:30</SelectItem>
+                          <SelectItem value="13:00">13:00</SelectItem>
+                          <SelectItem value="13:30">13:30</SelectItem>
+                          <SelectItem value="14:00">14:00</SelectItem>
+                          <SelectItem value="14:30">14:30</SelectItem>
+                          <SelectItem value="15:00">15:00</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>

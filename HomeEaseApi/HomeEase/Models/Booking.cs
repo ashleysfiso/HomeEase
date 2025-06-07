@@ -8,6 +8,7 @@
         public string Status { get; set; } = "Pending";
         public string Address { get; set; }
         public string ServiceTypeName {  get; set; }
+        public string Size { get; set; }
         public decimal TotalCost { get; set; }
         
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

@@ -1383,6 +1383,7 @@
           "serviceId",
           "serviceProviderId",
           "serviceTypeName",
+          "size",
           "time",
           "totalCost"
         ],
@@ -1401,6 +1402,10 @@
             "format": "int32"
           },
           "serviceTypeName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "size": {
             "minLength": 1,
             "type": "string"
           },
