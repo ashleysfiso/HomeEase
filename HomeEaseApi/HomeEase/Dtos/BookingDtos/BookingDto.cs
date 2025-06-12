@@ -7,6 +7,7 @@
         public string ServiceName { get; set; }
         public string ServiceTypeName { get; set; }
         public string CompanyName { get; set; }
+        public string Size { get; set; }
         public DateOnly BookingDate { get; set; }
         public string Time { get; set; }
         public string Status { get; set; } 
@@ -14,5 +15,6 @@
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public string Address { get; set; }
+        public double? Rating { get; set; }
     }
 }

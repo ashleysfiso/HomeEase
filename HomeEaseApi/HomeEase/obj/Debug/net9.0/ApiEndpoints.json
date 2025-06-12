@@ -1,53 +1,5 @@
 [
   {
-    "ContainingType": "HomeEase.Controllers.AccountController",
-    "Method": "LogIn",
-    "RelativePath": "api/Account/login",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "loginDto",
-        "Type": "HomeEase.Dtos.AccountDtos.LoginDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "HomeEase.Controllers.AccountController",
-    "Method": "RegisterCustomer",
-    "RelativePath": "api/Account/register/customers",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "registerDto",
-        "Type": "HomeEase.Dtos.AccountDtos.RegisterDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "HomeEase.Controllers.AccountController",
-    "Method": "RegisterServicerProvider",
-    "RelativePath": "api/Account/register/service-providers",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "serviceProviderDto",
-        "Type": "HomeEase.Dtos.AccountDtos.NewServiceProviderDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
     "ContainingType": "HomeEase.Controllers.AuthController",
     "Method": "Login",
     "RelativePath": "api/Auth/login",
@@ -407,7 +359,7 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "createReviewDto",
+        "Name": "dto",
         "Type": "HomeEase.Dtos.ReviewDtos.CreateReviewDto",
         "IsRequired": true
       }
@@ -443,6 +395,22 @@
         "Type": "HomeEase.Dtos.ReviewDtos.UpdateReviewDto",
         "IsRequired": true
       },
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.ReviewsController",
+    "Method": "Delete",
+    "RelativePath": "api/Reviews/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
       {
         "Name": "id",
         "Type": "System.Int32",

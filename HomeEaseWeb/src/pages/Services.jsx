@@ -208,17 +208,19 @@ export default function Component() {
                     </Avatar>
                     <span>{service.companyName}</span>
                   </p>
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="flex items-center gap-0.5">
-                      {/*<StarIcon className="w-5 h-5 fill-yellow-400" />
-                    <span className="text-sm font-medium">
-                      {product.rating}
-                    </span>*/}
+                  {service.rating && (
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="flex items-center gap-0.5">
+                        <StarIcon className="w-5 h-5 fill-yellow-400" />
+                        <span className="text-sm font-medium">
+                          {service.rating}
+                        </span>
+                      </div>
+                      <span className="text-sm text-muted-foreground">
+                        ({service.reviewCount} reviews)
+                      </span>
                     </div>
-                    {/*<span className="text-sm text-muted-foreground">
-                    ({product.reviews} reviews)
-                  </span>*/}
-                  </div>
+                  )}
                   <div>
                     <Link
                       to={`booking/${service.serviceId}/${service.serviceProviderId}`}

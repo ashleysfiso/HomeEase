@@ -62,14 +62,14 @@ namespace HomeEase.Controllers
                 return BadRequest("Invalid data submitted. Please check the details and try again.");
             }
 
-            var booking = await _bookingRepo.CreateAsync(createBookingDto.ToBookingModel());
+            var result = await _bookingRepo.CreateAsync(createBookingDto.ToBookingModel());
 
-            if(booking == null)
+            if(!result.Success)
             {
-                return NotFound("Service offering does not exists or invalid customer Id. Please check the details and try again");
+                return BadRequest(result.Error);
             }
 
-            return CreatedAtAction(nameof(GetById), new {id = booking.Id}, booking);
+            return CreatedAtAction(nameof(GetById), new {id = result.Data.Id}, result.Data);
         }
 
         [HttpPut("{id:int}")]

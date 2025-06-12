@@ -1,5 +1,6 @@
 ﻿using HomeEase.Dtos.BookingDtos;
 using HomeEase.Models;
+using HomeEase.Utility;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeEase.Interfaces
@@ -10,7 +11,7 @@ namespace HomeEase.Interfaces
         public Task<Booking?> GetByIdAsync(int id);
         public Task<List<Booking>> GetByCustomerIdAsync(int customerId);
         public Task<List<Booking>> GetByServiceProviderIdAsync(int serviceProviderId);
-        public Task<Booking?> CreateAsync(Booking booking);
+        public Task<ApiResponse<Booking>> CreateAsync(Booking booking);
         public Task<Booking?> UpdateAsync(UpdateBookingDto updateBookingDto, int bookingId);
        
     }

@@ -8,6 +8,14 @@ import {
   CardTitle,
   CardFooter,
 } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -49,6 +57,13 @@ export default function AllBookings({ bookings }) {
     window.scrollTo(0, 0);
   };
 
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  };
   return (
     <Card>
       <CardHeader>
@@ -135,9 +150,50 @@ export default function AllBookings({ bookings }) {
                     </td>
                     <td className="p-2">
                       <div className="flex space-x-2">
-                        <Button variant="outline" size="sm">
-                          View
-                        </Button>
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button variant="outline" size="sm">
+                              View Details
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>Booking Details</DialogTitle>
+                              <DialogDescription>
+                                Booking #{booking.id} - {booking.serviceName}
+                              </DialogDescription>
+                            </DialogHeader>
+                            <div className="grid gap-4 py-4">
+                              <div className="grid grid-cols-2 gap-2 text-sm">
+                                <span className="font-medium">Service:</span>
+                                <span>{booking.serviceName}</span>
+
+                                <span className="font-medium">Provider:</span>
+                                <span>{booking.companyName}</span>
+
+                                <span className="font-medium">Date:</span>
+                                <span>{formatDate(booking.bookingDate)}</span>
+
+                                <span className="font-medium">Time:</span>
+                                <span>{booking.time}</span>
+
+                                <span className="font-medium">Status:</span>
+                                <span>{booking.status}</span>
+
+                                <span className="font-medium">Amount:</span>
+                                <span>R{booking.totalCost.toFixed(2)}</span>
+
+                                <span className="font-medium">Address:</span>
+                                <span>{booking.address}</span>
+
+                                <span className="font-medium">
+                                  Property Size:
+                                </span>
+                                <span>{booking.size}</span>
+                              </div>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
                       </div>
                     </td>
                   </tr>

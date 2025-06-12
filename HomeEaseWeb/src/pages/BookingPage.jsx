@@ -29,6 +29,7 @@ import {
   AnvilIcon as Iron,
   Shirt,
   Loader2,
+  Star,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/contexts/AuthContext";
@@ -50,7 +51,6 @@ export async function action({ request }) {
   const date = formData.get("date");
   const time = formData.get("time");
   const address = formData.get("address");
-  const safeSize = originalValue.replace(/[^\x00-\xFF]/g, "");
   {
     try {
       const result = await CreateBooking({
@@ -66,10 +66,21 @@ export async function action({ request }) {
       });
       console.log("Result from post request", result);
       return redirect(
-        `/services/booking/success?id=${result.id}&date=${result.bookingDate}&time=${result.time}&address=${result.address}&service=${result.serviceTypeName}&details=${sizes}&total=${result.totalCost}`
+        `/services/booking/success?id=${encodeURIComponent(
+          result.id
+        )}&date=${encodeURIComponent(
+          result.bookingDate
+        )}&time=${encodeURIComponent(result.time)}&address=${encodeURIComponent(
+          result.address
+        )}&service=${encodeURIComponent(
+          result.serviceTypeName
+        )}&details=${encodeURIComponent(
+          result.size
+        )}&total=${encodeURIComponent(result.totalCost)}`
       );
     } catch (error) {
       console.log(error);
+      alert(error.message);
     }
   }
 }
@@ -87,13 +98,16 @@ export default function BookingPage() {
   const [totalCost, setTotalCost] = useState(0);
   const [typeName, setTypeName] = useState("");
   const [size, setSize] = useState({});
+  const [expanded, setExpanded] = useState(false);
 
   serviceId = sId;
   serviceProviderId = spId;
   totalPrice = totalCost;
   customerId = user?.customerID;
   serviceTypeName = typeName;
-  sizes = JSON.stringify(size).slice(1, -1);
+  sizes = Object.entries(size)
+    .map(([key, value]) => `${key}:${value}`)
+    .join(",");
 
   useEffect(() => {
     const fetchService = async () => {
@@ -136,8 +150,6 @@ export default function BookingPage() {
         (o) => o.price.toString() === price
       );
       if (option) {
-        console.log("Unit inside option: ", unit);
-        console.log(sizes);
         setSize((prev) => ({ ...prev, [unit]: option.pricingOptionName }));
       }
     }
@@ -179,10 +191,20 @@ export default function BookingPage() {
           </Avatar>
           <div>
             <h4 className="font-semibold">{service.companyName}</h4>
-            {/*<div className="flex items-center text-sm text-muted-foreground">
-                <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
-                <span>{service.provider.rating}</span>
-              </div>*/}
+            {service.rating && (
+              <div className="flex items-center gap-2 mb-2">
+                <div className="flex items-center gap-0.5">
+                  <Star
+                    className="w-4 h-4 text-yellow-500"
+                    fill="currentColor"
+                  />
+                  <span className="text-sm font-medium">{service.rating}</span>
+                </div>
+                <span className="text-sm text-muted-foreground">
+                  ({service.reviewCount} reviews)
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -216,7 +238,33 @@ export default function BookingPage() {
                   <h1 className="text-2xl font-bold">
                     {service.serviceName} Booking
                   </h1>
-                  <p className="text-muted-foreground">{service.description}</p>
+                  <div className="w-full">
+                    <p
+                      className={`whitespace-pre-wrap overflow-hidden transition-all duration-300 ${
+                        expanded ? "" : "line-clamp-6"
+                      }`}
+                    >
+                      {service.description}
+                    </p>
+
+                    {!expanded && (
+                      <button
+                        onClick={() => setExpanded(true)}
+                        className="text-blue-500 mt-2 hover:underline"
+                      >
+                        Read more
+                      </button>
+                    )}
+
+                    {expanded && (
+                      <button
+                        onClick={() => setExpanded(false)}
+                        className="text-blue-500 mt-2 hover:underline"
+                      >
+                        Hide
+                      </button>
+                    )}
+                  </div>
                 </div>
                 <h2 className="font-semibold">
                   Add details about your booking

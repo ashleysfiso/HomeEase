@@ -18,6 +18,11 @@ import {
   Search,
   Star,
 } from "lucide-react";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
@@ -94,9 +99,27 @@ export default function ServicesPage() {
                     <h3 className="text-xl font-bold">{service.serviceName}</h3>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <p className="text-muted-foreground">
-                      {service.description}
-                    </p>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <div className="cursor-pointer">
+                          <p
+                            className="whitespace-pre-wrap overflow-hidden"
+                            style={{
+                              display: "-webkit-box",
+                              WebkitLineClamp: 8,
+                              WebkitBoxOrient: "vertical",
+                            }}
+                          >
+                            {service.description}
+                          </p>
+                        </div>
+                      </PopoverTrigger>
+                      <PopoverContent className="max-w-md">
+                        <p className="whitespace-pre-wrap">
+                          {service.description}
+                        </p>
+                      </PopoverContent>
+                    </Popover>
 
                     {/* Provider Section */}
                     <div className="border-t pt-4">
@@ -117,10 +140,22 @@ export default function ServicesPage() {
                           <h4 className="font-semibold">
                             {service.companyName}
                           </h4>
-                          {/*<div className="flex items-center text-sm text-muted-foreground">
-                          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
-                          <span>{service.provider.rating}</span>
-                        </div>*/}
+                          {service.rating && (
+                            <div className="flex items-center gap-2 mb-2">
+                              <div className="flex items-center gap-0.5">
+                                <Star
+                                  className="w-4 h-4 text-yellow-500"
+                                  fill="currentColor"
+                                />
+                                <span className="text-sm font-medium">
+                                  {service.rating}
+                                </span>
+                              </div>
+                              <span className="text-sm text-muted-foreground">
+                                ({service.reviewCount} reviews)
+                              </span>
+                            </div>
+                          )}
                         </div>
                       </div>
                       <div className="grid grid-cols-2 gap-2 text-sm">

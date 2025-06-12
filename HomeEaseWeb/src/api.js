@@ -1,5 +1,6 @@
 import axios from "axios";
 import handleAxiosError from "./utils";
+import axiosInstance from "./axiosInstance";
 
 const baseURL = "https://localhost:7234/api/";
 //===================================================================================================================
@@ -500,6 +501,39 @@ export async function CreatePricingOption(option) {
 export async function DeletePricingOption(id) {
   return await axios
     .delete(`${baseURL}PricingOption/${id}`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      const errorMessage = handleAxiosError(err);
+      throw {
+        message: errorMessage,
+      };
+    });
+}
+//===================================================================================================================
+//Reviews
+export async function CreateReview(review) {
+  return await axiosInstance
+    .post("Reviews", {
+      bookingId: review.bookingId,
+      rating: review.rating,
+      comment: review.comment,
+    })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      const errorMessage = handleAxiosError(err);
+      throw {
+        message: errorMessage,
+      };
+    });
+}
+
+export async function DeleteReview(id) {
+  return await axiosInstance
+    .delete(`${baseURL}Reviews/${id}`)
     .then((res) => {
       return res.data;
     })

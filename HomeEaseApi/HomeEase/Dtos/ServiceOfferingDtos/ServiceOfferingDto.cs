@@ -16,6 +16,8 @@ namespace HomeEase.Dtos.ServiceOfferingDtos
         public string? ImgURL {  get; set; }
         public string Status { get; set; }
         public bool IsDeleted { get; set; }
+        public double? Rating { get; set; }
+        public string ReviewCount { get; set; }
         public List<PricingOptionGroup2> PricingOptions { get; set; }
     }
 

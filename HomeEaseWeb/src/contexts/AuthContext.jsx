@@ -15,6 +15,7 @@ export default function AuthProvider({ children }) {
     const loadUser = async () => {
       try {
         const res = await axiosInstance.get("Auth/me");
+        setUser(res.data);
       } catch (err) {
         setUser(null);
         setIsLoggedIn(false);

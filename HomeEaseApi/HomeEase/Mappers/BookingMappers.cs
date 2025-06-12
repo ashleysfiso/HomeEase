@@ -17,11 +17,12 @@ namespace HomeEase.Mappers
                 BookingDate = booking.BookingDate,
                 Time = booking.Time,
                 Status = booking.Status,
+                Size = booking.Size,
                 TotalCost = booking.TotalCost,
                 CreatedAt = booking.CreatedAt,
                 UpdatedAt = booking.UpdatedAt,
                 Address = booking.Address,
-
+                Rating = booking.Review?.Rating,
             };
         }
 

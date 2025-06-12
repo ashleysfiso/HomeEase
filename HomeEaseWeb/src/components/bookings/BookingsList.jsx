@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Calendar, Check, Filter, MoreHorizontal, Search } from "lucide-react";
+import {
+  Calendar,
+  Check,
+  Filter,
+  MoreHorizontal,
+  Search,
+  Star,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -27,13 +34,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import {
   Table,
   TableBody,
@@ -46,6 +53,10 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/contexts/AuthContext";
 import { GetBookingByCustomerId } from "@/api";
 import BookingsListSkeleton from "../SkeletonLoader/BookingsListSkeleton";
+import { MyPagination } from "../Pagination";
+import MyLoader from "../MyLoader";
+import { CreateReview } from "@/api";
+import { useToast } from "@/hooks/use-toast";
 
 export default function BookingsList() {
   const [bookings, setBookings] = useState([]);
@@ -55,8 +66,14 @@ export default function BookingsList() {
   const [dateFilter, setDateFilter] = useState(null);
   const [priceFilter, setPriceFilter] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
   const { user } = useAuth();
   const customerId = user?.customerID;
+  const [rating, setRating] = useState(null);
+  const [comment, setComment] = useState("");
+  const { toast } = useToast();
+  const [updatingReviews, setUpdatingReviews] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,6 +100,31 @@ export default function BookingsList() {
     });
   };
 
+  const handleRatingClick = (value) => {
+    setRating(value);
+  };
+
+  const handleSubmit = async (bookingId) => {
+    setUpdatingReviews((prev) => ({ ...prev, [bookingId]: true }));
+    if (!rating || comment.trim() === "") {
+      alert("Please provide a rating and a comment.");
+      return;
+    }
+
+    try {
+      const result = await CreateReview({
+        bookingId: bookingId,
+        rating: rating,
+        comment: comment,
+      });
+      toast({ description: "Thank you for your feedback!" });
+      setUpdatingReviews((prev) => ({ ...prev, [bookingId]: false }));
+    } catch (error) {
+      alert(error.message);
+      setUpdatingReviews((prev) => ({ ...prev, [bookingId]: false }));
+    }
+  };
+
   // Get status badge variant based on status
   const getStatusVariant = (status) => {
     switch (status.toLowerCase()) {
@@ -104,9 +146,7 @@ export default function BookingsList() {
       searchTerm &&
       !booking.serviceName.toLowerCase().includes(searchTerm.toLowerCase()) &&
       !booking.companyName.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      !booking.additionalInformation
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
+      !booking.serviceTypeName.toLowerCase().includes(searchTerm.toLowerCase())
     ) {
       return false;
     }
@@ -167,22 +207,28 @@ export default function BookingsList() {
 
     // Price filter
     if (priceFilter) {
-      if (priceFilter === "under-100" && booking.totalCost >= 100) {
+      if (priceFilter === "under-500" && booking.totalCost >= 500) {
         return false;
       }
       if (
-        priceFilter === "100-500" &&
-        (booking.totalCost < 100 || booking.totalCost > 500)
+        priceFilter === "500-1500" &&
+        (booking.totalCost < 500 || booking.totalCost > 1500)
       ) {
         return false;
       }
-      if (priceFilter === "over-500" && booking.totalCost <= 500) {
+      if (priceFilter === "over-1500" && booking.totalCost <= 1500) {
         return false;
       }
     }
 
     return true;
   });
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  const paginatedBookings = filteredBookings.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(filteredBookings.length / itemsPerPage);
 
   return (
     <div className="mx-auto px-4 py-20">
@@ -262,21 +308,21 @@ export default function BookingsList() {
                 All Prices{" "}
                 {!priceFilter && <Check className="ml-auto h-4 w-4" />}
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setPriceFilter("under-100")}>
-                Under R100{" "}
-                {priceFilter === "under-100" && (
+              <DropdownMenuItem onClick={() => setPriceFilter("under-500")}>
+                Under R500{" "}
+                {priceFilter === "under-500" && (
                   <Check className="ml-auto h-4 w-4" />
                 )}
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setPriceFilter("100-500")}>
-                R100 - R500{" "}
-                {priceFilter === "100-500" && (
+              <DropdownMenuItem onClick={() => setPriceFilter("500-1500")}>
+                R500 - R1500{" "}
+                {priceFilter === "500-1500" && (
                   <Check className="ml-auto h-4 w-4" />
                 )}
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setPriceFilter("over-500")}>
-                Over R500{" "}
-                {priceFilter === "over-500" && (
+              <DropdownMenuItem onClick={() => setPriceFilter("over-1500")}>
+                Over R1500{" "}
+                {priceFilter === "over-1500" && (
                   <Check className="ml-auto h-4 w-4" />
                 )}
               </DropdownMenuItem>
@@ -317,7 +363,7 @@ export default function BookingsList() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredBookings.map((booking) => (
+                {paginatedBookings.map((booking) => (
                   <TableRow key={booking.id}>
                     <TableCell>
                       <div className="flex flex-col">
@@ -325,7 +371,7 @@ export default function BookingsList() {
                           {booking.serviceName}
                         </span>
                         <span className="text-sm text-muted-foreground truncate max-w-[200px]">
-                          {booking.additionalInformation}
+                          {booking.serviceTypeName}
                         </span>
                       </div>
                     </TableCell>
@@ -382,31 +428,70 @@ export default function BookingsList() {
                               <span>{booking.address}</span>
 
                               <span className="font-medium">
-                                Additional Info:
+                                Property Size:
                               </span>
-                              <span>{booking.additionalInformation}</span>
+                              <span>{booking.size}</span>
                             </div>
                           </div>
                         </DialogContent>
                       </Dialog>
                     </TableCell>
                     <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon">
-                            <MoreHorizontal className="h-4 w-4" />
-                            <span className="sr-only">Open menu</span>
+                      <Popover key={booking.id}>
+                        <PopoverTrigger asChild>
+                          <Button
+                            disabled={updatingReviews[booking.id]}
+                            variant="outline"
+                          >
+                            {updatingReviews[booking.id] && <MyLoader />}Leave a
+                            Review
                           </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem>View details</DropdownMenuItem>
-                          <DropdownMenuItem>Reschedule</DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem className="text-destructive">
-                            Cancel booking
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-80 space-y-4">
+                          <div>
+                            <Label className="mb-2 block">Your Rating</Label>
+                            <div className="flex space-x-1">
+                              {[1, 2, 3, 4, 5].map((value) => (
+                                <Star
+                                  key={value}
+                                  size={24}
+                                  className={`cursor-pointer ${
+                                    rating && value <= rating
+                                      ? "text-yellow-500"
+                                      : "text-gray-300"
+                                  }`}
+                                  onClick={() => handleRatingClick(value)}
+                                  fill={
+                                    rating && value <= rating
+                                      ? "currentColor"
+                                      : "none"
+                                  }
+                                />
+                              ))}
+                            </div>
+                          </div>
+
+                          <div>
+                            <Label htmlFor="comment" className="mb-2 block">
+                              Your Comment
+                            </Label>
+                            <Textarea
+                              id="comment"
+                              placeholder="Write your thoughts here..."
+                              value={comment}
+                              onChange={(e) => setComment(e.target.value)}
+                            />
+                          </div>
+
+                          <Button
+                            className="w-full"
+                            onClick={() => handleSubmit(booking.id)}
+                            disabled={updatingReviews[booking.id]}
+                          >
+                            {updatingReviews[booking.id] && <MyLoader />} Submit
+                          </Button>
+                        </PopoverContent>
+                      </Popover>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -416,7 +501,7 @@ export default function BookingsList() {
 
           {/* Mobile view - Cards */}
           <div className="grid gap-4 md:hidden">
-            {filteredBookings.map((booking) => (
+            {paginatedBookings.map((booking) => (
               <Card key={booking.id}>
                 <CardHeader className="pb-2">
                   <div className="flex justify-between items-start">
@@ -484,27 +569,67 @@ export default function BookingsList() {
                           <span className="font-medium">Address:</span>
                           <span>{booking.address}</span>
 
-                          <span className="font-medium">Additional Info:</span>
-                          <span>{booking.additionalInformation}</span>
+                          <span className="font-medium">Property Size:</span>
+                          <span>{booking.size}</span>
                         </div>
                       </div>
                     </DialogContent>
                   </Dialog>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon">
-                        <MoreHorizontal className="h-4 w-4" />
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        disabled={updatingReviews[booking.id]}
+                        variant="outline"
+                      >
+                        {updatingReviews[booking.id] && <MyLoader />} Leave a
+                        Review
                       </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem>Reschedule</DropdownMenuItem>
-                      <DropdownMenuItem>Contact Provider</DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem className="text-destructive">
-                        Cancel booking
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80 space-y-4">
+                      <div>
+                        <Label className="mb-2 block">Your Rating</Label>
+                        <div className="flex space-x-1">
+                          {[1, 2, 3, 4, 5].map((value) => (
+                            <Star
+                              key={value}
+                              size={24}
+                              className={`cursor-pointer ${
+                                rating && value <= rating
+                                  ? "text-yellow-500"
+                                  : "text-gray-300"
+                              }`}
+                              onClick={() => handleRatingClick(value)}
+                              fill={
+                                rating && value <= rating
+                                  ? "currentColor"
+                                  : "none"
+                              }
+                            />
+                          ))}
+                        </div>
+                      </div>
+
+                      <div>
+                        <Label htmlFor="comment" className="mb-2 block">
+                          Your Comment
+                        </Label>
+                        <Textarea
+                          id="comment"
+                          placeholder="Write your thoughts here..."
+                          value={comment}
+                          onChange={(e) => setComment(e.target.value)}
+                        />
+                      </div>
+
+                      <Button
+                        className="w-full"
+                        onClick={() => handleSubmit(booking.id)}
+                        disabled={updatingReviews[booking.id]}
+                      >
+                        {updatingReviews[booking.id] && <MyLoader />} Submit
+                      </Button>
+                    </PopoverContent>
+                  </Popover>
                 </CardFooter>
               </Card>
             ))}
@@ -512,27 +637,18 @@ export default function BookingsList() {
 
           <div className="mt-6 flex items-center justify-between">
             <div className="text-sm text-muted-foreground">
-              Showing <strong>{filteredBookings.length}</strong> of{" "}
+              Showing <strong>{paginatedBookings.length}</strong> of{" "}
               <strong>{bookings.length}</strong> bookings
             </div>
-            <div className="flex items-center gap-2">
-              <Select defaultValue="10">
-                <SelectTrigger className="w-[70px]">
-                  <SelectValue placeholder="10" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="5">5</SelectItem>
-                  <SelectItem value="10">10</SelectItem>
-                  <SelectItem value="20">20</SelectItem>
-                  <SelectItem value="50">50</SelectItem>
-                </SelectContent>
-              </Select>
-              <Button variant="outline" size="sm" disabled>
-                Previous
-              </Button>
-              <Button variant="outline" size="sm" disabled>
-                Next
-              </Button>
+            <div
+              className="flex items-center gap-2"
+              onValueChange={(value) => setItemsPerPage(parseInt(value))}
+            >
+              <MyPagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
             </div>
           </div>
         </>

@@ -24,9 +24,7 @@ namespace HomeEase.Mappers
         {
             return new Review
             {
-                CustomerId = createReviewDto.CustomerId,
-                ServiceId = createReviewDto.ServiceId,
-                ServiceProviderId = createReviewDto.ServiceProviderId,
+                BookingId = createReviewDto.BookingId,
                 Rating = createReviewDto.Rating,
                 Comment = createReviewDto.Comment
             };

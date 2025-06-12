@@ -9,7 +9,13 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Form, redirect, useNavigation, useActionData } from "react-router-dom";
+import {
+  Form,
+  redirect,
+  useNavigation,
+  useActionData,
+  useLocation,
+} from "react-router-dom";
 import { LoginUser } from "../../api";
 import { useAuth } from "@/contexts/AuthContext";
 import { Link, ScrollRestoration } from "react-router-dom";
@@ -21,14 +27,15 @@ export async function action({ request }) {
   const formData = await request.formData();
   const email = formData.get("email");
   const password = formData.get("password");
-  console.log(formData);
+  const redirectTo = formData.get("redirectTo") || "/";
+  console.log(redirectTo);
   try {
     const userData = await LoginUser({ email, password });
     setUserInsideAction(userData);
     if (userData.role.includes("ServiceProvider")) {
       return redirect("/dashboard");
     }
-    return redirect("/");
+    return redirect(redirectTo);
   } catch (error) {
     return error.message;
   }
@@ -39,6 +46,7 @@ export default function LogInPage() {
   setUserInsideAction = setUser;
   const errorMessage = useActionData();
   const navigation = useNavigation();
+  const location = useLocation();
   return (
     <div>
       <ScrollRestoration />
@@ -59,6 +67,11 @@ export default function LogInPage() {
               <CardContent>
                 <Form method="post" replace>
                   <div className="flex flex-col gap-6">
+                    <input
+                      type="hidden"
+                      name="redirectTo"
+                      value={location.state?.from || "/"}
+                    />
                     <div className="grid gap-2">
                       <Label htmlFor="email">Email</Label>
                       <Input

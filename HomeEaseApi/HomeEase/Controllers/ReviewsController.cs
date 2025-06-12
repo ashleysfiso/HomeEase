@@ -1,6 +1,7 @@
 ﻿using HomeEase.Dtos.ReviewDtos;
 using HomeEase.Interfaces;
 using HomeEase.Mappers;
+using HomeEase.Utility;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -39,17 +40,20 @@ namespace HomeEase.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateReviewDto createReviewDto)
+        public async Task<IActionResult> Create([FromBody] CreateReviewDto dto)
         {
             if(!ModelState.IsValid)
             {
                 return BadRequest("Invalid data submitted. Please check the details and try again.");
             }
-            var review = createReviewDto.ToReviewFromCreateReviewDto();
 
-            var createdReview = await _reviewRepository.CreateAsync(review);
+            var result = await _reviewRepository.CreateAsync(dto);
+            if (!result.Success)
+            {
+                return BadRequest(result.Error);
+            }
 
-            return CreatedAtAction(nameof(GetById), new { Id = createdReview.Id }, createdReview);
+            return Ok($"Review created successfully");
         }
 
         [HttpPut("{id:int}")]
@@ -63,6 +67,24 @@ namespace HomeEase.Controllers
             var review = await _reviewRepository.UpdateAsync(updateReviewDto, id);
 
             if(review == null)
+            {
+                return NotFound("Review does not exists. Please check the details and try again");
+            }
+
+            return Ok(review.ToReviewDto());
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid data submitted. Please check the details and try again.");
+            }
+
+            var review = await _reviewRepository.DeleteAsync(id);
+
+            if (review == null)
             {
                 return NotFound("Review does not exists. Please check the details and try again");
             }

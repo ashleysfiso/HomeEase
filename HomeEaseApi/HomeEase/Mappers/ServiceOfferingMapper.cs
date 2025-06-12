@@ -1,6 +1,7 @@
 ﻿using HomeEase.Dtos.ServiceOfferingDtos;
 using HomeEase.Dtos.ServiceTypeDtos;
 using HomeEase.Models;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace HomeEase.Mappers
 {
@@ -20,7 +21,9 @@ namespace HomeEase.Mappers
                 ImgURL = serviceOffering.ImgURL,
                 Status = serviceOffering.Status,
                 IsDeleted = serviceOffering.IsDeleted,
-                PricingOptions = serviceOffering.PricingOptions.GroupBy(po => new {po.PricingOption.ServiceType.Name, po.PricingOption.UnitLabel})
+                Rating = serviceOffering.Reiviews.Count != 0 ? serviceOffering.Reiviews.Average(r => r.Rating) : null,
+                ReviewCount = $"{serviceOffering.Reiviews.Count()}",
+                PricingOptions = serviceOffering.PricingOptions.GroupBy(po => new { po.PricingOption.ServiceType.Name, po.PricingOption.UnitLabel })
                                                                .Select(group => new PricingOptionGroup2
                                                                {
                                                                    ServiceTypeName = group.Key.Name,
