@@ -53,7 +53,13 @@ namespace HomeEase.Controllers
             var bookingsDto = bookings.Select(b => b.ToBookingDto());
             return Ok(bookingsDto);
         }
-
+        [HttpGet("provider/dashboard/{providerId:int}")]
+        public async Task<IActionResult> GetProviderDashboardData([FromRoute] int providerId)
+        {
+            var results = await _bookingRepo.GetProviderDashboard(providerId);
+            
+            return Ok(results);
+        }
         [HttpPost]
         public async Task<IActionResult> Create(CreateBookingDto createBookingDto)
         {

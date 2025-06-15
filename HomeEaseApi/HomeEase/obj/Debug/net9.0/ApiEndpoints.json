@@ -173,6 +173,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "HomeEase.Controllers.BookingsController",
+    "Method": "GetProviderDashboardData",
+    "RelativePath": "api/Bookings/provider/dashboard/{providerId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "providerId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "HomeEase.Controllers.CustomerController",
     "Method": "GetAll",
     "RelativePath": "api/Customer",

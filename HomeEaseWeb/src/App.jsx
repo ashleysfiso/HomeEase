@@ -26,7 +26,8 @@ import { action as ManageServiceAction } from "./pages/dashboard/ManageServicesP
 import BecomeProviderPage from "./pages/BecomeProviderPage";
 import { action as BecomeProviderAction } from "./pages/BecomeProviderPage";
 import BecomeProviderSuccessPage from "./pages/BecomeProviderSuccessPage";
-import MyServices from "./pages/dashboard/MyServices";
+import MyServices from "./pages/dashboard/MyServicesPage";
+import MyBookings from "./pages/dashboard/MyBookingsPage";
 
 const router = createBrowserRouter([
   {
@@ -105,6 +106,10 @@ const router = createBrowserRouter([
       {
         path: "my-services",
         element: <MyServices />,
+      },
+      {
+        path: "my-bookings",
+        element: <MyBookings />,
       },
     ],
   },

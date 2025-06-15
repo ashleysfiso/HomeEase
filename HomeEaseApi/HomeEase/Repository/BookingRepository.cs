@@ -2,6 +2,7 @@
 using HomeEase.Dtos.BookingDtos;
 using HomeEase.Interfaces;
 using HomeEase.Models;
+using HomeEase.Services;
 using HomeEase.Utility;
 using Microsoft.EntityFrameworkCore;
 
@@ -120,6 +121,20 @@ namespace HomeEase.Repository
                                                   .Where(b => b.ServiceProviderId == serviceProviderId)
                                                   .ToListAsync();
             return bookings;
+        }
+
+        public async Task<ProviderDashboardDto> GetProviderDashboard(int serviceProviderId)
+        {
+            var bookings = await _context.Bookings.Include(b => b.Review)
+                                                 .Include(b => b.ServiceOffering).ThenInclude(so => so.ServiceProvider)
+                                                 .Include(b => b.ServiceOffering).ThenInclude(so => so.Service)
+                                                 .Include(b => b.Customer).ThenInclude(c => c.User)
+                                                 .Where(b => b.ServiceProviderId == serviceProviderId)
+                                                 .ToListAsync();
+
+            var data = DashboardData.ToProviderDashboardData(bookings);
+
+            return data;
         }
     }
 }

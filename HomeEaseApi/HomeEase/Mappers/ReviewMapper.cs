@@ -11,7 +11,7 @@ namespace HomeEase.Mappers
             return new ReviewDto
             {
                 Id = review.Id,
-                CustomerName = review.Customer.User.UserName,
+                CustomerName = $"{review.Customer.User?.FirstName} {review.Customer.User?.LastName}",
                 ServiceName = review.ServiceOffering.Service.Name,
                 CompanyName = review.ServiceOffering.ServiceProvider.CompanyName,
                 Rating = review.Rating,

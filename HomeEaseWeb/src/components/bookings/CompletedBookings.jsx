@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -6,14 +6,67 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  CardFooter,
 } from "@/components/ui/card";
-import { Calendar, CheckCircle, Clock, Search } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Calendar, CheckCircle, Star, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
+import { MyPagination } from "../Pagination";
 import { DatePicker } from "@/components/ui/date-picker";
 
 export default function CompletedBookings({ bookings }) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [dateFilter, setDateFilter] = useState(null);
+
+  const completedBooking = bookings.filter(
+    (booking) => booking.status === "Completed"
+  );
+
+  const itemsPerPage = 7;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const filteresBookings = completedBooking.filter((booking) => {
+    if (
+      searchTerm &&
+      !booking.serviceName.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      !booking.companyName.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      !booking.customerName.toLowerCase().includes(searchTerm.toLowerCase())
+    ) {
+      return false;
+    }
+    const bookingDate = new Date(booking.bookingDate);
+    if (
+      dateFilter &&
+      bookingDate.toDateString() !== dateFilter.toDateString()
+    ) {
+      return false;
+    }
+    return true;
+  });
+
+  const paginatedBookings = filteresBookings.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(filteresBookings.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo(0, 0);
+  };
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  };
   return (
     <Card>
       <CardHeader>
@@ -21,12 +74,29 @@ export default function CompletedBookings({ bookings }) {
         <CardDescription>View all completed service bookings.</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
           <div className="flex flex-1 max-w-sm relative">
-            <Input placeholder="Search completed services..." />
+            <Input
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search bookings..."
+            />
             <Search className="absolute right-3 top-2.5 h-4 w-4 text-muted-foreground" />
           </div>
-          <DatePicker />
+          <div className="flex flex-col md:flex-row gap-2">
+            <DatePicker
+              mode="single"
+              value={dateFilter}
+              onChange={setDateFilter}
+            />
+            <Button
+              variant="ghost"
+              onClick={() => {
+                setDateFilter(null);
+              }}
+            >
+              Clear Date
+            </Button>
+          </div>
         </div>
 
         <div className="border rounded-md">
@@ -43,55 +113,96 @@ export default function CompletedBookings({ bookings }) {
               </tr>
             </thead>
             <tbody>
-              {completedServices.map((service) => (
-                <tr key={service.id} className="border-b">
-                  <td className="p-2">#{service.id}</td>
+              {paginatedBookings.map((booking) => (
+                <tr key={booking.id} className="border-b">
+                  <td className="p-2">#{booking.id}</td>
                   <td className="p-2">
                     <div className="flex items-center space-x-2">
-                      <Avatar className="h-8 w-8">
-                        <AvatarImage src="/placeholder.svg" />
-                        <AvatarFallback>
-                          {service.customer.initials}
-                        </AvatarFallback>
-                      </Avatar>
-                      <span>{service.customer.name}</span>
+                      <span>{booking.customerName}</span>
                     </div>
                   </td>
-                  <td className="p-2">{service.service}</td>
+                  <td className="p-2">
+                    <div>
+                      <p>{booking.serviceName}</p>{" "}
+                      <p className="text-muted-foreground">
+                        {booking.serviceTypeName}
+                      </p>
+                    </div>
+                  </td>
                   <td className="p-2">
                     <div className="flex items-center space-x-2">
-                      <Avatar className="h-8 w-8">
-                        <AvatarImage src="/placeholder.svg" />
-                        <AvatarFallback>
-                          {service.provider.initials}
-                        </AvatarFallback>
-                      </Avatar>
-                      <span>{service.provider.name}</span>
+                      <span>{booking.companyName}</span>
                     </div>
                   </td>
-                  <td className="p-2">{service.completionDate}</td>
+                  <td className="p-2">{booking.bookingDate}</td>
                   <td className="p-2">
-                    <div className="flex items-center">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <svg
-                          key={star}
-                          className={`h-4 w-4 ${
-                            star <= service.rating
-                              ? "text-yellow-400 fill-yellow-400"
-                              : "text-gray-300"
-                          }`}
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                        >
-                          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                        </svg>
-                      ))}
-                    </div>
+                    {booking.rating ? (
+                      <div className="flex space-x-1">
+                        {[1, 2, 3, 4, 5].map((value) => (
+                          <Star
+                            key={value}
+                            size={24}
+                            className={`cursor-pointer ${
+                              booking.rating && value <= booking.rating
+                                ? "text-yellow-500"
+                                : "text-gray-300"
+                            }`}
+                            onClick={() => handleRatingClick(value)}
+                            fill={
+                              booking.rating && value <= booking.rating
+                                ? "currentColor"
+                                : "none"
+                            }
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      "No Rating"
+                    )}
                   </td>
                   <td className="p-2">
-                    <Button variant="outline" size="sm">
-                      View Details
-                    </Button>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button variant="outline" size="sm">
+                          View Details
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Booking Details</DialogTitle>
+                          <DialogDescription>
+                            Booking #{booking.id} - {booking.serviceName}
+                          </DialogDescription>
+                        </DialogHeader>
+                        <div className="grid gap-4 py-4">
+                          <div className="grid grid-cols-2 gap-2 text-sm">
+                            <span className="font-medium">Service:</span>
+                            <span>{booking.serviceName}</span>
+
+                            <span className="font-medium">Provider:</span>
+                            <span>{booking.companyName}</span>
+
+                            <span className="font-medium">Date:</span>
+                            <span>{formatDate(booking.bookingDate)}</span>
+
+                            <span className="font-medium">Time:</span>
+                            <span>{booking.time}</span>
+
+                            <span className="font-medium">Status:</span>
+                            <span>{booking.status}</span>
+
+                            <span className="font-medium">Amount:</span>
+                            <span>R{booking.totalCost.toFixed(2)}</span>
+
+                            <span className="font-medium">Address:</span>
+                            <span>{booking.address}</span>
+
+                            <span className="font-medium">Property Size:</span>
+                            <span>{booking.size}</span>
+                          </div>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
                   </td>
                 </tr>
               ))}
@@ -99,6 +210,13 @@ export default function CompletedBookings({ bookings }) {
           </table>
         </div>
       </CardContent>
+      <CardFooter>
+        <MyPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      </CardFooter>
     </Card>
   );
 }

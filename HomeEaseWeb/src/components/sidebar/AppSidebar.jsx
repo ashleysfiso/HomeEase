@@ -70,6 +70,11 @@ const data = {
       url: "/dashboard/my-services",
       icon: Hammer,
     },
+    {
+      title: "My Bookings",
+      url: "/dashboard/my-bookings",
+      icon: Briefcase,
+    },
   ],
 };
 

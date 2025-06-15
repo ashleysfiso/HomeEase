@@ -20,7 +20,7 @@ const COLORS = [
   "hsl(var(--destructive))",
 ];
 
-export function ProviderBookingsChart() {
+export function ProviderBookingsChart({ data }) {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <PieChart>
@@ -40,7 +40,7 @@ export function ProviderBookingsChart() {
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
-        <Tooltip formatter={(value) => [`${value}%`, "Percentage"]} />
+        <Tooltip formatter={(value) => [`${value}`, "Count"]} />
         <Legend />
       </PieChart>
     </ResponsiveContainer>

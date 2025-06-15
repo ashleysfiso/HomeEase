@@ -544,3 +544,19 @@ export async function DeleteReview(id) {
       };
     });
 }
+//===================================================================================================================
+//Dashboard
+
+export async function GetServiceProviderDashboard(providerId) {
+  return await axios
+    .get(`${baseURL}Bookings/provider/dashboard/${providerId}`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      const errorMessage = handleAxiosError(err);
+      throw {
+        message: errorMessage,
+      };
+    });
+}

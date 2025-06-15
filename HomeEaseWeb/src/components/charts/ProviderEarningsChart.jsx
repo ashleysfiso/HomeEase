@@ -10,18 +10,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const data = [
-  { name: "Week 1", earnings: 400 },
-  { name: "Week 2", earnings: 300 },
-  { name: "Week 3", earnings: 500 },
-  { name: "Week 4", earnings: 780 },
-  { name: "Week 5", earnings: 890 },
-  { name: "Week 6", earnings: 390 },
-  { name: "Week 7", earnings: 490 },
-  { name: "Week 8", earnings: 600 },
-];
-
-export function ProviderEarningsChart() {
+export function ProviderEarningsChart({ data }) {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <LineChart
@@ -32,13 +21,13 @@ export function ProviderEarningsChart() {
         <XAxis dataKey="name" />
         <YAxis />
         <Tooltip
-          formatter={(value) => [`$${value}`, "Earnings"]}
+          formatter={(value) => [`R${value}`, "Revenue"]} // changed to Rand
           labelFormatter={(label) => `${label}`}
         />
         <Legend />
         <Line
           type="monotone"
-          dataKey="earnings"
+          dataKey="revenue"
           stroke="hsl(var(--primary))"
           activeDot={{ r: 8 }}
         />

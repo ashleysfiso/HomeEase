@@ -10,7 +10,7 @@ namespace HomeEase.Mappers
             return new BookingDto
             {
                 Id = booking.Id,
-                CustomerName = booking.Customer.User.UserName,
+                CustomerName = $"{booking.Customer.User.FirstName} {booking.Customer.User.LastName}",
                 ServiceName = booking.ServiceOffering.Service.Name,
                 ServiceTypeName = booking.ServiceTypeName,
                 CompanyName = booking.ServiceOffering.ServiceProvider.CompanyName,
@@ -23,6 +23,7 @@ namespace HomeEase.Mappers
                 UpdatedAt = booking.UpdatedAt,
                 Address = booking.Address,
                 Rating = booking.Review?.Rating,
+                CustomerPhone = booking.Customer.User.PhoneNumber,
             };
         }
 
