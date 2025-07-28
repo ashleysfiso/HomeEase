@@ -5,6 +5,18 @@
     "version": "v1"
   },
   "paths": {
+    "/api/AuditLog": {
+      "get": {
+        "tags": [
+          "AuditLog"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Auth/register/customer": {
       "post": {
         "tags": [
@@ -37,6 +49,37 @@
       }
     },
     "/api/Auth/register/provider": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewServiceProviderDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewServiceProviderDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewServiceProviderDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Auth/register/admin": {
       "post": {
         "tags": [
           "Auth"
@@ -127,6 +170,90 @@
         "tags": [
           "Auth"
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Auth/edit-profile": {
+      "put": {
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditProfile"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditProfile"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditProfile"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Auth/user-profile/{userId}": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Auth/update-password": {
+      "put": {
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePassword"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePassword"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePassword"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -285,6 +412,29 @@
       }
     },
     "/api/Bookings/provider/dashboard/{providerId}": {
+      "get": {
+        "tags": [
+          "Bookings"
+        ],
+        "parameters": [
+          {
+            "name": "providerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Bookings/provider/dashboard/admin": {
       "get": {
         "tags": [
           "Bookings"
@@ -604,6 +754,61 @@
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Reviews/provider/{providerId}": {
+      "get": {
+        "tags": [
+          "Reviews"
+        ],
+        "parameters": [
+          {
+            "name": "providerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Reviews/service-offering/{providerId}/{serviceId}": {
+      "get": {
+        "tags": [
+          "Reviews"
+        ],
+        "parameters": [
+          {
+            "name": "providerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "serviceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -1366,6 +1571,7 @@
           },
           "time": {
             "minLength": 1,
+            "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$",
             "type": "string"
           },
           "totalCost": {
@@ -1573,6 +1779,35 @@
         },
         "additionalProperties": false
       },
+      "EditProfile": {
+        "required": [
+          "firstName",
+          "lastName",
+          "phoneNumber",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "userId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "firstName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "lastName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "phoneNumber": {
+            "minLength": 1,
+            "pattern": "^0\\d{9}$",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
       "LoginDto": {
         "required": [
           "email",
@@ -1618,6 +1853,7 @@
           },
           "phoneNumber": {
             "minLength": 1,
+            "pattern": "^0\\d{9}$",
             "type": "string"
           },
           "password": {
@@ -1656,6 +1892,7 @@
           },
           "phoneNumber": {
             "minLength": 1,
+            "pattern": "^0\\d{9}$",
             "type": "string"
           },
           "password": {
@@ -1676,6 +1913,29 @@
           "status": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdatePassword": {
+        "required": [
+          "currentPassword",
+          "newPassword",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "userId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "currentPassword": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "newPassword": {
+            "minLength": 1,
+            "type": "string"
           }
         },
         "additionalProperties": false

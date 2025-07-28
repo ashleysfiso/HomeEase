@@ -5,6 +5,7 @@ using HomeEase.Models;
 using HomeEase.Services;
 using HomeEase.Utility;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace HomeEase.Repository
 {
@@ -133,6 +134,23 @@ namespace HomeEase.Repository
                                                  .ToListAsync();
 
             var data = DashboardData.ToProviderDashboardData(bookings);
+
+            return data;
+        }
+
+        public async Task<AdminDashboardDto> GetAdminDashboard()
+        {
+            var bookings = await _context.Bookings.Include(b => b.Review)
+                                                 .Include(b => b.ServiceOffering).ThenInclude(so => so.ServiceProvider)
+                                                 .Include(b => b.ServiceOffering).ThenInclude(so => so.Service)
+                                                 .Include(b => b.Customer).ThenInclude(c => c.User)
+                                                 .ToListAsync();
+
+            var serviceProviders = await _context.ServiceProviders.ToListAsync();
+
+            var pendingapprovals = await _context.PendingApprovals.ToListAsync();
+
+            var data = DashboardData.ToAdminDashboardData(bookings, serviceProviders, pendingapprovals);
 
             return data;
         }

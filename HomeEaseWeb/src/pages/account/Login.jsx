@@ -35,9 +35,13 @@ export async function action({ request }) {
     if (userData.role.includes("ServiceProvider")) {
       return redirect("/dashboard");
     }
+    if (userData.role.includes("Admin")) {
+      return redirect("/dashboard/admin");
+    }
     return redirect(redirectTo);
   } catch (error) {
     return error.message;
+    console.log(error.message);
   }
 }
 

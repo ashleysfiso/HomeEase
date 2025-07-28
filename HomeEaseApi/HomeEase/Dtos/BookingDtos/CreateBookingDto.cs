@@ -17,6 +17,7 @@ namespace HomeEase.Dtos.BookingDtos
         [Required]
         public DateOnly BookingDate { get; set; }
         [Required]
+        [RegularExpression(@"^(?:[01]\d|2[0-3]):[0-5]\d$", ErrorMessage = "Time must be in 24-hour format (HH:mm)")]
         public string Time { get; set; }
         [Required]
         public decimal TotalCost { get; set; }

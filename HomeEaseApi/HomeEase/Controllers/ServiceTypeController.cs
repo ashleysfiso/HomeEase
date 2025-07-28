@@ -3,6 +3,7 @@ using HomeEase.Interfaces;
 using HomeEase.Mappers;
 using HomeEase.Models;
 using HomeEase.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +18,7 @@ namespace HomeEase.Controllers
         {
             _repo = repo;
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -26,7 +27,7 @@ namespace HomeEase.Controllers
 
             return Ok(result);
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromBody] int id)
         {
@@ -37,7 +38,7 @@ namespace HomeEase.Controllers
             }
             return Ok(serviceType);
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateServiceTypeDto createServiceType)
         {
@@ -53,7 +54,7 @@ namespace HomeEase.Controllers
             }
             return CreatedAtAction(nameof(GetById), new { id = serviceType.Id }, serviceType);
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateServiceTypeDto updateServiceType)
         {
@@ -65,7 +66,7 @@ namespace HomeEase.Controllers
 
             return Ok(serviceType);
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {

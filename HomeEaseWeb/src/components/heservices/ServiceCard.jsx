@@ -7,6 +7,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
 import { StatusBadge } from "./StatusBadge";
 import { Button } from "../ui/button";
 import { Undo, Trash2 } from "lucide-react";
@@ -61,7 +66,27 @@ export function ServiceCard({ service, setSubmitTrigger, serviceProviderId }) {
           <div className="text-muted-foreground">Available:</div>
           <div>{service.availability}</div>
         </div>
-        <p className="text-xs text-muted-foreground">{service.description}</p>
+        <Popover>
+          <PopoverTrigger asChild>
+            <div className="cursor-pointer">
+              <p
+                className="text-xs text-muted-foreground whitespace-pre-wrap overflow-hidden"
+                style={{
+                  display: "-webkit-box",
+                  WebkitLineClamp: 8,
+                  WebkitBoxOrient: "vertical",
+                }}
+              >
+                {service.description}
+              </p>
+            </div>
+          </PopoverTrigger>
+          <PopoverContent className="max-w-md">
+            <p className="text-xs text-muted-foreground whitespace-pre-wrap">
+              {service.description}
+            </p>
+          </PopoverContent>
+        </Popover>
       </CardContent>
       <CardFooter className="p-2 gap-2">
         <EditPricingOptions

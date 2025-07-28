@@ -1,6 +1,7 @@
 ﻿using HomeEase.Dtos.ServiceProviderDtos;
 using HomeEase.Interfaces;
 using HomeEase.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,7 +16,7 @@ namespace HomeEase.Controllers
         {
             _repo = repo;
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -23,7 +24,7 @@ namespace HomeEase.Controllers
             var result = serviceProviders.Select(sp => sp.ToServiceProviderDto()).ToList();
             return Ok(result);
         }
-
+        [Authorize(Roles = "Admin,ServiceProvider")]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateServiceProvicerDto updateDto)
         {

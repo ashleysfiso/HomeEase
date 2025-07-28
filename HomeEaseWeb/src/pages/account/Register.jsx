@@ -27,16 +27,16 @@ export async function action({ request }) {
   const formData = await request.formData();
   const email = formData.get("email");
   const password = formData.get("password");
-  const firsName = formData.get("firstName");
+  const firstName = formData.get("firstName");
   const lastName = formData.get("lastName");
   const phoneNumber = formData.get("phone");
   console.log(
-    `${firsName}, ${lastName}, ${email}, ${phoneNumber}, ${password},`
+    `${firstName}, ${lastName}, ${email}, ${phoneNumber}, ${password},`
   );
 
   try {
     const data = await RegisterUser({
-      firsName,
+      firstName,
       lastName,
       email,
       phoneNumber,
@@ -46,7 +46,7 @@ export async function action({ request }) {
     //setUserInsideAction(data);
     return redirect("/login");
   } catch (error) {
-    //return error.message;
+    return error.message;
     console.log(error);
   }
 }

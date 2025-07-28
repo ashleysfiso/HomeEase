@@ -1,6 +1,7 @@
 ﻿using HomeEase.Dtos.PendingApprovalsDtos;
 using HomeEase.Interfaces;
 using HomeEase.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -16,14 +17,15 @@ namespace HomeEase.Controllers
         {
             _repo = repo;
         }
+        [Authorize(Roles = "Admin")]
         [HttpGet]
-
         public async Task<IActionResult> GetAll()
         {
             var pendingApprovals = await _repo.GetAllAsync();
             return Ok(pendingApprovals);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
@@ -52,6 +54,7 @@ namespace HomeEase.Controllers
             return CreatedAtAction(nameof(GetById), new { id = pendingApproval.Id }, pendingApproval);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdatePendingApprovalDto updatePendingApprovalDto)
         {

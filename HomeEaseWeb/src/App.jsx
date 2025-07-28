@@ -14,7 +14,7 @@ import ServicesErrorPage from "./pages/ServicesErrorPage";
 import BookingPage, { action as bookingAction } from "./pages/BookingPage";
 import BookingsPage from "./pages/BookingsPage";
 import BookingSuccess from "./pages/BookingSuccess";
-import { AdminDashboard } from "./pages/dashboard/AdminDashboard";
+import { AdminDashboard } from "./pages/dashboard/AdminDashboardPage";
 import { ProviderDashboard } from "./pages/dashboard/ProviderDashboard";
 import { ManageProvidersPage } from "./pages/dashboard/ManageProvidersPage";
 import { ManageServicesPage } from "./pages/dashboard/ManageServicesPage";
@@ -28,6 +28,10 @@ import { action as BecomeProviderAction } from "./pages/BecomeProviderPage";
 import BecomeProviderSuccessPage from "./pages/BecomeProviderSuccessPage";
 import MyServices from "./pages/dashboard/MyServicesPage";
 import MyBookings from "./pages/dashboard/MyBookingsPage";
+import ReviewsPage from "./pages/dashboard/ReviewsPage";
+import MyReviewsPage from "./pages/dashboard/MyReviewsPage";
+import EditProfilePage from "./pages/account/EditProfilePage";
+import AuditLogPage from "./pages/dashboard/AuditLogsPage";
 
 const router = createBrowserRouter([
   {
@@ -76,6 +80,15 @@ const router = createBrowserRouter([
         path: "becomeaprovider/success",
         element: <BecomeProviderSuccessPage />,
       },
+      {
+        path: "account",
+        children: [
+          {
+            path: "edit-profile",
+            element: <EditProfilePage />,
+          },
+        ],
+      },
     ],
   },
   {
@@ -85,6 +98,10 @@ const router = createBrowserRouter([
       {
         path: "",
         element: <DashboardPage />,
+      },
+      {
+        path: "admin",
+        element: <AdminDashboard />,
       },
       {
         path: "provider",
@@ -110,6 +127,27 @@ const router = createBrowserRouter([
       {
         path: "my-bookings",
         element: <MyBookings />,
+      },
+      {
+        path: "reviews",
+        element: <ReviewsPage />,
+      },
+      {
+        path: "my-reviews",
+        element: <MyReviewsPage />,
+      },
+      {
+        path: "audit-logs",
+        element: <AuditLogPage />,
+      },
+      {
+        path: "account",
+        children: [
+          {
+            path: "edit-profile",
+            element: <EditProfilePage />,
+          },
+        ],
       },
     ],
   },

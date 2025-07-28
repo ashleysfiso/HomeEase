@@ -7,6 +7,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PlusCircle, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -253,7 +258,30 @@ export function ManageServicesPage() {
                       {paginatedServices.map((service) => (
                         <tr key={service.id} className="border-b">
                           <td className="p-2">{service.name}</td>
-                          <td>{service.description}</td>
+                          <td>
+                            {" "}
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <div className="cursor-pointer">
+                                  <p
+                                    className="text-xs text-muted-foreground whitespace-pre-wrap overflow-hidden"
+                                    style={{
+                                      display: "-webkit-box",
+                                      WebkitLineClamp: 4,
+                                      WebkitBoxOrient: "vertical",
+                                    }}
+                                  >
+                                    {service.description}
+                                  </p>
+                                </div>
+                              </PopoverTrigger>
+                              <PopoverContent className="max-w-md">
+                                <p className="text-xs text-muted-foreground whitespace-pre-wrap">
+                                  {service.description}
+                                </p>
+                              </PopoverContent>
+                            </Popover>
+                          </td>
                           <td className="p-2">R{service.basePrice}</td>
                           <td className="p-2">
                             <span

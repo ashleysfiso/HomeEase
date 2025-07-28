@@ -2,6 +2,7 @@
 using HomeEase.Interfaces;
 using HomeEase.Mappers;
 using HomeEase.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +17,7 @@ namespace HomeEase.Controllers
         {
             _serviceOfferingRepo = serviceOfferingRepo;
         }
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -50,7 +52,7 @@ namespace HomeEase.Controllers
 
             return Ok(serviceOffering.ToServiceOfferingDto()); ;
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateServiceOfferingDto createServiceOfferingDto)
         {
@@ -66,7 +68,7 @@ namespace HomeEase.Controllers
             }
             return Ok($"Service Offering with serviceId: {createdServiceOffering.ServiceId} serviceProviderId: {createdServiceOffering.ServiceProviderId} has been created successfully.");
         }
-
+        [Authorize(Roles = "Admin,ServiceProvider")]
         [HttpPut("{serviceProviderId:int}/{serviceId:int}")]
         public async Task<IActionResult> Update([FromBody] UpdateServiceOfferingDto updateServiceOfferingDto,[FromRoute] int serviceProviderId, [FromRoute] int serviceId)
         {
@@ -85,6 +87,7 @@ namespace HomeEase.Controllers
             return Ok(updatedServiceOffering.ToServiceOfferingDto());
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{serviceProviderId:int}/{serviceId:int}/{status}")]
         public async Task<IActionResult> UpdateStatus([FromRoute] string status, [FromRoute] int serviceProviderId, [FromRoute] int serviceId)
         {
@@ -103,6 +106,7 @@ namespace HomeEase.Controllers
             return Ok(updatedServiceOffering.ToServiceOfferingDto());
         }
 
+        [Authorize(Roles = "Admin,ServiceProvider")]
         [HttpDelete("{serviceProviderId:int}/{serviceId:int}")]
         public async Task<IActionResult> Delete([FromRoute] int serviceProviderId, [FromRoute] int serviceId)
         {

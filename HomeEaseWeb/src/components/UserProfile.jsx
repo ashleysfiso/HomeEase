@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,9 +12,20 @@ import { LogOut, User, Bell } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Link, redirect } from "react-router-dom";
 import axiosInstance from "@/axiosInstance";
+import { useNavigate } from "react-router-dom";
 
 export default function UserProfile() {
-  const { setUser, user, setIsLoggedIn } = useAuth();
+  const { setUser, user, setIsLoggedIn, isLoggedIn } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (!isLoggedIn) {
+        navigate("/");
+      }
+    }, 100);
+  }, [isLoggedIn]);
+
   const handleLogout = async () => {
     try {
       const res = await axiosInstance.post("Auth/logout");
@@ -26,6 +37,7 @@ export default function UserProfile() {
       console.log(error);
     }
   };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -36,7 +48,8 @@ export default function UserProfile() {
               {user?.userName.charAt(0).toUpperCase()}
             </AvatarFallback>
           </Avatar>
-          {user?.role.includes("ServiceProvider") && (
+          {(user?.role.includes("ServiceProvider") ||
+            user?.role.includes("Admin")) && (
             <div className="grid flex-1 text-left text-sm leading-tight">
               <span className="truncate font-semibold">{user?.userName}</span>
               <span className="truncate text-xs">{user?.email}</span>
@@ -60,7 +73,14 @@ export default function UserProfile() {
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           <User />
-          <span>Profile</span>
+          {user?.role.includes("ServiceProvider") ||
+          user?.role.includes("Admin") ? (
+            <span>
+              <Link to="/dashboard/account/edit-profile">Profile</Link>
+            </span>
+          ) : (
+            <Link to="/account/edit-profile">Profile</Link>
+          )}
         </DropdownMenuItem>
         <DropdownMenuItem>
           <Bell />

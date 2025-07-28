@@ -22,7 +22,7 @@ const COLORS = [
 
 export function ProviderBookingsChart({ data }) {
   return (
-    <ResponsiveContainer width="100%" height="100%">
+    <ResponsiveContainer width="100%" height={400}>
       <PieChart>
         <Pie
           data={data}

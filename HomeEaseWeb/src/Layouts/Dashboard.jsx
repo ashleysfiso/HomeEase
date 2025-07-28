@@ -9,10 +9,10 @@ export default function Dashboard({ children }) {
     <SidebarProvider>
       <AppSidebar />
 
-      <main>
-        <div className="w-full max-w-full flex justify-center">
-          <SidebarTrigger className="sticky" />
-          <div className="flex-1 min-w-0">
+      <main className="flex-1 flex flex-col min-w-0">
+        <div className="w-full flex justify-center">
+          <SidebarTrigger className="sticky ml-6 md:ml-0" />
+          <div className="flex-col w-full">
             {children}
             <header className="w-full max-w-full border-b">
               <div className="flex h-16 items-center px-4 md:px-6">

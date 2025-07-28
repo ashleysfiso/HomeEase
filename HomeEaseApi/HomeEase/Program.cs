@@ -112,7 +112,9 @@ builder.Services.AddScoped<IServiceProviderRepository, ServiceProviderRepository
 builder.Services.AddScoped<IServiceTypeRepository, ServiceTypeRepository>();
 builder.Services.AddScoped<IPricingOptionRepository, PricingOptionRepository>();
 builder.Services.AddScoped<IServiceOfferingPricingOptionRepository, ServiceOfferingPricingOptionRepository>();
-
+builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+builder.Services.AddSingleton<AuditQueue>();
+builder.Services.AddHostedService<AuditLogBackgroundService>();
 
 var app = builder.Build();
 

@@ -2,6 +2,7 @@
 using HomeEase.Interfaces;
 using HomeEase.Mappers;
 using HomeEase.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,6 +18,7 @@ namespace HomeEase.Controllers
             _repo = repo;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -38,7 +40,7 @@ namespace HomeEase.Controllers
                                 .ToList();
             return Ok(grouped);
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
@@ -49,7 +51,7 @@ namespace HomeEase.Controllers
             }
             return Ok(pricingOption.ToPricingOptionDto());
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreatePricingOptionDto createPricingOptionDto)
         {
@@ -65,7 +67,7 @@ namespace HomeEase.Controllers
 
             return CreatedAtAction(nameof(GetById), new { id = pricingOption.Id }, pricingOption);
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdatePricingOptionDto updatePricingOptionDto)
         {
@@ -81,7 +83,7 @@ namespace HomeEase.Controllers
             }
             return Ok(pricingOption.ToPricingOptionDto());
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {

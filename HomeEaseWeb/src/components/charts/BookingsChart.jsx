@@ -8,22 +8,16 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const data = [
-  { name: "Completed", value: 65 },
-  { name: "Pending", value: 25 },
-  { name: "Canceled", value: 10 },
-];
-
 const COLORS = [
   "hsl(var(--success))",
   "hsl(var(--warning))",
   "hsl(var(--destructive))",
 ];
 
-export function BookingsChart() {
+export function BookingsChart({ data }) {
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <PieChart>
+    <ResponsiveContainer width="100%" height={400}>
+      <PieChart className="mt-4">
         <Pie
           data={data}
           cx="50%"
@@ -40,7 +34,7 @@ export function BookingsChart() {
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
-        <Tooltip formatter={(value) => [`${value}%`, "Percentage"]} />
+        <Tooltip formatter={(value) => [`${value}`, "Count"]} />
         <Legend />
       </PieChart>
     </ResponsiveContainer>

@@ -12,11 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -34,10 +30,12 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/contexts/AuthContext";
 import { Form, useParams } from "react-router-dom";
-import { GetServiceById } from "@/api";
+import { GetServiceById, GetServiceOfferingReviews } from "@/api";
 import { BookingPageSkeleton } from "@/components/SkeletonLoader/BookingPageSkeleton";
 import { CreateBooking } from "@/api";
 import { redirect, useNavigation } from "react-router-dom";
+import MyLoader from "@/components/MyLoader";
+import Reviews from "@/components/Reviews/Reviews";
 
 let customerId;
 let serviceId;
@@ -99,6 +97,8 @@ export default function BookingPage() {
   const [typeName, setTypeName] = useState("");
   const [size, setSize] = useState({});
   const [expanded, setExpanded] = useState(false);
+  const [reviews, setReviews] = useState(null);
+  const [isReviewsLoading, setIsReviewsLoading] = useState(true);
 
   serviceId = sId;
   serviceProviderId = spId;
@@ -116,16 +116,25 @@ export default function BookingPage() {
         setService(service);
         setBaseRate(service.rate);
         setPricingOptions(service.pricingOptions);
-        console.log(service.pricingOptions);
         setIsLoading(false);
       } catch (error) {
         console.log(error);
-        setIsLoading(false);
       }
     };
+
+    const fetchReviews = async () => {
+      try {
+        const result = await GetServiceOfferingReviews(spId, sId);
+        setReviews(result);
+        setIsReviewsLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     if (customerId) {
       fetchService();
-      console.log(customerId);
+      fetchReviews();
     }
   }, [customerId]);
 
@@ -232,68 +241,77 @@ export default function BookingPage() {
             </div>
 
             {/* Right Section */}
-            <div className="flex-1 p-4 lg:p-6">
-              <div className="max-w-2xl mx-auto space-y-8">
-                <div>
-                  <h1 className="text-2xl font-bold">
-                    {service.serviceName} Booking
-                  </h1>
-                  <div className="w-full">
-                    <p
-                      className={`whitespace-pre-wrap overflow-hidden transition-all duration-300 ${
-                        expanded ? "" : "line-clamp-6"
-                      }`}
-                    >
-                      {service.description}
-                    </p>
+            <Tabs defaultValue="booking" className="w-full mx-auto px-6">
+              <TabsList className="w-full mx-auto">
+                <TabsTrigger className="w-full" value="booking">
+                  Make a Booking
+                </TabsTrigger>
+                <TabsTrigger className="w-full" value="reviews">
+                  Customer Reviews
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="booking">
+                <div className="flex-1 p-4 lg:p-6">
+                  <div className="max-w-2xl mx-auto space-y-8">
+                    <div>
+                      <h1 className="text-2xl font-bold">
+                        {service.serviceName} Booking
+                      </h1>
+                      <div className="w-full">
+                        <p
+                          className={`whitespace-pre-wrap overflow-hidden transition-all duration-300 ${
+                            expanded ? "" : "line-clamp-6"
+                          }`}
+                        >
+                          {service.description}
+                        </p>
 
-                    {!expanded && (
-                      <button
-                        onClick={() => setExpanded(true)}
-                        className="text-blue-500 mt-2 hover:underline"
-                      >
-                        Read more
-                      </button>
-                    )}
+                        {!expanded && (
+                          <button
+                            onClick={() => setExpanded(true)}
+                            className="text-blue-500 mt-2 hover:underline"
+                          >
+                            Read more
+                          </button>
+                        )}
 
-                    {expanded && (
-                      <button
-                        onClick={() => setExpanded(false)}
-                        className="text-blue-500 mt-2 hover:underline"
-                      >
-                        Hide
-                      </button>
-                    )}
-                  </div>
-                </div>
-                <h2 className="font-semibold">
-                  Add details about your booking
-                </h2>
+                        {expanded && (
+                          <button
+                            onClick={() => setExpanded(false)}
+                            className="text-blue-500 mt-2 hover:underline"
+                          >
+                            Hide
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                    <h2 className="font-semibold">
+                      Add details about your booking
+                    </h2>
+                    <div className="space-y-6">
+                      {/*<div className="space-y-4">
+                              <h2 className="font-semibold">Booking Duration</h2>
+                              <div className="flex items-center gap-4">
+                                <Button
+                                  variant="outline"
+                                  size="icon"
+                                  onClick={() => setDuration(Math.max(1, duration - 1))}
+                                >
+                                  <Minus className="h-4 w-4" />
+                                </Button>
+                                <span className="text-2xl font-bold">{duration}</span>
+                                <Button
+                                  variant="outline"
+                                  size="icon"
+                                  onClick={() => setDuration(duration + 1)}
+                                >
+                                  <Plus className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </div>*/}
 
-                <div className="space-y-6">
-                  {/*<div className="space-y-4">
-              <h2 className="font-semibold">Booking Duration</h2>
-              <div className="flex items-center gap-4">
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => setDuration(Math.max(1, duration - 1))}
-                >
-                  <Minus className="h-4 w-4" />
-                </Button>
-                <span className="text-2xl font-bold">{duration}</span>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => setDuration(duration + 1)}
-                >
-                  <Plus className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>*/}
-
-                  <div className="space-y-4">
-                    {/*<div className="space-y-2">
+                      <div className="space-y-4">
+                        {/*<div className="space-y-2">
                       <label className="text-sm">Select start date:</label>
                       <Popover>
                         <PopoverTrigger asChild>
@@ -323,133 +341,141 @@ export default function BookingPage() {
                       </Popover>
                     </div>*/}
 
-                    {pricingOptions && (
-                      <div className="space-y-2">
-                        <label className="text-sm">Select Service Type:</label>
-                        <Select
-                          onValueChange={handleServiceTypeChange}
-                          required
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select Service Type" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {Array.from(
-                              new Set(
-                                pricingOptions.map(
-                                  (option) => option.serviceTypeName
-                                )
-                              )
-                            ).map((type, index) => (
-                              <SelectItem key={index} value={type}>
-                                {type}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    )}
+                        {pricingOptions && (
+                          <div className="space-y-2">
+                            <label className="text-sm">
+                              Select Service Type:
+                            </label>
+                            <Select
+                              onValueChange={handleServiceTypeChange}
+                              required
+                            >
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select Service Type" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {Array.from(
+                                  new Set(
+                                    pricingOptions.map(
+                                      (option) => option.serviceTypeName
+                                    )
+                                  )
+                                ).map((type, index) => (
+                                  <SelectItem key={index} value={type}>
+                                    {type}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        )}
 
-                    {options &&
-                      options.map((option, index) => (
-                        <div key={index} className="space-y-2">
-                          <label className="text-sm">
-                            Select {option.labelUnit}
-                          </label>
-                          <Select
-                            onValueChange={(value) =>
-                              handleSeletedPricing(option.labelUnit, value)
-                            }
-                            required
-                            key={option.serviceTypeName}
-                          >
+                        {options &&
+                          options.map((option, index) => (
+                            <div key={index} className="space-y-2">
+                              <label className="text-sm">
+                                Select {option.labelUnit}
+                              </label>
+                              <Select
+                                onValueChange={(value) =>
+                                  handleSeletedPricing(option.labelUnit, value)
+                                }
+                                required
+                                key={option.serviceTypeName}
+                              >
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {option.options.map((o, index) => (
+                                    <SelectItem
+                                      key={o.pricingOptionId}
+                                      value={o.price.toString()}
+                                    >
+                                      {o.pricingOptionName}
+                                      <span className="ml-8 text-muted-foreground">
+                                        + R{o.price}
+                                      </span>
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          ))}
+
+                        <div>
+                          <Label className="flex " htmlFor="date">
+                            Select Date
+                          </Label>
+                          <div className="flex mt-1 items-center">
+                            <Input
+                              name="date"
+                              type="date"
+                              required
+                              className="w-full"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="space-y-2">
+                          <label className="text-sm">Select start time:</label>
+                          <Select name="time" required>
                             <SelectTrigger>
-                              <SelectValue placeholder="Select" />
+                              <SelectValue placeholder="Select Time" />
                             </SelectTrigger>
                             <SelectContent>
-                              {option.options.map((o, index) => (
-                                <SelectItem
-                                  key={o.pricingOptionId}
-                                  value={o.price.toString()}
-                                >
-                                  {o.pricingOptionName}
-                                  <span className="ml-8 text-muted-foreground">
-                                    + R{o.price}
-                                  </span>
-                                </SelectItem>
-                              ))}
+                              <SelectItem value="08:00">08:00</SelectItem>
+                              <SelectItem value="08:30">08:30</SelectItem>
+                              <SelectItem value="09:00">09:00</SelectItem>
+                              <SelectItem value="09:30">09:30</SelectItem>
+                              <SelectItem value="10:00">10:00</SelectItem>
+                              <SelectItem value="10:30">10:30</SelectItem>
+                              <SelectItem value="11:00">11:00</SelectItem>
+                              <SelectItem value="11:30">11:30</SelectItem>
+                              <SelectItem value="12:00">12:00</SelectItem>
+                              <SelectItem value="12:30">12:30</SelectItem>
+                              <SelectItem value="13:00">13:00</SelectItem>
+                              <SelectItem value="13:30">13:30</SelectItem>
+                              <SelectItem value="14:00">14:00</SelectItem>
+                              <SelectItem value="14:30">14:30</SelectItem>
+                              <SelectItem value="15:00">15:00</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
-                      ))}
+                      </div>
 
-                    <div>
-                      <Label className="flex " htmlFor="date">
-                        Select Date
-                      </Label>
-                      <div className="flex mt-1 items-center">
-                        <Input
-                          name="date"
-                          type="date"
+                      <div className="space-y-2">
+                        <label className="text-sm">Add your address</label>
+                        <Textarea
+                          name="address"
+                          placeholder="Enter your address (e.g., 123 Main Street, Apartment 4B, City, Province, ZIP Code)"
                           required
-                          className="w-full"
+                          className="min-h-[100px]"
                         />
                       </div>
+                      <div className="hidden lg:block w-full gap-4">
+                        <Button
+                          disabled={navigation.state === "submitting"}
+                          className="flex-1"
+                          size="lg"
+                        >
+                          {navigation.state === "submitting" ? (
+                            <Loader2 className="animate-spin h-5 w-5 mr-2" />
+                          ) : (
+                            ""
+                          )}
+                          Confirm Booking
+                        </Button>
+                      </div>
                     </div>
-
-                    <div className="space-y-2">
-                      <label className="text-sm">Select start time:</label>
-                      <Select name="time" required>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Time" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="08:00">08:00</SelectItem>
-                          <SelectItem value="08:30">08:30</SelectItem>
-                          <SelectItem value="09:00">09:00</SelectItem>
-                          <SelectItem value="09:30">09:30</SelectItem>
-                          <SelectItem value="10:00">10:00</SelectItem>
-                          <SelectItem value="10:30">10:30</SelectItem>
-                          <SelectItem value="11:00">11:00</SelectItem>
-                          <SelectItem value="11:30">11:30</SelectItem>
-                          <SelectItem value="12:00">12:00</SelectItem>
-                          <SelectItem value="12:30">12:30</SelectItem>
-                          <SelectItem value="13:00">13:00</SelectItem>
-                          <SelectItem value="13:30">13:30</SelectItem>
-                          <SelectItem value="14:00">14:00</SelectItem>
-                          <SelectItem value="14:30">14:30</SelectItem>
-                          <SelectItem value="15:00">15:00</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm">Add your address</label>
-                    <Textarea
-                      name="address"
-                      placeholder="Enter your address (e.g., 123 Main Street, Apartment 4B, City, Province, ZIP Code)"
-                      required
-                      className="min-h-[100px]"
-                    />
-                  </div>
-                  <div className="hidden lg:block w-full gap-4">
-                    <Button
-                      disabled={navigation.state === "submitting"}
-                      className="flex-1"
-                      size="lg"
-                    >
-                      {navigation.state === "submitting" ? (
-                        <Loader2 className="animate-spin h-5 w-5 mr-2" />
-                      ) : (
-                        ""
-                      )}
-                      Confirm Booking
-                    </Button>
                   </div>
                 </div>
-              </div>
-            </div>
+              </TabsContent>
+              <TabsContent value="reviews">
+                {isReviewsLoading ? <MyLoader /> : <Reviews data={reviews} />}
+              </TabsContent>
+            </Tabs>
+
             {/* Mobile Sticky Footer */}
             <div className="fixed bottom-0 left-0 right-0 lg:hidden bg-background border-t p-4 space-y-4">
               <PriceSection />

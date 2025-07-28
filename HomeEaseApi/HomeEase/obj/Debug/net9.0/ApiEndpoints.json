@@ -1,5 +1,31 @@
 [
   {
+    "ContainingType": "HomeEase.Controllers.AuditLogController",
+    "Method": "GetAll",
+    "RelativePath": "api/AuditLog",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.AuthController",
+    "Method": "EditProfile",
+    "RelativePath": "api/Auth/edit-profile",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "editProfile",
+        "Type": "HomeEase.Dtos.AccountDtos.EditProfile",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "HomeEase.Controllers.AuthController",
     "Method": "Login",
     "RelativePath": "api/Auth/login",
@@ -47,6 +73,22 @@
   },
   {
     "ContainingType": "HomeEase.Controllers.AuthController",
+    "Method": "RegisterAdmin",
+    "RelativePath": "api/Auth/register/admin",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "HomeEase.Dtos.AccountDtos.NewServiceProviderDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.AuthController",
     "Method": "Register",
     "RelativePath": "api/Auth/register/customer",
     "HttpMethod": "POST",
@@ -72,6 +114,38 @@
       {
         "Name": "dto",
         "Type": "HomeEase.Dtos.AccountDtos.NewServiceProviderDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.AuthController",
+    "Method": "UpdatePassword",
+    "RelativePath": "api/Auth/update-password",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "updatePassword",
+        "Type": "HomeEase.Dtos.AccountDtos.UpdatePassword",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.AuthController",
+    "Method": "UserProfile",
+    "RelativePath": "api/Auth/user-profile/{userId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
@@ -184,6 +258,22 @@
         "Name": "providerId",
         "Type": "System.Int32",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.BookingsController",
+    "Method": "GetAdminDashboardData",
+    "RelativePath": "api/Bookings/provider/dashboard/admin",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "providerId",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -429,6 +519,43 @@
     "Parameters": [
       {
         "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.ReviewsController",
+    "Method": "GetAllByProviderId",
+    "RelativePath": "api/Reviews/provider/{providerId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "providerId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.ReviewsController",
+    "Method": "GetAllByServiceOfferingId",
+    "RelativePath": "api/Reviews/service-offering/{providerId}/{serviceId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "providerId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "serviceId",
         "Type": "System.Int32",
         "IsRequired": true
       }

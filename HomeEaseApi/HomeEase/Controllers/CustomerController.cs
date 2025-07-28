@@ -1,4 +1,5 @@
 ﻿using HomeEase.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,7 +14,7 @@ namespace HomeEase.Controllers
         {
             _customerRepo = customerRepo;
         }
-
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -21,7 +22,7 @@ namespace HomeEase.Controllers
 
             return Ok(customers);
         }
-
+        [Authorize]
         [HttpGet("{userId}")]
         public async Task<IActionResult> GetByUserId([FromRoute] string userId)
         {

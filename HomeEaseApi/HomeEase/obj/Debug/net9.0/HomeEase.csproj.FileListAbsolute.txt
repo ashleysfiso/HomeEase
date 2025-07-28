@@ -307,12 +307,6 @@ C:\Users\ashle\OneDrive\Documents\HomeEase\HomeEaseApi\HomeEase\obj\Debug\net9.0
 C:\Users\ashle\OneDrive\Documents\HomeEase\HomeEaseApi\HomeEase\obj\Debug\net9.0\staticwebassets.build.json
 C:\Users\ashle\OneDrive\Documents\HomeEase\HomeEaseApi\HomeEase\obj\Debug\net9.0\staticwebassets.development.json
 C:\Users\ashle\OneDrive\Documents\HomeEase\HomeEaseApi\HomeEase\obj\Debug\net9.0\staticwebassets.build.endpoints.json
-C:\Users\ashle\OneDrive\Documents\HomeEase\HomeEaseApi\HomeEase\obj\Debug\net9.0\staticwebassets\msbuild.HomeEase.Microsoft.AspNetCore.StaticWebAssets.props
-C:\Users\ashle\OneDrive\Documents\HomeEase\HomeEaseApi\HomeEase\obj\Debug\net9.0\staticwebassets\msbuild.HomeEase.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
-C:\Users\ashle\OneDrive\Documents\HomeEase\HomeEaseApi\HomeEase\obj\Debug\net9.0\staticwebassets\msbuild.build.HomeEase.props
-C:\Users\ashle\OneDrive\Documents\HomeEase\HomeEaseApi\HomeEase\obj\Debug\net9.0\staticwebassets\msbuild.buildMultiTargeting.HomeEase.props
-C:\Users\ashle\OneDrive\Documents\HomeEase\HomeEaseApi\HomeEase\obj\Debug\net9.0\staticwebassets\msbuild.buildTransitive.HomeEase.props
-C:\Users\ashle\OneDrive\Documents\HomeEase\HomeEaseApi\HomeEase\obj\Debug\net9.0\staticwebassets.pack.json
 C:\Users\ashle\OneDrive\Documents\HomeEase\HomeEaseApi\HomeEase\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
 C:\Users\ashle\OneDrive\Documents\HomeEase\HomeEaseApi\HomeEase\obj\Debug\net9.0\HomeEase.csproj.Up2Date
 C:\Users\ashle\OneDrive\Documents\HomeEase\HomeEaseApi\HomeEase\obj\Debug\net9.0\HomeEase.dll
@@ -321,3 +315,8 @@ C:\Users\ashle\OneDrive\Documents\HomeEase\HomeEaseApi\HomeEase\obj\Debug\net9.0
 C:\Users\ashle\OneDrive\Documents\HomeEase\HomeEaseApi\HomeEase\obj\Debug\net9.0\HomeEase.genruntimeconfig.cache
 C:\Users\ashle\OneDrive\Documents\HomeEase\HomeEaseApi\HomeEase\obj\Debug\net9.0\ref\HomeEase.dll
 C:\Users\ashle\OneDrive\Documents\HomeEase\HomeEaseApi\HomeEase\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\ashle\OneDrive\Documents\HomeEase\HomeEaseApi\HomeEase\obj\Debug\net9.0\rpswa.dswa.cache.json
+C:\Users\ashle\OneDrive\Documents\HomeEase\HomeEaseApi\HomeEase\obj\Debug\net9.0\rjimswa.dswa.cache.json
+C:\Users\ashle\OneDrive\Documents\HomeEase\HomeEaseApi\HomeEase\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
+C:\Users\ashle\OneDrive\Documents\HomeEase\HomeEaseApi\HomeEase\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
+C:\Users\ashle\OneDrive\Documents\HomeEase\HomeEaseApi\HomeEase\obj\Debug\net9.0\staticwebassets.build.json.cache

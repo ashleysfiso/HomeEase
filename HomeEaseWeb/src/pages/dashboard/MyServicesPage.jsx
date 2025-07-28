@@ -36,45 +36,6 @@ import {
 import PricingInputs from "@/components/heservices/myservices/PricingInputs";
 import EmptyState from "@/components/EmptyState";
 
-const servicess = [
-  {
-    serviceId: 1,
-    serviceProviderId: 1,
-    serviceName: "Home Cleaning",
-    companyName: "CleanPro Services",
-    rate: 200,
-    availability: "Mon-Sat",
-    description:
-      "Basic cleaning for homes, including: 🏡 Dusting 🧹 Vacuuming 🏠 Mopping 🍽️ Kitchen Cleaning 🚽 Bathroom Sanitation",
-    imgURL: null,
-    status: "approved",
-  },
-  {
-    serviceId: 2,
-    serviceProviderId: 1,
-    serviceName: "Office Cleaning",
-    companyName: "CleanPro Services",
-    rate: 350,
-    availability: "Mon-Fri",
-    description:
-      "Professional cleaning for offices and commercial spaces: 🏢 Dusting 🧹 Vacuuming 🧽 Surface Cleaning 🚽 Restroom Maintenance",
-    imgURL: null,
-    status: "approved",
-  },
-  {
-    serviceId: 3,
-    serviceProviderId: 1,
-    serviceName: "Deep Cleaning",
-    companyName: "CleanPro Services",
-    rate: 500,
-    availability: "Weekends",
-    description:
-      "Thorough deep cleaning service: 🧼 Cabinet Cleaning 🚿 Shower Descaling 🧫 Appliance Cleaning 🪟 Window Washing",
-    imgURL: null,
-    status: "pending",
-  },
-];
-
 export default function MyServices() {
   const [isServicesLoading, setIsServicesLoading] = useState(true);
   const [services, setServices] = useState([]);
@@ -211,9 +172,27 @@ export default function MyServices() {
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-muted-foreground">
-                      {service.description}
-                    </p>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <div className="cursor-pointer">
+                          <p
+                            className="text-xs text-muted-foreground whitespace-pre-wrap overflow-hidden"
+                            style={{
+                              display: "-webkit-box",
+                              WebkitLineClamp: 8,
+                              WebkitBoxOrient: "vertical",
+                            }}
+                          >
+                            {service.description}
+                          </p>
+                        </div>
+                      </PopoverTrigger>
+                      <PopoverContent className="max-w-md">
+                        <p className="text-xs text-muted-foreground whitespace-pre-wrap">
+                          {service.description}
+                        </p>
+                      </PopoverContent>
+                    </Popover>
                   </CardContent>
                 </Card>
               ))

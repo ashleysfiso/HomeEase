@@ -1,6 +1,7 @@
 ﻿using HomeEase.Dtos.ServiceDto;
 using HomeEase.Interfaces;
 using HomeEase.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeEase.Controllers
@@ -14,12 +15,14 @@ namespace HomeEase.Controllers
         {
             _serviceRepo = serviceRepo;
         }
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var sevices = await _serviceRepo.GetServicesAsync();
             return Ok(sevices.Select(s => s.ToServiceDto()));
         }
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
@@ -33,7 +36,7 @@ namespace HomeEase.Controllers
 
             return Ok(service.ToServiceDto());
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateServiceDto createServiceDto)
         {
@@ -47,7 +50,7 @@ namespace HomeEase.Controllers
 
             return CreatedAtAction(nameof(GetById), new { id = serviceModel.Id }, serviceModel.ToServiceDto());
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromRoute] int id ,UpdateServiceDto updateServiceDto)
         {
@@ -65,7 +68,7 @@ namespace HomeEase.Controllers
 
             return Ok(updatedService);
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {

@@ -11,10 +11,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("17911ef9-8fd3-4d97-86a8-7787589d4e9e")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("HomeEase")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+59ad38ea9ed768fe5e2993507c81ecf4e517e8ca")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f22e5b190012206e3e2f1cd677cc220fb0dffa60")]
 [assembly: System.Reflection.AssemblyProductAttribute("HomeEase")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HomeEase")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

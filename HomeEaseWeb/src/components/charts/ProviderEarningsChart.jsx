@@ -21,7 +21,7 @@ export function ProviderEarningsChart({ data }) {
         <XAxis dataKey="name" />
         <YAxis />
         <Tooltip
-          formatter={(value) => [`R${value}`, "Revenue"]} // changed to Rand
+          formatter={(value) => [`R${value}`, "Revenue"]}
           labelFormatter={(label) => `${label}`}
         />
         <Legend />

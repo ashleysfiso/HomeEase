@@ -12,6 +12,7 @@ namespace HomeEase.Dtos.AccountDtos
         [EmailAddress]
         public string Email { get; set; }
         [Required]
+        [RegularExpression(@"^0\d{9}$", ErrorMessage = "Phone number must be 10 digits and start with 0 (e.g., 0821234567).")]
         public string PhoneNumber { get; set; }
         [Required]
         public string Password { get; set; }

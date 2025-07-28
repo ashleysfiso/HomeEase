@@ -15,6 +15,8 @@ export function checkUserRole() {
     const user = JSON.parse(storedUser);
     if (user.role.includes("ServiceProvider")) {
       throw redirect("/dashboard");
+    } else if (user.role.includes("Admin")) {
+      throw redirect("/dashboard/admin");
     }
     //console.log(user.role);
   }

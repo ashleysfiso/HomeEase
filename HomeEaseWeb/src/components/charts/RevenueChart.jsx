@@ -9,22 +9,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const data = [
-  { name: "Jan", revenue: 4000 },
-  { name: "Feb", revenue: 3000 },
-  { name: "Mar", revenue: 5000 },
-  { name: "Apr", revenue: 2780 },
-  { name: "May", revenue: 1890 },
-  { name: "Jun", revenue: 2390 },
-  { name: "Jul", revenue: 3490 },
-  { name: "Aug", revenue: 4000 },
-  { name: "Sep", revenue: 5000 },
-  { name: "Oct", revenue: 6000 },
-  { name: "Nov", revenue: 7000 },
-  { name: "Dec", revenue: 9000 },
-];
-
-export function RevenueChart() {
+export function RevenueChart({ data }) {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <AreaChart

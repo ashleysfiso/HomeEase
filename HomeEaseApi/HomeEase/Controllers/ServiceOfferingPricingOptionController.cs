@@ -1,6 +1,7 @@
 ﻿using HomeEase.Dtos.ServiceOfferingPricingOptionDtos;
 using HomeEase.Interfaces;
 using HomeEase.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,7 +16,7 @@ namespace HomeEase.Controllers
         {
             _repo = repo;
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -23,7 +24,7 @@ namespace HomeEase.Controllers
             var result =soPricingOptions.Select(sopo => sopo.ToSOPricingOptionDto()).ToList();
             return Ok(result);
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateSOPricingOption createSOPricingOption)
         {
@@ -39,7 +40,7 @@ namespace HomeEase.Controllers
 
             return Ok(soPricingOption);
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdateSOPricingOption updateSOPricingOption)
         {

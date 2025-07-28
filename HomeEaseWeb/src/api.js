@@ -1,114 +1,103 @@
-import axios from "axios";
-import handleAxiosError from "./utils";
 import axiosInstance from "./axiosInstance";
+import handleAxiosError from "./utils";
+import axios from "axios";
 
 const baseURL = "https://localhost:7234/api/";
+
 //===================================================================================================================
-// Account Fuctions
+// Account Functions
 export async function LoginUser(creds) {
-  let data;
-  await axios
-    .post(
+  try {
+    const res = await axios.post(
       `${baseURL}Auth/login`,
       {
         email: creds.email,
         password: creds.password,
       },
       {
-        withCredentials: true, // ✅ THIS IS REQUIRED
+        withCredentials: true,
       }
-    )
-    .then((res) => {
-      data = res.data;
-    })
-    .catch((err) => {
-      console.log(err);
-      const errorMessage = handleAxiosError(err);
-      throw {
-        message: errorMessage,
-      };
-    });
-
-  return data;
+    );
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
 }
 
 export async function RegisterUser(creds) {
-  let data;
-
-  await axios
-    .post(`${baseURL}Auth/register/customer`, {
+  try {
+    const res = await axiosInstance.post("Auth/register/customer", {
       firstName: creds.firstName,
       lastName: creds.lastName,
       email: creds.email,
       phoneNumber: creds.phoneNumber,
       password: creds.password,
-    })
-    .then((res) => {
-      //console.log(res);
-      data = res.data;
-    })
-    .catch((err) => {
-      const errorMessage = handleAxiosError(err);
-      throw {
-        message: errorMessage,
-      };
     });
-
-  return data;
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
 }
+
+export async function EditUserProfile(creds) {
+  try {
+    const res = await axiosInstance.put("Auth/edit-profile", creds);
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
+}
+
+export async function GetUserProfile(userId) {
+  try {
+    const res = await axiosInstance.get(`Auth/user-profile/${userId}`);
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
+}
+
+export async function UpdatePassword(creds) {
+  try {
+    const res = await axiosInstance.put("Auth/update-password", creds);
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
+}
+
 //===================================================================================================================
 // Service offerings functions
 export async function GetServiceOfferings() {
-  let data;
-  await axios
-    .get(`${baseURL}ServiceOfferings`)
-    .then((res) => {
-      data = res.data;
-    })
-    .catch((err) => {
-      const errorMessage = handleAxiosError(err);
-      throw {
-        message: errorMessage,
-      };
-    });
-
-  return data;
+  try {
+    const res = await axiosInstance.get("ServiceOfferings");
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
 }
 
 export async function GetServiceById(spId, sId) {
-  let service;
-  await axios
-    .get(`${baseURL}ServiceOfferings/${spId}/${sId}`)
-    .then((res) => {
-      service = res.data;
-    })
-    .catch((err) => {
-      const errorMessage = handleAxiosError(err);
-      throw {
-        message: errorMessage,
-      };
-    });
-
-  return service;
+  try {
+    const res = await axiosInstance.get(`ServiceOfferings/${spId}/${sId}`);
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
 }
 
 export async function GetServiceProviderServiceOfferings(spId) {
-  return await axios
-    .get(`${baseURL}ServiceOfferings/${spId}`)
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      const errorMessage = handleAxiosError(err);
-      throw {
-        message: errorMessage,
-      };
-    });
+  try {
+    const res = await axiosInstance.get(`ServiceOfferings/${spId}`);
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
 }
 
 export async function CreateServiceOffering(details) {
-  return await axios
-    .post(`${baseURL}ServiceOfferings`, {
+  try {
+    const res = await axiosInstance.post("ServiceOfferings", {
       serviceId: details.serviceId,
       serviceProviderId: details.serviceProviderId,
       rate: details.rate,
@@ -116,447 +105,306 @@ export async function CreateServiceOffering(details) {
       description:
         "This is a placeholder description for the service. Please update this section with detailed and accurate information about the service being offered, including what is provided, any limitations or requirements, pricing details if applicable, and any other relevant notes. This description should be written and maintained by the service provider to ensure clarity and transparency for potential customers.",
       pricingOptionsToSO: details.options,
-    })
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      const errorMessage = handleAxiosError(err);
-      throw {
-        message: errorMessage,
-      };
     });
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
 }
 
 export async function UpdatePricingOption(option) {
-  return axios
-    .put(`${baseURL}ServiceOfferingPricingOption`, {
-      serviceProviderId: option.serviceProviderId,
-      serviceId: option.serviceId,
-      pricingOptionId: option.pricingOptionId,
-      price: option.price,
-    })
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      const errorMessage = handleAxiosError(err);
-      throw {
-        message: errorMessage,
-      };
-    });
+  try {
+    const res = await axiosInstance.put("ServiceOfferingPricingOption", option);
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
 }
 
 export async function UpdateServiceOfferingStatus(details) {
-  return axios
-    .put(
-      `${baseURL}ServiceOfferings/${details.spId}/${details.sId}/${details.status}`
-    )
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      const errorMessage = handleAxiosError(err);
-      throw {
-        message: errorMessage,
-      };
-    });
+  try {
+    const res = await axiosInstance.put(
+      `ServiceOfferings/${details.spId}/${details.sId}/${details.status}`
+    );
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
 }
 
 export async function DeleteServiceOffering(spId, sId) {
-  return await axios
-    .delete(`${baseURL}ServiceOfferings/${spId}/${sId}`)
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      const errorMessage = handleAxiosError(err);
-      throw {
-        message: errorMessage,
-      };
-    });
+  try {
+    const res = await axiosInstance.delete(`ServiceOfferings/${spId}/${sId}`);
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
 }
 
 //===================================================================================================================
 // Bookings functions
 export async function CreateBooking(bookingInfo) {
-  let result;
-  await axios
-    .post(`${baseURL}Bookings`, {
-      customerId: bookingInfo.customerId,
-      serviceId: bookingInfo.serviceId,
-      serviceProviderId: bookingInfo.serviceProviderId,
-      serviceTypeName: bookingInfo.serviceTypeName,
-      size: bookingInfo.sizes,
-      bookingDate: bookingInfo.date,
-      time: bookingInfo.time,
-      totalCost: bookingInfo.totalPrice,
-      address: bookingInfo.address,
-    })
-    .then((res) => {
-      result = res.data;
-    })
-    .catch((err) => {
-      const errorMessage = handleAxiosError(err);
-      throw {
-        message: errorMessage,
-      };
-    });
-
-  return result;
+  try {
+    const res = await axiosInstance.post("Bookings", bookingInfo);
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
 }
 
 export async function GetBookingByCustomerId(customerId) {
-  return await axios
-    .get(`${baseURL}Bookings/customer/${customerId}`)
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      const errorMessage = handleAxiosError(err);
-      throw {
-        message: errorMessage,
-      };
-    });
+  try {
+    const res = await axiosInstance.get(`Bookings/customer/${customerId}`);
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
 }
 
 export async function GetAllBookings() {
-  return await axios
-    .get(`${baseURL}Bookings`)
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      const errorMessage = handleAxiosError(err);
-      throw {
-        message: errorMessage,
-      };
-    });
+  try {
+    const res = await axiosInstance.get("Bookings");
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
 }
 
 export async function GetBookingByProviderId(providerId) {
-  return await axios
-    .get(`${baseURL}Bookings/provider/${providerId}`)
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      const errorMessage = handleAxiosError(err);
-      throw {
-        message: errorMessage,
-      };
-    });
+  try {
+    const res = await axiosInstance.get(`Bookings/provider/${providerId}`);
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
 }
 
 export async function UpdateBooking(booking) {
-  return axios
-    .put(`${baseURL}Bookings/${booking.id}`, {
+  try {
+    const res = await axiosInstance.put(`Bookings/${booking.id}`, {
       status: booking.status,
-    })
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      const errorMessage = handleAxiosError(err);
-      throw {
-        message: errorMessage,
-      };
     });
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
 }
 
 //===================================================================================================================
 // Services functions
 export async function GetAvailableServices() {
-  return await axios
-    .get(`${baseURL}Services`)
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      const errorMessage = handleAxiosError(err);
-      throw {
-        message: errorMessage,
-      };
-    });
+  try {
+    const res = await axiosInstance.get("Services");
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
 }
 
 export async function AddNewService(service) {
-  return await axios
-    .post(`${baseURL}Services`, {
-      name: service.name,
-      description: service.description,
-      basePrice: service.basePrice,
-    })
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      const errorMessage = handleAxiosError(err);
-      throw {
-        message: errorMessage,
-      };
-    });
+  try {
+    const res = await axiosInstance.post("Services", service);
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
 }
 
 export async function UpdateService(service) {
-  return axios
-    .put(`${baseURL}Services/${service.id}`, {
-      name: service.name,
-      description: service.description,
-      basePrice: service.basePrice,
-    })
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      const errorMessage = handleAxiosError(err);
-      throw {
-        message: errorMessage,
-      };
-    });
+  try {
+    const res = await axiosInstance.put(`Services/${service.id}`, service);
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
 }
 
 export async function DeleteService(id) {
-  return await axios
-    .delete(`${baseURL}Services/${id}`)
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      const errorMessage = handleAxiosError(err);
-      throw {
-        message: errorMessage,
-      };
-    });
+  try {
+    const res = await axiosInstance.delete(`Services/${id}`);
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
 }
-//===================================================================================================================
-//Service Providers Functions
 
+//===================================================================================================================
+// Service Providers Functions
 export async function GetServiceProviders() {
-  return await axios
-    .get(`${baseURL}ServiceProviders`)
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      const errorMessage = handleAxiosError(err);
-      throw {
-        message: errorMessage,
-      };
-    });
+  try {
+    const res = await axiosInstance.get("ServiceProviders");
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
 }
 
 export async function UpdateStatus(id, status) {
-  return await axios
-    .put(`${baseURL}ServiceProviders/${id}`, { status: status })
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      const errorMessage = handleAxiosError(err);
-      throw {
-        message: errorMessage,
-      };
-    });
+  try {
+    const res = await axiosInstance.put(`ServiceProviders/${id}`, { status });
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
 }
+
 //===================================================================================================================
-//Pending Approvals functions
+// Pending Approvals functions
 export async function CreateServiceProviderApplication(details) {
-  return await axios
-    .post(`${baseURL}PendingApproval`, {
-      firstName: details.firstName,
-      lastName: details.lastName,
-      email: details.email,
-      phoneNumber: details.phoneNumber,
-      companyName: details.companyName,
-      experience: details.experience,
-    })
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      const errorMessage = handleAxiosError(err);
-      throw {
-        message: errorMessage,
-      };
-    });
+  try {
+    const res = await axiosInstance.post("PendingApproval", details);
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
 }
 
 export async function GetPendingApprovals() {
-  return await axios
-    .get(`${baseURL}PendingApproval`)
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      const errorMessage = handleAxiosError(err);
-      throw {
-        message: errorMessage,
-      };
-    });
+  try {
+    const res = await axiosInstance.get("PendingApproval");
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
 }
 
 export async function UpdatePendingApprovalStatus(id, status) {
-  return await axios
-    .put(`${baseURL}PendingApproval/${id}`, { status: status })
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      const errorMessage = handleAxiosError(err);
-      throw {
-        message: errorMessage,
-      };
-    });
+  try {
+    const res = await axiosInstance.put(`PendingApproval/${id}`, { status });
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
 }
 
 export async function ApproveServiceProviderApplication(details) {
-  return await axios
-    .post(`${baseURL}Auth/register/provider`, {
-      firstName: details.firstName,
-      lastName: details.lastName,
-      email: details.email,
-      phoneNumber: details.phoneNumber,
+  try {
+    const res = await axiosInstance.post("Auth/register/provider", {
+      ...details,
       password: "Provider@123",
-      companyName: details.companyName,
-    })
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      const errorMessage = handleAxiosError(err);
-      throw {
-        message: errorMessage,
-      };
     });
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
 }
 
 //===================================================================================================================
-//Service Types
+// Service Types
 export async function CreateServiceType(serviceType) {
-  return await axios
-    .post(`${baseURL}ServiceType`, {
-      serviceId: serviceType.serviceId,
-      name: serviceType.name,
-    })
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      const errorMessage = handleAxiosError(err);
-      throw {
-        message: errorMessage,
-      };
-    });
+  try {
+    const res = await axiosInstance.post("ServiceType", serviceType);
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
 }
 
 export async function UpdateServiceType(id, status) {
-  return await axios
-    .put(`${baseURL}ServiceType/${id}`, { status: status })
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      const errorMessage = handleAxiosError(err);
-      throw {
-        message: errorMessage,
-      };
-    });
+  try {
+    const res = await axiosInstance.put(`ServiceType/${id}`, { status });
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
 }
 
 export async function DeleteServiceType(id) {
-  return await axios
-    .delete(`${baseURL}ServiceType/${id}`)
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      const errorMessage = handleAxiosError(err);
-      throw {
-        message: errorMessage,
-      };
-    });
+  try {
+    const res = await axiosInstance.delete(`ServiceType/${id}`);
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
 }
 
 //===================================================================================================================
-//Pricing Options
+// Pricing Options
 export async function CreatePricingOption(option) {
-  return await axios
-    .post(`${baseURL}PricingOption`, {
-      serviceTypeId: option.serviceTypeId,
-      name: option.name,
-      unitLabel: option.unitLabel,
-    })
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      const errorMessage = handleAxiosError(err);
-      throw {
-        message: errorMessage,
-      };
-    });
+  try {
+    const res = await axiosInstance.post("PricingOption", option);
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
 }
 
 export async function DeletePricingOption(id) {
-  return await axios
-    .delete(`${baseURL}PricingOption/${id}`)
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      const errorMessage = handleAxiosError(err);
-      throw {
-        message: errorMessage,
-      };
-    });
+  try {
+    const res = await axiosInstance.delete(`PricingOption/${id}`);
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
 }
+
 //===================================================================================================================
-//Reviews
+// Reviews
 export async function CreateReview(review) {
-  return await axiosInstance
-    .post("Reviews", {
-      bookingId: review.bookingId,
-      rating: review.rating,
-      comment: review.comment,
-    })
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      const errorMessage = handleAxiosError(err);
-      throw {
-        message: errorMessage,
-      };
-    });
+  try {
+    const res = await axiosInstance.post("Reviews", review);
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
 }
 
 export async function DeleteReview(id) {
-  return await axiosInstance
-    .delete(`${baseURL}Reviews/${id}`)
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      const errorMessage = handleAxiosError(err);
-      throw {
-        message: errorMessage,
-      };
-    });
+  try {
+    const res = await axiosInstance.delete(`Reviews/${id}`);
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
 }
-//===================================================================================================================
-//Dashboard
 
-export async function GetServiceProviderDashboard(providerId) {
-  return await axios
-    .get(`${baseURL}Bookings/provider/dashboard/${providerId}`)
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      const errorMessage = handleAxiosError(err);
-      throw {
-        message: errorMessage,
-      };
-    });
+export async function GetProviderReviews(providerId) {
+  try {
+    const res = await axiosInstance.get(`Reviews/provider/${providerId}`);
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
 }
+
+export async function GetServiceOfferingReviews(providerId, serviceId) {
+  try {
+    const res = await axiosInstance.get(
+      `Reviews/service-offering/${providerId}/${serviceId}`
+    );
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
+}
+
+export async function GetReviews() {
+  try {
+    const res = await axiosInstance.get("Reviews");
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
+}
+
+//===================================================================================================================
+// Dashboard
+export async function GetServiceProviderDashboard(providerId) {
+  try {
+    const res = await axiosInstance.get(
+      `Bookings/provider/dashboard/${providerId}`
+    );
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
+}
+
+export async function GetAdminDashboard() {
+  try {
+    const res = await axiosInstance.get("Bookings/provider/dashboard/admin");
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
+} // End

@@ -10,15 +10,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const data = [
-  { name: "Cleaning", bookings: 240 },
-  { name: "Plumbing", bookings: 180 },
-  { name: "Electrical", bookings: 150 },
-  { name: "Gardening", bookings: 120 },
-  { name: "Painting", bookings: 90 },
-];
-
-export function ServiceDemandChart() {
+export function ServiceDemandChart({ data }) {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <BarChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
