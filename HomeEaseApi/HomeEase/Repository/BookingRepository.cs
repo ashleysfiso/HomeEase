@@ -113,6 +113,8 @@ namespace HomeEase.Repository
             return bookings;
         }
 
+
+
         public async Task<List<Booking>> GetByServiceProviderIdAsync(int serviceProviderId)
         {
             var bookings = await _context.Bookings.Include(b => b.Review)
@@ -153,6 +155,61 @@ namespace HomeEase.Repository
             var data = DashboardData.ToAdminDashboardData(bookings, serviceProviders, pendingapprovals);
 
             return data;
+        }
+
+        public async Task<Booking?> UpcomingCustomerBooking(int customerId)
+        {
+            var today = DateOnly.FromDateTime(DateTime.Now);
+            var nextBooking = await _context.Bookings
+                                            .Include(b => b.Review)
+                                            .Include(b => b.ServiceOffering).ThenInclude(so => so.ServiceProvider)
+                                            .Include(b => b.ServiceOffering).ThenInclude(so => so.Service)
+                                            .Include(b => b.Customer).ThenInclude(c => c.User)
+                                            .Where(b => b.CustomerId == customerId && b.BookingDate >= today)
+                                            .OrderBy(b => b.BookingDate)
+                                            .FirstOrDefaultAsync();
+            return nextBooking;
+        }
+
+        public async Task<Booking?> UpcomingProviderBooking(int providerId)
+        {
+            var today = DateOnly.FromDateTime(DateTime.Now);
+            var nextBooking = await _context.Bookings
+                                           .Include(b => b.Review)
+                                           .Include(b => b.ServiceOffering).ThenInclude(so => so.ServiceProvider)
+                                           .Include(b => b.ServiceOffering).ThenInclude(so => so.Service)
+                                           .Include(b => b.Customer).ThenInclude(c => c.User)
+                                           .Where(b => b.ServiceProviderId == providerId && b.BookingDate >= today)
+                                           .OrderBy(b => b.BookingDate)
+                                           .FirstOrDefaultAsync();
+            return nextBooking;
+        }
+
+        public async Task<List<Booking>> Recent5CustomerBookings(int customerId)
+        {
+            var bookings = await _context.Bookings.OrderByDescending(b => b.CreatedAt)
+                                                  .Include(b => b.Review)
+                                                  .Include(b => b.ServiceOffering).ThenInclude(so => so.ServiceProvider)
+                                                  .Include(b => b.ServiceOffering).ThenInclude(so => so.Service)
+                                                  .Include(b => b.Customer).ThenInclude(c => c.User)
+                                                  .Where(b => b.CustomerId == customerId)
+                                                  .Take(5)
+                                                  .ToListAsync();
+            return bookings;
+        }
+
+        public async Task<List<Booking>> Recent5ProviderBookings(int serviceProviderId)
+        {
+            var bookings = await _context.Bookings.OrderByDescending(b => b.CreatedAt)
+                                                  .Include(b => b.Review)
+                                                  .Include(b => b.ServiceOffering).ThenInclude(so => so.ServiceProvider)
+                                                  .Include(b => b.ServiceOffering).ThenInclude(so => so.Service)
+                                                  .Include(b => b.Customer).ThenInclude(c => c.User)
+                                                  .Where(b => b.ServiceProviderId == serviceProviderId)
+                                                  .Take(5)
+                                                  .ToListAsync();
+
+            return bookings;
         }
     }
 }

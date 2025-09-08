@@ -1,5 +1,3 @@
-"use client";
-
 import {
   ArrowLeft,
   Calendar,
@@ -13,6 +11,7 @@ import { useEffect, useState } from "react";
 import {
   Alert,
   Image,
+  KeyboardAvoidingView,
   SafeAreaView,
   ScrollView,
   Text,
@@ -20,10 +19,32 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import CustomDatePicker from "~/components/CustomDatePicker";
 import ReadMoreText from "~/components/ReadMoreText";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
+import { Textarea } from "~/components/ui/textarea";
+import TimePickerScreen from "~/components/TimeSelector";
+import { Platform } from "react-native";
 
 const ServiceDetailScreen = () => {
+  const insets = useSafeAreaInsets();
+  const contentInsets = {
+    top: insets.top,
+    bottom: insets.bottom,
+    left: 12,
+    right: 12,
+  };
+
   const [activeTab, setActiveTab] = useState("Booking");
   const [selectedServiceType, setSelectedServiceType] = useState("");
   const [selectedBedroomOption, setSelectedBedroomOption] = useState<any>(null);
@@ -33,7 +54,13 @@ const ServiceDetailScreen = () => {
   const [bookingTime, setBookingTime] = useState("");
   const [address, setAddress] = useState("");
   const [totalCost, setTotalCost] = useState(0);
-  const [isFavorite, setIsFavorite] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+
+  const hours = Array.from({ length: 9 }, (_, i) => {
+    const hour = 9 + i;
+    const label = `${hour.toString().padStart(2, "0")}:00`;
+    return { label, value: label };
+  });
 
   // Service data
   const serviceData = {
@@ -224,377 +251,369 @@ const ServiceDetailScreen = () => {
   );
 
   return (
-    <SafeAreaView className="flex-1 bg-background">
-      <View className="flex-1">
-        <ScrollView
-          className="flex-1"
-          showsVerticalScrollIndicator={false}
-          bounces={true}
-          contentContainerStyle={{
-            paddingBottom: activeTab === "Booking" ? 100 : 20,
-          }}
-        >
-          {/* Header */}
-          {/* Hero Image */}
-          <View className="relative">
-            <Image
-              source={{ uri: "https://picsum.photos/seed/bathroom/120/160" }}
-              className="w-full h-80"
-              resizeMode="cover"
-            />
-
-            {/* Company Logo Overlay */}
-            <View className="absolute bottom-4 right-4">
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      className="flex-1"
+      enabled={true}
+    >
+      <SafeAreaView className="flex-1 bg-background">
+        <View className="flex-1 bg-background">
+          <ScrollView
+            className="flex-1"
+            showsVerticalScrollIndicator={false}
+            bounces={true}
+            contentContainerStyle={{
+              paddingBottom: activeTab === "Booking" ? 100 : 20,
+              flexGrow: 1,
+            }}
+            keyboardShouldPersistTaps="handled"
+          >
+            {/* Header */}
+            {/* Hero Image */}
+            <View className="relative">
               <Image
-                source={{ uri: "https://picsum.photos/seed/kitchen/120/160" }}
-                className="w-16 h-16 rounded-full bg-card border-4 border-card shadow-lg"
+                source={{ uri: "https://picsum.photos/seed/bathroom/120/160" }}
+                className="w-full h-80"
                 resizeMode="cover"
               />
-            </View>
-          </View>
 
-          {/* Content Container */}
-          <View className="bg-card">
-            {/* Service Info */}
-            <View className="p-6 border-b border-border">
-              <Text className="text-2xl font-bold text-foreground mb-2">
-                {serviceData.serviceName}
-              </Text>
-              <View className="flex-row items-center mb-3">
-                <Text className="text-muted-foreground mr-4">
-                  By Cleaning Experts
+              {/* Company Logo Overlay */}
+              <View className="absolute bottom-4 right-4">
+                <Image
+                  source={{ uri: "https://picsum.photos/seed/kitchen/120/160" }}
+                  className="w-16 h-16 rounded-full bg-card border-4 border-card shadow-lg"
+                  resizeMode="cover"
+                />
+              </View>
+            </View>
+
+            {/* Content Container */}
+            <View className="bg-card">
+              {/* Service Info */}
+              <View className="p-6 border-b border-border">
+                <Text className="text-2xl font-bold text-foreground mb-2">
+                  {serviceData.serviceName}
+                </Text>
+                <View className="flex-row items-center mb-3">
+                  <Text className="text-muted-foreground mr-4">
+                    By Cleaning Experts
+                  </Text>
+                </View>
+
+                <View className="flex-row items-center justify-between">
+                  <View className="flex-row items-center">
+                    <Star size={16} color="#fbbf24" fill="#fbbf24" />
+                    <Text className="text-foreground ml-1 font-bold">
+                      {serviceData.rating}/5
+                    </Text>
+                    <Text className="text-muted-foreground ml-1">
+                      ({serviceData.reviewCount})
+                    </Text>
+                  </View>
+                </View>
+              </View>
+
+              {/* Description */}
+              <View className="p-6 border-b border-border">
+                <Text className="text-lg font-semibold text-foreground mb-3">
+                  Overview
+                </Text>
+                <Text className="text-card-foreground leading-6 mb-4">
+                  <ReadMoreText description={serviceData.description} />
                 </Text>
               </View>
 
-              <View className="flex-row items-center justify-between">
-                <View className="flex-row items-center">
-                  <Star size={16} color="#fbbf24" fill="#fbbf24" />
-                  <Text className="text-foreground ml-1 font-bold">
-                    {serviceData.rating}/5
-                  </Text>
-                  <Text className="text-muted-foreground ml-1">
-                    ({serviceData.reviewCount})
-                  </Text>
-                </View>
-              </View>
-            </View>
-
-            {/* Description */}
-            <View className="p-6 border-b border-border">
-              <Text className="text-lg font-semibold text-foreground mb-3">
-                Overview
-              </Text>
-              <Text className="text-card-foreground leading-6 mb-4">
-                <ReadMoreText description={serviceData.description} />
-              </Text>
-            </View>
-
-            {/* Tabs */}
-            <Tabs
-              value={activeTab}
-              onValueChange={setActiveTab}
-              className="flex-1 gap-3 mx-6 mt-4"
-            >
-              <TabsList className="flex-row w-full">
-                <TabsTrigger value="Booking" className="flex-1">
-                  <Text className="text-sm text-primary font-medium">
-                    Booking
-                  </Text>
-                </TabsTrigger>
-                <TabsTrigger value="Reviews" className="flex-1">
-                  <Text className="text-sm text-primary font-medium">
-                    Reviews
-                  </Text>
-                </TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="Booking">
-                {/* Service Type Selection */}
-                {serviceTypes.length > 0 && (
-                  <View className="bg-card p-6 border-b border-border">
-                    <Text className="text-lg font-semibold text-foreground mb-4">
-                      Select Service Type
+              {/* Tabs */}
+              <Tabs
+                value={activeTab}
+                onValueChange={setActiveTab}
+                className="flex-1 gap-3 mx-6 mt-4"
+              >
+                <TabsList className="flex-row w-full">
+                  <TabsTrigger value="Booking" className="flex-1">
+                    <Text className="text-sm text-primary font-medium">
+                      Booking
                     </Text>
-                    {serviceTypes.map((serviceType) => (
-                      <TouchableOpacity
-                        key={serviceType}
-                        onPress={() => handleServiceTypeSelection(serviceType)}
-                        className={`p-4 rounded-xl border-2 mb-3 ${
-                          selectedServiceType === serviceType
-                            ? "border-primary bg-primary/10"
-                            : "border-border bg-card"
-                        }`}
-                      >
-                        <Text
-                          className={`font-medium ${
+                  </TabsTrigger>
+                  <TabsTrigger value="Reviews" className="flex-1">
+                    <Text className="text-sm text-primary font-medium">
+                      Reviews
+                    </Text>
+                  </TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="Booking">
+                  {/* Service Type Selection */}
+                  {serviceTypes.length > 0 && (
+                    <View className="bg-card p-6 border-b border-border">
+                      <Text className="text-lg font-semibold text-foreground mb-4">
+                        Select Service Type
+                      </Text>
+                      {serviceTypes.map((serviceType) => (
+                        <TouchableOpacity
+                          key={serviceType}
+                          onPress={() =>
+                            handleServiceTypeSelection(serviceType)
+                          }
+                          className={`p-4 rounded-xl border-2 mb-3 ${
                             selectedServiceType === serviceType
-                              ? "text-primary"
-                              : "text-foreground"
+                              ? "border-primary bg-primary/10"
+                              : "border-border bg-card"
                           }`}
                         >
-                          {serviceType}
-                        </Text>
-                      </TouchableOpacity>
-                    ))}
-                  </View>
-                )}
-
-                {/* Size Selection */}
-                {selectedServiceType && (
-                  <View className="bg-card p-6 border-b border-border">
-                    <Text className="text-lg font-semibold text-foreground mb-4">
-                      Select Size Options
-                    </Text>
-
-                    {/* Bedroom Options */}
-                    {bedroomOptions && (
-                      <View className="mb-6">
-                        <Text className="text-md font-medium text-card-foreground mb-3">
-                          {bedroomOptions.labelUnit}
-                        </Text>
-                        {bedroomOptions.options.map((option) => (
-                          <TouchableOpacity
-                            key={option.pricingOptionId}
-                            onPress={() => setSelectedBedroomOption(option)}
-                            className={`p-4 rounded-xl border-2 mb-2 flex-row justify-between items-center ${
-                              selectedBedroomOption?.pricingOptionId ===
-                              option.pricingOptionId
-                                ? "border-primary bg-primary/10"
-                                : "border-border bg-card"
+                          <Text
+                            className={`font-medium ${
+                              selectedServiceType === serviceType
+                                ? "text-primary"
+                                : "text-foreground"
                             }`}
                           >
-                            <Text
-                              className={`font-medium ${
+                            {serviceType}
+                          </Text>
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+                  )}
+
+                  {/* Size Selection */}
+                  {selectedServiceType && (
+                    <View className="bg-card p-6 border-b border-border">
+                      <Text className="text-lg font-semibold text-foreground mb-4">
+                        Select Size Options
+                      </Text>
+
+                      {/* Bedroom Options */}
+                      {bedroomOptions && (
+                        <View className="mb-6">
+                          <Text className="text-md font-medium text-card-foreground mb-3">
+                            {bedroomOptions.labelUnit}
+                          </Text>
+                          {bedroomOptions.options.map((option) => (
+                            <TouchableOpacity
+                              key={option.pricingOptionId}
+                              onPress={() => setSelectedBedroomOption(option)}
+                              className={`p-4 rounded-xl border-2 mb-2 flex-row justify-between items-center ${
                                 selectedBedroomOption?.pricingOptionId ===
                                 option.pricingOptionId
-                                  ? "text-primary"
-                                  : "text-foreground"
+                                  ? "border-primary bg-primary/10"
+                                  : "border-border bg-card"
                               }`}
                             >
-                              {option.pricingOptionName}
-                            </Text>
-                            <Text className="text-green-600 font-bold">
-                              ${option.price}
-                            </Text>
-                          </TouchableOpacity>
-                        ))}
-                      </View>
-                    )}
+                              <Text
+                                className={`font-medium ${
+                                  selectedBedroomOption?.pricingOptionId ===
+                                  option.pricingOptionId
+                                    ? "text-primary"
+                                    : "text-foreground"
+                                }`}
+                              >
+                                {option.pricingOptionName}
+                              </Text>
+                              <Text className="text-green-600 font-bold">
+                                ${option.price}
+                              </Text>
+                            </TouchableOpacity>
+                          ))}
+                        </View>
+                      )}
 
-                    {/* Bathroom Options */}
-                    {bathroomOptions && (
-                      <View>
-                        <Text className="text-md font-medium text-card-foreground mb-3">
-                          {bathroomOptions.labelUnit}
-                        </Text>
-                        {bathroomOptions.options.map((option) => (
-                          <TouchableOpacity
-                            key={option.pricingOptionId}
-                            onPress={() => setSelectedBathroomOption(option)}
-                            className={`p-4 rounded-xl border-2 mb-2 flex-row justify-between items-center ${
-                              selectedBathroomOption?.pricingOptionId ===
-                              option.pricingOptionId
-                                ? "border-primary bg-primary/10"
-                                : "border-border bg-card"
-                            }`}
-                          >
-                            <Text
-                              className={`font-medium ${
+                      {/* Bathroom Options */}
+                      {bathroomOptions && (
+                        <View>
+                          <Text className="text-md font-medium text-card-foreground mb-3">
+                            {bathroomOptions.labelUnit}
+                          </Text>
+                          {bathroomOptions.options.map((option) => (
+                            <TouchableOpacity
+                              key={option.pricingOptionId}
+                              onPress={() => setSelectedBathroomOption(option)}
+                              className={`p-4 rounded-xl border-2 mb-2 flex-row justify-between items-center ${
                                 selectedBathroomOption?.pricingOptionId ===
                                 option.pricingOptionId
-                                  ? "text-primary"
-                                  : "text-foreground"
+                                  ? "border-primary bg-primary/10"
+                                  : "border-border bg-card"
                               }`}
                             >
-                              {option.pricingOptionName}
-                            </Text>
-                            <Text className="text-green-600 font-bold">
-                              ${option.price}
-                            </Text>
-                          </TouchableOpacity>
-                        ))}
-                      </View>
-                    )}
-                  </View>
-                )}
+                              <Text
+                                className={`font-medium ${
+                                  selectedBathroomOption?.pricingOptionId ===
+                                  option.pricingOptionId
+                                    ? "text-primary"
+                                    : "text-foreground"
+                                }`}
+                              >
+                                {option.pricingOptionName}
+                              </Text>
+                              <Text className="text-green-600 font-bold">
+                                ${option.price}
+                              </Text>
+                            </TouchableOpacity>
+                          ))}
+                        </View>
+                      )}
+                    </View>
+                  )}
 
-                {/* Date & Time Selection */}
-                <View className="bg-card p-6 border-b border-border">
-                  <Text className="text-lg font-semibold text-foreground mb-4">
-                    Select Date & Time
-                  </Text>
+                  {/* Date & Time Selection */}
 
-                  <View className="mb-4">
-                    <Text className="text-card-foreground font-medium mb-2">
-                      Date
+                  <View className="bg-card p-6 border-b border-border">
+                    <Text className="text-lg font-semibold text-foreground mb-4">
+                      Select Date & Time
                     </Text>
-                    <View className="flex-row items-center bg-input rounded-xl px-4 py-4">
-                      <Calendar size={20} color="text-muted-foreground" />
-                      <TextInput
-                        placeholder="YYYY-MM-DD"
-                        placeholderTextColor="#9ca3af"
-                        className="flex-1 ml-3 text-foreground"
-                        value={bookingDate}
-                        onChangeText={setBookingDate}
+
+                    <View>
+                      <Text className="text-card-foreground font-medium mb-2">
+                        Date
+                      </Text>
+                      <CustomDatePicker
+                        label="Select Booking Date"
+                        value={selectedDate}
+                        onChange={setSelectedDate}
                       />
+                    </View>
+
+                    <View>
+                      <Text className="text-card-foreground font-medium mb-2">
+                        Time
+                      </Text>
+                      <TimePickerScreen />
                     </View>
                   </View>
 
-                  <View>
-                    <Text className="text-card-foreground font-medium mb-2">
-                      Time
+                  {/* Address */}
+                  <View className="bg-card p-6 border-b border-border">
+                    <Text className="text-lg font-semibold text-foreground mb-4">
+                      Service Address
                     </Text>
-                    <View className="flex-row items-center bg-input rounded-xl px-4 py-4">
-                      <Clock size={20} color="text-muted-foreground" />
-                      <TextInput
-                        placeholder="HH:MM"
-                        placeholderTextColor="#9ca3af"
-                        className="flex-1 ml-3 text-foreground"
-                        value={bookingTime}
-                        onChangeText={setBookingTime}
-                      />
-                    </View>
-                  </View>
-                </View>
 
-                {/* Address */}
-                <View className="bg-card p-6 border-b border-border">
-                  <Text className="text-lg font-semibold text-foreground mb-4">
-                    Service Address
-                  </Text>
-                  <View className="flex-row items-start bg-input rounded-xl px-4 py-4">
-                    <MapPin
-                      size={20}
-                      color="text-muted-foreground"
-                      className="mt-1"
-                    />
                     <TextInput
                       placeholder="Enter your full address"
-                      placeholderTextColor="#9ca3af"
-                      className="flex-1 ml-3 text-foreground"
+                      className="h-32 border border-gray-300 rounded-lg p-3 text-base text-black"
                       multiline
-                      numberOfLines={3}
+                      textAlignVertical="top"
                       value={address}
                       onChangeText={setAddress}
                     />
                   </View>
-                </View>
 
-                {/* Cost Summary */}
-                {totalCost > 0 && (
-                  <View className="bg-card p-6 mb-6">
-                    <Text className="text-lg font-semibold text-foreground mb-4">
-                      Cost Summary
-                    </Text>
-                    {selectedBedroomOption && (
-                      <View className="flex-row justify-between items-center mb-2">
-                        <Text className="text-card-foreground">
-                          {selectedBedroomOption.pricingOptionName}
-                        </Text>
-                        <Text className="text-foreground font-medium">
-                          ${selectedBedroomOption.price}
-                        </Text>
-                      </View>
-                    )}
-                    {selectedBathroomOption && (
-                      <View className="flex-row justify-between items-center mb-2">
-                        <Text className="text-card-foreground">
-                          {selectedBathroomOption.pricingOptionName}
-                        </Text>
-                        <Text className="text-foreground font-medium">
-                          ${selectedBathroomOption.price}
-                        </Text>
-                      </View>
-                    )}
-                    <View className="border-t border-border pt-2 mt-2">
-                      <View className="flex-row justify-between items-center">
-                        <Text className="text-lg font-bold text-foreground">
-                          Total
-                        </Text>
-                        <Text className="text-xl font-bold text-green-600">
-                          ${totalCost}
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                )}
-              </TabsContent>
-
-              <TabsContent value="Reviews">
-                <View className="p-6">
-                  <View className="flex-row items-center justify-between mb-6">
-                    <Text className="text-lg font-semibold text-foreground">
-                      Reviews ({serviceData.reviewCount})
-                    </Text>
-                    <View className="flex-row items-center">
-                      <Star size={16} color="#fbbf24" fill="#fbbf24" />
-                      <Text className="text-card-foreground ml-1 font-medium">
-                        {serviceData.rating}
+                  {/* Cost Summary */}
+                  {totalCost > 0 && (
+                    <View className="bg-card p-6 mb-6">
+                      <Text className="text-lg font-semibold text-foreground mb-4">
+                        Cost Summary
                       </Text>
-                    </View>
-                  </View>
-                  {reviews.map((review) => (
-                    <View
-                      key={review.id}
-                      className="bg-card rounded-xl p-4 mb-4 shadow-sm border border-border"
-                    >
-                      <View className="flex-row items-center mb-3">
-                        <Image
-                          source={{ uri: review.avatar }}
-                          className="w-10 h-10 rounded-full mr-3"
-                        />
-                        <View className="flex-1">
-                          <Text className="font-semibold text-foreground">
-                            {review.userName}
+                      {selectedBedroomOption && (
+                        <View className="flex-row justify-between items-center mb-2">
+                          <Text className="text-card-foreground">
+                            {selectedBedroomOption.pricingOptionName}
                           </Text>
-                          <Text className="text-muted-foreground text-sm">
-                            {review.date}
+                          <Text className="text-foreground font-medium">
+                            ${selectedBedroomOption.price}
                           </Text>
                         </View>
-                        <View className="flex-row items-center">
-                          {[...Array(5)].map((_, i) => (
-                            <Star
-                              key={i}
-                              size={14}
-                              color={i < review.rating ? "#fbbf24" : "#e5e7eb"}
-                              fill={i < review.rating ? "#fbbf24" : "#e5e7eb"}
-                            />
-                          ))}
+                      )}
+                      {selectedBathroomOption && (
+                        <View className="flex-row justify-between items-center mb-2">
+                          <Text className="text-card-foreground">
+                            {selectedBathroomOption.pricingOptionName}
+                          </Text>
+                          <Text className="text-foreground font-medium">
+                            ${selectedBathroomOption.price}
+                          </Text>
+                        </View>
+                      )}
+                      <View className="border-t border-border pt-2 mt-2">
+                        <View className="flex-row justify-between items-center">
+                          <Text className="text-lg font-bold text-foreground">
+                            Total
+                          </Text>
+                          <Text className="text-xl font-bold text-green-600">
+                            ${totalCost}
+                          </Text>
                         </View>
                       </View>
-                      <Text className="text-card-foreground leading-5">
-                        {review.comment}
-                      </Text>
                     </View>
-                  ))}
-                </View>
-              </TabsContent>
-            </Tabs>
-          </View>
-        </ScrollView>
+                  )}
+                </TabsContent>
 
-        {/* Floating Book Now Button - Only show on Booking tab */}
-        {activeTab === "Booking" && (
-          <View className="absolute bottom-0 left-0 right-0 bg-card/95 backdrop-blur-sm border-t border-border p-4 shadow-lg">
-            <TouchableOpacity
-              onPress={handleBooking}
-              className="bg-primary rounded-xl py-4 items-center shadow-lg"
-              style={{
-                shadowColor: "#3b82f6", // Keeping hardcoded as it's a style prop
-                shadowOffset: { width: 0, height: 4 },
-                shadowOpacity: 0.3,
-                shadowRadius: 8,
-                elevation: 8,
-              }}
-            >
-              <Text className="text-primary-foreground font-bold text-lg">
-                Book Now - ${totalCost}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      </View>
-    </SafeAreaView>
+                <TabsContent value="Reviews">
+                  <View className="p-6">
+                    <View className="flex-row items-center justify-between mb-6">
+                      <Text className="text-lg font-semibold text-foreground">
+                        Reviews ({serviceData.reviewCount})
+                      </Text>
+                      <View className="flex-row items-center">
+                        <Star size={16} color="#fbbf24" fill="#fbbf24" />
+                        <Text className="text-card-foreground ml-1 font-medium">
+                          {serviceData.rating}
+                        </Text>
+                      </View>
+                    </View>
+                    {reviews.map((review) => (
+                      <View
+                        key={review.id}
+                        className="bg-card rounded-xl p-4 mb-4 shadow-sm border border-border"
+                      >
+                        <View className="flex-row items-center mb-3">
+                          <Image
+                            source={{ uri: review.avatar }}
+                            className="w-10 h-10 rounded-full mr-3"
+                          />
+                          <View className="flex-1">
+                            <Text className="font-semibold text-foreground">
+                              {review.userName}
+                            </Text>
+                            <Text className="text-muted-foreground text-sm">
+                              {review.date}
+                            </Text>
+                          </View>
+                          <View className="flex-row items-center">
+                            {[...Array(5)].map((_, i) => (
+                              <Star
+                                key={i}
+                                size={14}
+                                color={
+                                  i < review.rating ? "#fbbf24" : "#e5e7eb"
+                                }
+                                fill={i < review.rating ? "#fbbf24" : "#e5e7eb"}
+                              />
+                            ))}
+                          </View>
+                        </View>
+                        <Text className="text-card-foreground leading-5">
+                          {review.comment}
+                        </Text>
+                      </View>
+                    ))}
+                  </View>
+                </TabsContent>
+              </Tabs>
+            </View>
+          </ScrollView>
+
+          {/* Floating Book Now Button - Only show on Booking tab */}
+          {activeTab === "Booking" && (
+            <View className="absolute bottom-0 left-0 right-0 bg-card/95 backdrop-blur-sm border-t border-border p-4 shadow-lg">
+              <TouchableOpacity
+                onPress={handleBooking}
+                className="bg-blue-500 rounded-xl py-4 items-center shadow-lg"
+                style={{
+                  shadowColor: "#3b82f6", // Keeping hardcoded as it's a style prop
+                  shadowOffset: { width: 0, height: 4 },
+                  shadowOpacity: 0.3,
+                  shadowRadius: 8,
+                  elevation: 8,
+                }}
+              >
+                <Text className="text-primary-foreground font-bold text-lg">
+                  Book Now - ${totalCost}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };
 

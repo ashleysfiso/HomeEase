@@ -64,6 +64,33 @@
             return Ok(bookingsDto);
         }
 
+        [Authorize(Roles = "Customer")]
+        [HttpGet("customer/recent5/{customerId:int}")]
+        public async Task<IActionResult> GetByCustomerIdRecent([FromRoute] int customerId)
+        {
+            var bookings = await _bookingRepo.Recent5CustomerBookings(customerId);
+            var bookingsDto = bookings.Select(b => b.ToBookingDto());
+            return Ok(bookingsDto);
+        }
+
+        [Authorize(Roles = "Customer")]
+        [HttpGet("upcoming/customer/{customerId:int}")]
+        public async Task<IActionResult> GetUpcomingByCustomerId([FromRoute] int customerId)
+        {
+            var booking = await _bookingRepo.UpcomingCustomerBooking(customerId);
+            if (booking == null) return Ok("No Upcoming Booking");
+            return Ok(new { Name = booking.ServiceTypeName, Date = booking.BookingDate, Time = booking.Time });
+        }
+
+        [Authorize(Roles = "ServiceProvider")]
+        [HttpGet("upcoming/provider/{providerId:int}")]
+        public async Task<IActionResult> GetUpcomingByProviderId([FromRoute] int providerId)
+        {
+            var booking = await _bookingRepo.UpcomingProviderBooking(providerId);
+            if (booking == null) return Ok("No Upcoming Booking");
+            return Ok(new { Name = booking.ServiceTypeName, Date = booking.BookingDate, Time = booking.Time });
+        }
+
         /// <summary>
         /// The GetByProviderId
         /// </summary>
@@ -75,6 +102,15 @@
         public async Task<IActionResult> GetByProviderId([FromRoute] int providerId)
         {
             var bookings = await _bookingRepo.GetByServiceProviderIdAsync(providerId);
+            var bookingsDto = bookings.Select(b => b.ToBookingDto());
+            return Ok(bookingsDto);
+        }
+
+        [Authorize(Roles = "Admin,ServiceProvider")]
+        [HttpGet("provider/recent5/{providerId:int}")]
+        public async Task<IActionResult> GetByProviderIdRecent([FromRoute] int providerId)
+        {
+            var bookings = await _bookingRepo.Recent5ProviderBookings(providerId);
             var bookingsDto = bookings.Select(b => b.ToBookingDto());
             return Ok(bookingsDto);
         }

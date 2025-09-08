@@ -1,3 +1,4 @@
+import { Link } from "expo-router";
 import {
   ArrowLeft,
   Calendar,
@@ -16,8 +17,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useAuth } from "~/contexts/AuthContext";
 
 const ProfileScreen = () => {
+  const { logout } = useAuth();
   const userProfile = {
     name: "WaxCraftedLi",
     role: "Customer",
@@ -77,10 +80,14 @@ const ProfileScreen = () => {
           <Text className="text-xl font-bold text-foreground mb-1">
             {userProfile.name}
           </Text>
-          <TouchableOpacity className="flex-row items-center">
-            <Edit3 size={16} color="#3b82f6" />
-            <Text className="text-blue-500 font-medium ml-1">Edit Profile</Text>
-          </TouchableOpacity>
+          <Link href="/profile/edit-profile" asChild>
+            <TouchableOpacity className="flex-row items-center">
+              <Edit3 size={16} color="#3b82f6" />
+              <Text className="text-blue-500 font-medium ml-1">
+                Edit Profile
+              </Text>
+            </TouchableOpacity>
+          </Link>
         </View>
 
         {/* Profile Fields */}
@@ -112,72 +119,26 @@ const ProfileScreen = () => {
 
         {/* Additional Profile Options */}
         <View className="px-6 py-4">
-          <TouchableOpacity className="bg-card rounded-xl p-4 mb-3 flex-row items-center justify-between shadow-sm border border-border">
-            <View className="flex-row items-center">
-              <View className="w-10 h-10 bg-primary/10 rounded-full items-center justify-center mr-3">
-                <User size={20} color="#3b82f6" />
+          <Link href="/support" asChild>
+            <TouchableOpacity className="bg-card rounded-xl p-4 mb-3 flex-row items-center justify-between shadow-sm border border-border">
+              <View className="flex-row items-center">
+                <View className="w-10 h-10 bg-green-500/10 rounded-full items-center justify-center mr-3">
+                  <Phone size={20} color="#10b981" />
+                </View>
+                <Text className="text-foreground font-medium">
+                  Support & Help
+                </Text>
               </View>
-              <Text className="text-foreground font-medium">
-                Account Settings
-              </Text>
-            </View>
-            <ArrowLeft
-              size={20}
-              color="text-muted-foreground"
-              style={{ transform: [{ rotate: "180deg" }] }}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity className="bg-card rounded-xl p-4 mb-3 flex-row items-center justify-between shadow-sm border border-border">
-            <View className="flex-row items-center">
-              <View className="w-10 h-10 bg-green-500/10 rounded-full items-center justify-center mr-3">
-                <Phone size={20} color="#10b981" />
-              </View>
-              <Text className="text-foreground font-medium">
-                Support & Help
-              </Text>
-            </View>
-            <ArrowLeft
-              size={20}
-              color="text-muted-foreground"
-              style={{ transform: [{ rotate: "180deg" }] }}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity className="bg-card rounded-xl p-4 mb-3 flex-row items-center justify-between shadow-sm border border-border">
-            <View className="flex-row items-center">
-              <View className="w-10 h-10 bg-purple-500/10 rounded-full items-center justify-center mr-3">
-                <Mail size={20} color="#8b5cf6" />
-              </View>
-              <Text className="text-foreground font-medium">Notifications</Text>
-            </View>
-            <ArrowLeft
-              size={20}
-              color="text-muted-foreground"
-              style={{ transform: [{ rotate: "180deg" }] }}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity className="bg-card rounded-xl p-4 mb-6 flex-row items-center justify-between shadow-sm border border-border">
-            <View className="flex-row items-center">
-              <View className="w-10 h-10 bg-destructive/10 rounded-full items-center justify-center mr-3">
-                <Text className="text-destructive font-bold">⚙️</Text>
-              </View>
-              <Text className="text-foreground font-medium">
-                Privacy Policy
-              </Text>
-            </View>
-            <ArrowLeft
-              size={20}
-              color="text-muted-foreground"
-              style={{ transform: [{ rotate: "180deg" }] }}
-            />
-          </TouchableOpacity>
+            </TouchableOpacity>
+          </Link>
         </View>
 
         {/* Logout Button */}
         <View className="px-6 pb-8">
-          <TouchableOpacity className="bg-destructive/10 border border-destructive/20 rounded-xl p-4 items-center">
+          <TouchableOpacity
+            onPress={logout}
+            className="bg-destructive/10 border border-destructive/20 rounded-xl p-4 items-center"
+          >
             <Text className="text-destructive font-semibold text-lg">
               Logout
             </Text>

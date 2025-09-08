@@ -1,7 +1,9 @@
 ﻿using HomeEase.Data;
 using HomeEase.Dtos.ServiceOfferingDtos;
 using HomeEase.Interfaces;
+using HomeEase.Mappers;
 using HomeEase.Models;
+using HomeEase.Utility;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -95,6 +97,56 @@ namespace HomeEase.Repository
                                                   .ThenInclude(po => po.ServiceType)
                                                   .Include(so => so.Reiviews)
                                                   .FirstOrDefaultAsync(so => so.ServiceProviderId == ServiceProviderId && so.ServiceId == ServiceId);
+        }
+
+        public async Task<PagedResult<ServiceOfferingDto>> GetPagedAsync(int skip = 0, int take = 10, string? searchTerm = null)
+        {
+            var query = _context.ServiceOfferings
+                                               .Include(so => so.Service)
+                                               .Include(so => so.ServiceProvider)
+                                               .Include(so => so.PricingOptions)
+                                               .ThenInclude(sopo => sopo.PricingOption)
+                                               .ThenInclude(po => po.ServiceType)       
+                                               .Include(so => so.Reiviews)
+                                               .AsQueryable();
+
+            // Search filter
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(so =>
+                    so.Service.Name.Contains(searchTerm) ||
+                    so.ServiceProvider.CompanyName.Contains(searchTerm));
+            }
+
+            var totalCount = await query.CountAsync();
+
+            var items = await query
+                .Skip(skip)
+                .Take(take)
+                .Select(so => so.ToServiceOfferingDto())
+                .ToListAsync();
+
+            return new PagedResult<ServiceOfferingDto>
+            {
+                Items = items,
+                TotalCount = totalCount,
+                PageNumber = (skip / take) + 1,
+                PageSize = take
+            };
+        }
+
+        public async Task<List<ServiceOffering>> GetPopularServices()
+        {
+            var pupolarServices = await _context.ServiceOfferings.Include(so => so.Service)
+                                                  .Include(so => so.ServiceProvider)
+                                                  .Include(so => so.PricingOptions)
+                                                  .ThenInclude(sopo => sopo.PricingOption)
+                                                  .ThenInclude(po => po.ServiceType)
+                                                  .Include(so => so.Reiviews)
+                                                  .OrderByDescending(s => s.Reiviews.Average(r => r.Rating))
+                                                  .ThenByDescending(s => s.Reiviews.Count)
+                                                  .Take(5).ToListAsync();
+            return pupolarServices;
         }
 
         public async Task<ServiceOffering?> UpdateAsync(UpdateServiceOfferingDto serviceOfferingDto, int ServiceProviderId, int ServiceId)

@@ -15,6 +15,10 @@ namespace HomeEase.Interfaces
         public Task<AdminDashboardDto> GetAdminDashboard();
         public Task<ApiResponse<Booking>> CreateAsync(Booking booking);
         public Task<Booking?> UpdateAsync(UpdateBookingDto updateBookingDto, int bookingId);
-       
+        public Task<Booking?> UpcomingCustomerBooking(int customerId);
+        public Task<Booking?> UpcomingProviderBooking(int providerId);
+        public Task<List<Booking>> Recent5CustomerBookings(int customerId);
+        public Task<List<Booking>> Recent5ProviderBookings(int serviceProviderId);
+
     }
 }

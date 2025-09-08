@@ -19,7 +19,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend",
         builder =>
         {
-            builder.WithOrigins("https://localhost:5173")
+            builder.WithOrigins("https://localhost:5173", "https://10.0.0.100:5173")
                    .AllowCredentials()
                    .AllowAnyMethod()
                    .AllowAnyHeader();
@@ -93,10 +93,20 @@ builder.Services.AddAuthentication(options =>
     {
         OnMessageReceived = context =>
         {
-            // Read from cookie
-            context.Token = context.Request.Cookies["access_token"];
+            // 1. Check Authorization header (Mobile / API requests)
+            var authHeader = context.Request.Headers.Authorization.FirstOrDefault();
+            if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer "))
+            {
+                context.Token = authHeader.Substring("Bearer ".Length).Trim();
+            }
+            // 2. Fallback to cookie (Web)
+            else if (context.Request.Cookies.ContainsKey("access_token"))
+            {
+                context.Token = context.Request.Cookies["access_token"];
+            }
 
             return Task.CompletedTask;
+
         }
     };
 });

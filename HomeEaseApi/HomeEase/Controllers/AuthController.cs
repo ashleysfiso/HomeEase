@@ -325,6 +325,45 @@
                 });
         }
 
+        [HttpPost("login-app")]
+        public async Task<IActionResult> LoginApp(LoginDto dto)
+        {
+            var user = await _userManager.Users.Include(u => u.Customer).Include(u => u.ServiceProvider).FirstOrDefaultAsync(u => u.Email == dto.Email);
+            if (user == null || !await _userManager.CheckPasswordAsync(user, dto.Password))
+                return Unauthorized("Incorrect username or password");
+
+            var accessToken = await _tokenService.CreateAccessToken(user);
+            var refreshToken = _tokenService.CreateRefreshToken();
+
+            user.SetRefreshToken(refreshToken, DateTime.UtcNow.AddDays(7));
+            await _userManager.UpdateAsync(user);
+
+            var updatedUser = await _userManager.FindByIdAsync(user.Id);
+
+            var role = await _userManager.GetRolesAsync(user);
+            _auditQueue.Enqueue(new AuditLog
+            {
+                Action = "User Loggin: App",
+                PerformedBy = user.Id,
+                TableName = "Users",
+                RecordId = user.Id,
+                Details = "Login successful"
+            });
+
+            return Ok(
+                new
+                {
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName= user.LastName,
+                    UserId = user.Id,
+                    Role = role,
+                    CustomerID = user.Customer?.Id,
+                    ProviderId = user.ServiceProvider?.Id,
+                    Token = accessToken,
+                });
+        }
+
         /// <summary>
         /// The Refresh
         /// </summary>
@@ -419,6 +458,24 @@
             var role = await _userManager.GetRolesAsync(user);
             return Ok(
                 new 
+                {
+                    Email = user.Email,
+                    UserName = $"{user.FirstName} {user.LastName}",
+                    UserId = user.Id,
+                    Role = role,
+                    CustomerID = user.Customer?.Id,
+                    ProviderId = user.ServiceProvider?.Id,
+                });
+        }
+
+        [Authorize]
+        [HttpGet("get-user/{userId}")]
+        public async Task<IActionResult> GetUser([FromRoute] string userId)
+        {
+            var user = await _userManager.Users.Include(u => u.Customer).Include(u => u.ServiceProvider).FirstOrDefaultAsync(u => u.Id == userId);
+            var role = await _userManager.GetRolesAsync(user);
+            return Ok(
+                new
                 {
                     Email = user.Email,
                     UserName = $"{user.FirstName} {user.LastName}",

@@ -15,6 +15,9 @@ import { useColorScheme } from "~/lib/useColorScheme";
 import { PortalHost } from "@rn-primitives/portal";
 import { ThemeToggle } from "~/components/ThemeToggle";
 import { setAndroidNavigationBar } from "~/lib/android-navigation-bar";
+import { AuthProvider } from "~/contexts/AuthContext";
+import AppLayoutWithMiddleware from "~/components/AppLayoutWithMiddleware";
+import Toast from "react-native-toast-message";
 
 const LIGHT_THEME: Theme = {
   ...DefaultTheme,
@@ -42,23 +45,12 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-      <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-      <Stack>
-        <Stack.Screen
-          name="(tabs)"
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="service/[serviceId]/[providerId]/details"
-          options={{
-            title: "Book This Service",
-            headerShown: true,
-          }}
-        />
-      </Stack>
-      <PortalHost />
+      <AuthProvider>
+        <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
+        <AppLayoutWithMiddleware />
+        <Toast />
+        <PortalHost />
+      </AuthProvider>
     </ThemeProvider>
   );
 }

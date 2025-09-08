@@ -2,6 +2,8 @@
 using HomeEase.Interfaces;
 using HomeEase.Mappers;
 using HomeEase.Models;
+using HomeEase.Repository;
+using HomeEase.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,11 +28,28 @@ namespace HomeEase.Controllers
             return Ok(serviceOfferings.Select(so => so.ToServiceOfferingDto()));
         }
 
+        [HttpGet("paged")]
+        public async Task<ActionResult<PagedResult<ServiceOfferingDto>>> GetServiceOfferings([FromQuery] int skip = 0, [FromQuery] int take = 10, [FromQuery] string? searchTerm = null)
+        {
+            var result = await _serviceOfferingRepo.GetPagedAsync(skip, take, searchTerm);
+            return Ok(result);
+        }
+
         [HttpGet("{serviceProviderId:int}")]
 
         public async Task<IActionResult> GetAllByServiceProviderId([FromRoute] int serviceProviderId)
         {
             var serviceOfferings = await _serviceOfferingRepo.GetAllByServiceProviderId(serviceProviderId);
+
+            return Ok(serviceOfferings.Select(so => so.ToServiceOfferingDto()));
+        }
+
+
+        [HttpGet("popular")]
+
+        public async Task<IActionResult> GetPopularServices()
+        {
+            var serviceOfferings = await _serviceOfferingRepo.GetPopularServices();
 
             return Ok(serviceOfferings.Select(so => so.ToServiceOfferingDto()));
         }

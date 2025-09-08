@@ -7,11 +7,18 @@ interface Props {
   placeholder: string;
   value: string;
   onChangeText: (text: string) => void;
+  searchTrigger?: () => void;
 }
 
-const SearchBar = ({ onPress, placeholder, value, onChangeText }: Props) => {
+const SearchBar = ({
+  onPress,
+  placeholder,
+  value,
+  onChangeText,
+  searchTrigger,
+}: Props) => {
   return (
-    <View className="flex-row items-center bg-white rounded-2xl shadow-sm border border-gray-100">
+    <View className="flex-row items-center rounded-xl border border-border text-foreground bg-card">
       <TextInput
         onPress={onPress}
         placeholder={placeholder}
@@ -20,7 +27,10 @@ const SearchBar = ({ onPress, placeholder, value, onChangeText }: Props) => {
         placeholderTextColor="#9ca3af"
         className="flex-1 px-4 py-4 text-gray-900"
       />
-      <TouchableOpacity className="bg-blue-600 m-2 p-3 rounded-xl">
+      <TouchableOpacity
+        onPress={searchTrigger}
+        className="bg-blue-600 m-2 p-3 rounded-xl"
+      >
         <Search size={20} color="white" />
       </TouchableOpacity>
     </View>
