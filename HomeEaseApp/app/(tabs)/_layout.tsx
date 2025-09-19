@@ -8,7 +8,7 @@ export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{
-        headerShown: true,
+        headerShown: false,
         tabBarLabelPosition: "below-icon",
         tabBarShowLabel: true,
         tabBarActiveTintColor: "#1d4ed8",
@@ -20,34 +20,6 @@ export default function TabsLayout() {
           elevation: 4,
         },
         headerShadowVisible: true,
-        headerTitle: () => (
-          <View className="">
-            <Text
-              className="text-2xl font-bold text-blue-500"
-              style={{
-                fontFamily: "System",
-                letterSpacing: -0.5,
-              }}
-            >
-              HomeEase
-            </Text>
-            <Text className="text-xs text-gray-500">
-              Your trusted home services app
-            </Text>
-          </View>
-        ),
-        headerRight: () => <ThemeToggle />,
-        headerBackground: () => (
-          <View
-            className="bg-background w-full h-full"
-            style={{
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.2,
-              shadowRadius: 2,
-              elevation: 4, // Android
-            }}
-          />
-        ),
       }}
     >
       <Tabs.Screen

@@ -51,6 +51,7 @@ const LoginScreen = () => {
     try {
       const data = await apiLogin(email, password);
       const token = data.token;
+      const refreshToken = data.refreshToken;
       const user = {
         email: data.email,
         userName: data.firstName,
@@ -59,7 +60,8 @@ const LoginScreen = () => {
         customerID: data.customerID,
         providerId: data.providerId,
       };
-      login(token, user);
+
+      login(token, refreshToken, user);
       console.log("Login attempt:", { email, password });
       Alert.alert("Login Success", "You have been logged in!");
       // Navigate to the main app after successful login

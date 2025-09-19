@@ -40,6 +40,7 @@ import { getPopularServices } from "~/api/serviceOfferingApi";
 import SkeletonBookingConfrimation from "~/components/skeletonLoader/BookingConfirmationLoader";
 import SkeletonPopularServices from "~/components/skeletonLoader/SkeletonPopularServices";
 import SkeletonRecentBookings from "~/components/skeletonLoader/SkeletonRecentBooking";
+import PremiumAppHeader from "~/components/AppHeader";
 
 export default function Index() {
   const router = useRouter();
@@ -174,13 +175,34 @@ export default function Index() {
       fetchPopularServices();
       fetchRecentBookings();
     }
-  }, []);
+  }, [user]);
+
+  const handleSearch = () => {
+    console.log("Search pressed");
+  };
+
+  const handleNotifications = () => {
+    console.log("Notifications pressed");
+  };
+
+  const handleMessages = () => {
+    console.log("Messages pressed");
+  };
 
   return (
     <SafeAreaView edges={[]} className="flex-1 bg-background">
-      {
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {/*<View className="flex-row justify-center items-center mt-2n">
+      <PremiumAppHeader
+        showSearch={true}
+        showNotifications={true}
+        showMessages={true}
+        onSearchPress={handleSearch}
+        onNotificationPress={handleNotifications}
+        onMessagePress={handleMessages}
+        notificationCount={5}
+        variant="glass"
+      />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {/*<View className="flex-row justify-center items-center mt-2n">
           <Image
             source={require("../../assets/images/HomeEase.png")}
             className="w-12 h-10"
@@ -188,196 +210,198 @@ export default function Index() {
           <Text className="text-xl pt-2 font-bold text-primary">HomeEase</Text>
         </View>*/}
 
-          {/* Header */}
-          <View className="px-6 pt-4 pb-6">
-            {/* Search Bar */}
-            <SearchBar
-              onPress={() => router.push("/browse")}
-              placeholder="Search what you need"
-              value=""
-              onChangeText={(text: string) => text}
-            />
-          </View>
-
-          {/* Categories */}
-          <FlatList
-            data={categories}
-            renderItem={({ item }) => {
-              const IconComponent = item.icon;
-              return (
-                <TouchableOpacity className="items-center mr-4">
-                  <View
-                    className="w-16 h-16 rounded-full items-center justify-center mb-2"
-                    style={{ backgroundColor: `${item.color}15` }}
-                  >
-                    <IconComponent size={24} color={item.color} />
-                  </View>
-                  <Text className="text-foreground text-sm font-medium text-center">
-                    {item.name}
-                  </Text>
-                </TouchableOpacity>
-              );
-            }}
-            keyExtractor={(item) => item.id.toString()}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ paddingHorizontal: 16 }}
-            className="mb-6"
+        {/* Header */}
+        <View className="px-6 pt-4 pb-6">
+          {/* Search Bar */}
+          <SearchBar
+            onPress={() => router.push("/browse")}
+            placeholder="Search what you need"
+            value=""
+            onChangeText={(text: string) => text}
           />
+        </View>
 
-          {/* Booking Confirmation Card */}
-          <View className="px-6 mb-6 ">
-            {isLoading.upcoming ? (
-              <SkeletonBookingConfrimation />
-            ) : upcomingBooking === typeof String ? (
-              <View className="bg-gray-200 rounded-2xl p-4 flex-row items-center">
-                <View className="bg-gray-400/40 p-2 rounded-full mr-3">
-                  <Clock size={24} color="black" />
+        {/* Categories */}
+        <FlatList
+          data={categories}
+          renderItem={({ item }) => {
+            const IconComponent = item.icon;
+            return (
+              <TouchableOpacity className="items-center mr-4">
+                <View
+                  className="w-16 h-16 rounded-full items-center justify-center mb-2"
+                  style={{ backgroundColor: `${item.color}15` }}
+                >
+                  <IconComponent size={24} color={item.color} />
                 </View>
-                <View className="flex-1">
-                  <Text className="text-gray-800 font-semibold text-lg mb-1">
-                    No Upcoming Bookings
-                  </Text>
-                  <Text className="text-gray-600 font-medium mb-1">
-                    They’ll appear here once schedul
-                  </Text>
-                </View>
-                <TouchableOpacity className="bg-gray-400/40 p-2 rounded-full">
-                  <ArrowRight size={20} color="black" />
-                </TouchableOpacity>
+                <Text className="text-foreground text-sm font-medium text-center">
+                  {item.name}
+                </Text>
+              </TouchableOpacity>
+            );
+          }}
+          keyExtractor={(item) => item.id.toString()}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingHorizontal: 16 }}
+          className="mb-6"
+        />
+
+        {/* Booking Confirmation Card */}
+        <View className="px-6 mb-6 ">
+          {isLoading.upcoming ? (
+            <SkeletonBookingConfrimation />
+          ) : upcomingBooking === "No Upcoming Booking" ? (
+            <View className="bg-gray-200 rounded-2xl p-4 flex-row items-center">
+              <View className="bg-gray-400/40 p-2 rounded-full mr-3">
+                <Clock size={24} color="black" />
               </View>
-            ) : (
-              <View className="bg-blue-600 rounded-2xl p-4 flex-row items-center">
-                <View className="bg-white/20 p-2 rounded-full mr-3">
-                  <CheckCircle size={24} color="white" />
-                </View>
-                <View className="flex-1">
-                  <Text className="text-white font-semibold text-lg mb-1">
-                    Your booking is Confirmed
-                  </Text>
-                  <Text className="text-white/90 font-medium mb-1">
-                    {upcomingBooking?.name}
-                  </Text>
-                  <View className="flex-row items-center">
-                    <Clock size={14} color="white" />
-                    <Text className="text-white/90 ml-1">
-                      {formatDistanceToNow(new Date(upcomingBooking?.date))} • @
-                      {upcomingBooking?.time}
-                    </Text>
-                  </View>
-                </View>
-                <TouchableOpacity className="bg-white/20 p-2 rounded-full">
-                  <ArrowRight size={20} color="white" />
-                </TouchableOpacity>
+              <View className="flex-1">
+                <Text className="text-gray-800 font-semibold text-lg mb-1">
+                  No Upcoming Bookings
+                </Text>
+                <Text className="text-gray-600 font-medium mb-1">
+                  They’ll appear here once schedul
+                </Text>
               </View>
-            )}
-          </View>
-
-          {/* Popular Cleaning Services Section */}
-          <View className="px-6 ">
-            <View className="flex-row justify-between items-center mb-4">
-              <Text className="text-xl font-bold text-muted-foreground">
-                Popular Services
-              </Text>
-            </View>
-            {isLoading.popular ? (
-              <SkeletonPopularServices />
-            ) : (
-              <FlatList
-                data={popularServices}
-                renderItem={({ item }) => (
-                  <TouchableOpacity
-                    key={item.id}
-                    className="bg-card rounded-2xl overflow-hidden shadow-sm border border-border"
-                    style={{ width: 150, marginRight: 12 }}
-                  >
-                    <Image
-                      source={{ uri: item?.imgURL }}
-                      className="w-full h-32"
-                      resizeMode="cover"
-                    />
-                    <View className="p-3">
-                      <Text className="font-semibold text-card-foreground mb-1">
-                        {item?.serviceName}
-                      </Text>
-                      <View className="flex-row justify-between items-center">
-                        <Text className="text-blue-500 font-medium">
-                          From R{item?.rate}
-                        </Text>
-                        <View className="flex-row items-center">
-                          <Star size={12} color="#fbbf24" fill="#fbbf24" />
-                          <Text className="text-muted-foreground text-sm">
-                            {" "}
-                            {item?.rating}
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                  </TouchableOpacity>
-                )}
-                keyExtractor={(item) =>
-                  `${item.serviceId}-${item.serviceProviderId}`
-                }
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{ paddingHorizontal: 16 }}
-                className="mb-6"
-              />
-            )}
-          </View>
-
-          {/* Recent Services */}
-          <View className="px-6 mt-6 mb-8">
-            <View className="flex-row justify-between items-center mb-4">
-              <Text className="text-xl font-bold text-muted-foreground">
-                Recent Bookings
-              </Text>
-              <TouchableOpacity>
-                <Text className="text-blue-500 font-medium">See All</Text>
+              <TouchableOpacity className="bg-gray-400/40 p-2 rounded-full">
+                <ArrowRight size={20} color="black" />
               </TouchableOpacity>
             </View>
-            {isLoading.recent ? (
-              <SkeletonRecentBookings />
-            ) : recentBookings.length > 0 ? (
-              <View className="gap-y-3">
-                {recentBookings.map((booking: any) => (
-                  <TouchableOpacity
-                    key={booking.id}
-                    className="bg-card rounded-2xl p-4 flex-row items-center shadow-sm border border-border"
-                  >
-                    <View className="bg-primary/10 p-3 rounded-xl mr-4">
-                      <Home size={24} color="#3b82f6" />
-                    </View>
-                    <View className="flex-1">
-                      <Text className="font-semibold text-card-foreground mb-1">
-                        {booking.serviceName}
-                      </Text>
-                      <Text className="text-muted-foreground text-sm">
-                        {formatDistanceToNow(new Date(booking?.createdAt))} ago
-                      </Text>
-                    </View>
-                    <Text className="text-blue-500 font-semibold">
-                      R{booking?.totalCost}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
+          ) : (
+            <View className="bg-blue-600 rounded-2xl p-4 flex-row items-center">
+              <View className="bg-white/20 p-2 rounded-full mr-3">
+                <CheckCircle size={24} color="white" />
               </View>
-            ) : (
-              <View className="bg-card border border-border rounded-2xl p-6 items-center justify-center">
-                <View className="bg-blue-500/10 p-4 rounded-full mb-3">
-                  <Calendar size={28} color="#3b82f6" />
+              <View className="flex-1">
+                <Text className="text-white font-semibold text-lg mb-1">
+                  Your booking is Confirmed
+                </Text>
+                <Text className="text-white/90 font-medium mb-1">
+                  {upcomingBooking?.name}
+                </Text>
+                <View className="flex-row items-center">
+                  <Clock size={14} color="white" />
+                  <Text className="text-white/90 ml-1">
+                    {formatDistanceToNow(new Date(upcomingBooking?.date))} • @
+                    {upcomingBooking?.time}
+                  </Text>
                 </View>
-                <Text className="text-card-foreground font-semibold text-base mb-1">
-                  No recent bookings
-                </Text>
-                <Text className="text-muted-foreground text-sm text-center">
-                  Book a service and your recent bookings will appear here.
-                </Text>
               </View>
-            )}
+              <TouchableOpacity className="bg-white/20 p-2 rounded-full">
+                <ArrowRight size={20} color="white" />
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
+
+        {/* Popular Cleaning Services Section */}
+        <View className="px-6 ">
+          <View className="flex-row justify-between items-center mb-4">
+            <Text className="text-xl font-bold text-muted-foreground">
+              Popular Services
+            </Text>
           </View>
-        </ScrollView>
-      }
+          {isLoading.popular ? (
+            <SkeletonPopularServices />
+          ) : (
+            <FlatList
+              data={popularServices}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  key={item.id}
+                  className="bg-card rounded-2xl overflow-hidden shadow-sm border border-border"
+                  style={{ width: 150, marginRight: 12 }}
+                >
+                  <Image
+                    source={{ uri: item?.imgURL }}
+                    className="w-full h-32"
+                    resizeMode="cover"
+                  />
+                  <View className="p-3">
+                    <Text className="font-semibold text-card-foreground mb-1">
+                      {item?.serviceName}
+                    </Text>
+                    <View className="flex-row justify-between items-center">
+                      <Text className="text-blue-500 font-medium">
+                        From R{item?.rate}
+                      </Text>
+                      <View className="flex-row items-center">
+                        <Star size={12} color="#fbbf24" fill="#fbbf24" />
+                        <Text className="text-muted-foreground text-sm">
+                          {" "}
+                          {item?.rating}
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              )}
+              keyExtractor={(item) =>
+                `${item.serviceId}-${item.serviceProviderId}`
+              }
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{ paddingHorizontal: 16 }}
+              className="mb-6"
+            />
+          )}
+        </View>
+
+        {/* Recent Services */}
+        <View className="px-6 mt-6 mb-8">
+          <View className="flex-row justify-between items-center mb-4">
+            <Text className="text-xl font-bold text-muted-foreground">
+              Recent Bookings
+            </Text>
+            <TouchableOpacity>
+              <Text className="text-blue-500 font-medium">See All</Text>
+            </TouchableOpacity>
+          </View>
+          {isLoading.recent ? (
+            <SkeletonRecentBookings />
+          ) : recentBookings.length > 0 ? (
+            <View className="gap-y-3">
+              {recentBookings.map((booking: any) => (
+                <TouchableOpacity
+                  key={booking.id}
+                  className="bg-card rounded-2xl p-4 flex-row items-center shadow-sm border border-border"
+                >
+                  <View
+                    className="bg-primary/10 p-3 rounded-xl mr-4"
+                    style={{ backgroundColor: "#3b82f615" }}
+                  >
+                    <Home size={24} color="#3b82f6" />
+                  </View>
+                  <View className="flex-1">
+                    <Text className="font-semibold text-card-foreground mb-1">
+                      {booking.serviceName}
+                    </Text>
+                    <Text className="text-muted-foreground text-sm">
+                      {formatDistanceToNow(new Date(booking?.createdAt))} ago
+                    </Text>
+                  </View>
+                  <Text className="text-blue-500 font-semibold">
+                    R{booking?.totalCost}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          ) : (
+            <View className="bg-card border border-border rounded-2xl p-6 items-center justify-center">
+              <View className="bg-blue-500/10 p-4 rounded-full mb-3">
+                <Calendar size={28} color="#3b82f6" />
+              </View>
+              <Text className="text-card-foreground font-semibold text-base mb-1">
+                No recent bookings
+              </Text>
+              <Text className="text-muted-foreground text-sm text-center">
+                Book a service and your recent bookings will appear here.
+              </Text>
+            </View>
+          )}
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }

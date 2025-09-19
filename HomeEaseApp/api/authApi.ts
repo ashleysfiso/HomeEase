@@ -40,6 +40,7 @@ export async function getUser(userId: string) {
     const res = await api.get(`Auth/get-user/${userId}`);
     return res.data;
   } catch (err: any) {
+    console.log(`From Auth Error: ${err.statusCode}`);
     throw err.message;
   }
 }

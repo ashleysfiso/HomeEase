@@ -9,6 +9,7 @@ import * as SecureStore from "expo-secure-store";
 import { useRouter } from "expo-router";
 import { ActivityIndicator, View } from "react-native";
 import { getUser } from "~/api/authApi";
+import { setAxiosToken } from "~/api/axiosConfig";
 
 interface User {
   email: string;
@@ -23,7 +24,11 @@ interface User {
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  login: (token: string, userData: Omit<User, "token">) => Promise<void>;
+  login: (
+    token: string,
+    refreshToken: string,
+    userData: Omit<User, "token">
+  ) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -41,6 +46,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const token = await SecureStore.getItemAsync("access_token");
         const userId = await SecureStore.getItemAsync("userId");
         if (token && userId) {
+          setAxiosToken(token);
           const user = await getUser(userId);
           const userWithToken = { ...user, token: token };
           setUser(userWithToken);
@@ -49,17 +55,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         console.error("Error restoring token", e);
       } finally {
         setLoading(false);
-        console.log(user);
       }
     };
     restoreToken();
   }, []);
 
   // Login
-  const login = async (token: string, userData: Omit<User, "token">) => {
+  const login = async (
+    token: string,
+    refreshToken: string,
+    userData: Omit<User, "token">
+  ) => {
     try {
+      setAxiosToken(token);
       await SecureStore.setItemAsync("access_token", token);
       await SecureStore.setItemAsync("userId", userData.userId);
+      await SecureStore.setItemAsync("refreshToken", refreshToken);
       setUser({ ...userData, token });
       router.replace("/");
     } catch (e) {

@@ -193,7 +193,7 @@ namespace HomeEase.Repository
                                                   .Include(b => b.ServiceOffering).ThenInclude(so => so.Service)
                                                   .Include(b => b.Customer).ThenInclude(c => c.User)
                                                   .Where(b => b.CustomerId == customerId)
-                                                  .Take(5)
+                                                  .Take(3)
                                                   .ToListAsync();
             return bookings;
         }
@@ -206,7 +206,7 @@ namespace HomeEase.Repository
                                                   .Include(b => b.ServiceOffering).ThenInclude(so => so.Service)
                                                   .Include(b => b.Customer).ThenInclude(c => c.User)
                                                   .Where(b => b.ServiceProviderId == serviceProviderId)
-                                                  .Take(5)
+                                                  .Take(3)
                                                   .ToListAsync();
 
             return bookings;

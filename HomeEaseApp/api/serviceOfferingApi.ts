@@ -9,6 +9,18 @@ export async function getPopularServices() {
   }
 }
 
+export async function getServiceOfferingById(
+  serviceId: number,
+  providerId: number
+) {
+  try {
+    const res = await api.get(`ServiceOfferings/${providerId}/${serviceId}`);
+    return res.data;
+  } catch (err: any) {
+    throw err.message;
+  }
+}
+
 export async function getServiceOfferings(
   skip: number,
   take: number,

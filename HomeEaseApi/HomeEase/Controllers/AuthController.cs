@@ -10,6 +10,7 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Identity.Data;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Rewrite;
     using Microsoft.EntityFrameworkCore;
@@ -361,6 +362,7 @@
                     CustomerID = user.Customer?.Id,
                     ProviderId = user.ServiceProvider?.Id,
                     Token = accessToken,
+                    RefreshToken = refreshToken,
                 });
         }
 
@@ -415,10 +417,34 @@
             return Ok("You are authorized!");
         }
 
-        /// <summary>
-        /// The Logout
-        /// </summary>
-        /// <returns>The <see cref="Task{IActionResult}"/></returns>
+        [HttpPost("mobile/refresh")]
+        public async Task<IActionResult> Refresh([FromBody] RefreshRequestDto request)
+        {
+            if (string.IsNullOrEmpty(request.RefreshToken))
+                return Unauthorized(new { message = "Missing refresh token" });
+
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.RefreshToken == request.RefreshToken);
+
+            if (user == null || user.RefreshTokenExpiryTime < DateTime.UtcNow)
+            {
+                return Unauthorized(new { message = "Invalid or expired refresh token" });
+            }
+
+            // Create new access + refresh tokens
+            var newAccessToken = await _tokenService.CreateAccessToken(user);
+            var newRefreshToken = _tokenService.CreateRefreshToken();
+
+            // Save new refresh token in DB
+            user.SetRefreshToken(newRefreshToken, DateTime.UtcNow.AddDays(7));
+            await _userManager.UpdateAsync(user);
+
+            return Ok(new
+            {
+                accessToken = newAccessToken,
+                refreshToken = newRefreshToken
+            });
+        }
+        
         [HttpPost("logout")]
         [Authorize]
         public async Task<IActionResult> Logout()
@@ -468,7 +494,7 @@
                 });
         }
 
-        [Authorize]
+        
         [HttpGet("get-user/{userId}")]
         public async Task<IActionResult> GetUser([FromRoute] string userId)
         {

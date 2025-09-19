@@ -21,6 +21,8 @@ export default function CustomDatePicker({
     setPickerVisible(false);
     onChange(date);
   };
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
 
   return (
     <View className="mb-4">
@@ -42,6 +44,7 @@ export default function CustomDatePicker({
         date={value ?? new Date()}
         onConfirm={handleConfirm}
         onCancel={() => setPickerVisible(false)}
+        minimumDate={tomorrow}
       />
     </View>
   );

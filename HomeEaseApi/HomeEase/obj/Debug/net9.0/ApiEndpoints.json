@@ -96,6 +96,22 @@
   {
     "ContainingType": "HomeEase.Controllers.AuthController",
     "Method": "Refresh",
+    "RelativePath": "api/Auth/mobile/refresh",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "HomeEase.Dtos.AccountDtos.RefreshRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.AuthController",
+    "Method": "Refresh",
     "RelativePath": "api/Auth/refresh",
     "HttpMethod": "POST",
     "IsController": true,
