@@ -3,8 +3,32 @@
   "WorkspaceRootPath": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{134126EE-1226-4244-A41B-A2D50D2A2791}|HomeEase\\HomeEase.csproj|c:\\users\\ashle\\onedrive\\documents\\homeease\\homeeaseapi\\homeease\\repository\\serviceofferingrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{134126EE-1226-4244-A41B-A2D50D2A2791}|HomeEase\\HomeEase.csproj|solutionrelative:homeease\\repository\\serviceofferingrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{134126EE-1226-4244-A41B-A2D50D2A2791}|HomeEase\\HomeEase.csproj|c:\\users\\ashle\\onedrive\\documents\\homeease\\homeeaseapi\\homeease\\controllers\\bookingscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{134126EE-1226-4244-A41B-A2D50D2A2791}|HomeEase\\HomeEase.csproj|solutionrelative:homeease\\controllers\\bookingscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{134126EE-1226-4244-A41B-A2D50D2A2791}|HomeEase\\HomeEase.csproj|c:\\users\\ashle\\onedrive\\documents\\homeease\\homeeaseapi\\homeease\\repository\\bookingrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{134126EE-1226-4244-A41B-A2D50D2A2791}|HomeEase\\HomeEase.csproj|solutionrelative:homeease\\repository\\bookingrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{134126EE-1226-4244-A41B-A2D50D2A2791}|HomeEase\\HomeEase.csproj|c:\\users\\ashle\\onedrive\\documents\\homeease\\homeeaseapi\\homeease\\interfaces\\ibookingrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{134126EE-1226-4244-A41B-A2D50D2A2791}|HomeEase\\HomeEase.csproj|solutionrelative:homeease\\interfaces\\ibookingrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{134126EE-1226-4244-A41B-A2D50D2A2791}|HomeEase\\HomeEase.csproj|c:\\users\\ashle\\onedrive\\documents\\homeease\\homeeaseapi\\homeease\\interfaces\\icustomerrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{134126EE-1226-4244-A41B-A2D50D2A2791}|HomeEase\\HomeEase.csproj|solutionrelative:homeease\\interfaces\\icustomerrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{134126EE-1226-4244-A41B-A2D50D2A2791}|HomeEase\\HomeEase.csproj|c:\\users\\ashle\\onedrive\\documents\\homeease\\homeeaseapi\\homeease\\controllers\\serviceofferingscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{134126EE-1226-4244-A41B-A2D50D2A2791}|HomeEase\\HomeEase.csproj|solutionrelative:homeease\\controllers\\serviceofferingscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{134126EE-1226-4244-A41B-A2D50D2A2791}|HomeEase\\HomeEase.csproj|c:\\users\\ashle\\onedrive\\documents\\homeease\\homeeaseapi\\homeease\\controllers\\pendingapprovalcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{134126EE-1226-4244-A41B-A2D50D2A2791}|HomeEase\\HomeEase.csproj|solutionrelative:homeease\\controllers\\pendingapprovalcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{134126EE-1226-4244-A41B-A2D50D2A2791}|HomeEase\\HomeEase.csproj|c:\\users\\ashle\\onedrive\\documents\\homeease\\homeeaseapi\\homeease\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -27,24 +51,12 @@
       "RelativeMoniker": "D:0:0:{134126EE-1226-4244-A41B-A2D50D2A2791}|HomeEase\\HomeEase.csproj|solutionrelative:homeease\\services\\auditlogbackgroundservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{134126EE-1226-4244-A41B-A2D50D2A2791}|HomeEase\\HomeEase.csproj|c:\\users\\ashle\\onedrive\\documents\\homeease\\homeeaseapi\\homeease\\controllers\\serviceofferingscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{134126EE-1226-4244-A41B-A2D50D2A2791}|HomeEase\\HomeEase.csproj|solutionrelative:homeease\\controllers\\serviceofferingscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{134126EE-1226-4244-A41B-A2D50D2A2791}|HomeEase\\HomeEase.csproj|c:\\users\\ashle\\onedrive\\documents\\homeease\\homeeaseapi\\homeease\\interfaces\\iserviceofferingrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{134126EE-1226-4244-A41B-A2D50D2A2791}|HomeEase\\HomeEase.csproj|solutionrelative:homeease\\interfaces\\iserviceofferingrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{134126EE-1226-4244-A41B-A2D50D2A2791}|HomeEase\\HomeEase.csproj|c:\\users\\ashle\\onedrive\\documents\\homeease\\homeeaseapi\\homeease\\interfaces\\ibookingrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{134126EE-1226-4244-A41B-A2D50D2A2791}|HomeEase\\HomeEase.csproj|solutionrelative:homeease\\interfaces\\ibookingrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{134126EE-1226-4244-A41B-A2D50D2A2791}|HomeEase\\HomeEase.csproj|c:\\users\\ashle\\onedrive\\documents\\homeease\\homeeaseapi\\homeease\\utility\\pagedresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{134126EE-1226-4244-A41B-A2D50D2A2791}|HomeEase\\HomeEase.csproj|solutionrelative:homeease\\utility\\pagedresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{134126EE-1226-4244-A41B-A2D50D2A2791}|HomeEase\\HomeEase.csproj|c:\\users\\ashle\\onedrive\\documents\\homeease\\homeeaseapi\\homeease\\controllers\\bookingscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{134126EE-1226-4244-A41B-A2D50D2A2791}|HomeEase\\HomeEase.csproj|solutionrelative:homeease\\controllers\\bookingscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{134126EE-1226-4244-A41B-A2D50D2A2791}|HomeEase\\HomeEase.csproj|c:\\users\\ashle\\onedrive\\documents\\homeease\\homeeaseapi\\homeease\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -111,10 +123,6 @@
       "RelativeMoniker": "D:0:0:{134126EE-1226-4244-A41B-A2D50D2A2791}|HomeEase\\HomeEase.csproj|solutionrelative:homeease\\models\\appuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{134126EE-1226-4244-A41B-A2D50D2A2791}|HomeEase\\HomeEase.csproj|c:\\users\\ashle\\onedrive\\documents\\homeease\\homeeaseapi\\homeease\\controllers\\pendingapprovalcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{134126EE-1226-4244-A41B-A2D50D2A2791}|HomeEase\\HomeEase.csproj|solutionrelative:homeease\\controllers\\pendingapprovalcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{134126EE-1226-4244-A41B-A2D50D2A2791}|HomeEase\\HomeEase.csproj|c:\\users\\ashle\\onedrive\\documents\\homeease\\homeeaseapi\\homeease\\repository\\reviewrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{134126EE-1226-4244-A41B-A2D50D2A2791}|HomeEase\\HomeEase.csproj|solutionrelative:homeease\\repository\\reviewrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -162,20 +170,96 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "AuditLogBackgroundService.cs",
-              "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Services\\AuditLogBackgroundService.cs",
-              "RelativeDocumentMoniker": "HomeEase\\Services\\AuditLogBackgroundService.cs",
-              "ToolTip": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Services\\AuditLogBackgroundService.cs",
-              "RelativeToolTip": "HomeEase\\Services\\AuditLogBackgroundService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAA6AAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "BookingRepository.cs",
+              "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Repository\\BookingRepository.cs",
+              "RelativeDocumentMoniker": "HomeEase\\Repository\\BookingRepository.cs",
+              "ToolTip": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Repository\\BookingRepository.cs",
+              "RelativeToolTip": "HomeEase\\Repository\\BookingRepository.cs",
+              "ViewState": "AgIAABsBAAAAAAAAAAAuwDEBAAA6AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-17T08:54:18.16Z",
+              "WhenOpened": "2025-06-27T15:34:14.441Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ServiceOfferingsController.cs",
+              "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Controllers\\ServiceOfferingsController.cs",
+              "RelativeDocumentMoniker": "HomeEase\\Controllers\\ServiceOfferingsController.cs",
+              "ToolTip": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Controllers\\ServiceOfferingsController.cs",
+              "RelativeToolTip": "HomeEase\\Controllers\\ServiceOfferingsController.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAA0wB8AAAC8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-22T14:41:59.201Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "BookingsController.cs",
+              "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Controllers\\BookingsController.cs",
+              "RelativeDocumentMoniker": "HomeEase\\Controllers\\BookingsController.cs",
+              "ToolTip": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Controllers\\BookingsController.cs",
+              "RelativeToolTip": "HomeEase\\Controllers\\BookingsController.cs",
+              "ViewState": "AgIAAGYAAAAAAAAAAAAwwHcAAABAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-12T13:26:20.55Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ServiceOfferingRepository.cs",
+              "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Repository\\ServiceOfferingRepository.cs",
+              "RelativeDocumentMoniker": "HomeEase\\Repository\\ServiceOfferingRepository.cs",
+              "ToolTip": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Repository\\ServiceOfferingRepository.cs",
+              "RelativeToolTip": "HomeEase\\Repository\\ServiceOfferingRepository.cs",
+              "ViewState": "AgIAAIYAAAAAAAAAAAD4v4sAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-20T13:50:10.634Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ICustomerRepository.cs",
+              "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Interfaces\\ICustomerRepository.cs",
+              "RelativeDocumentMoniker": "HomeEase\\Interfaces\\ICustomerRepository.cs",
+              "ToolTip": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Interfaces\\ICustomerRepository.cs",
+              "RelativeToolTip": "HomeEase\\Interfaces\\ICustomerRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-21T12:02:54.38Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "IBookingRepository.cs",
+              "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Interfaces\\IBookingRepository.cs",
+              "RelativeDocumentMoniker": "HomeEase\\Interfaces\\IBookingRepository.cs",
+              "ToolTip": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Interfaces\\IBookingRepository.cs",
+              "RelativeToolTip": "HomeEase\\Interfaces\\IBookingRepository.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAQwBgAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-27T15:35:44.455Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "PendingApprovalController.cs",
+              "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Controllers\\PendingApprovalController.cs",
+              "RelativeDocumentMoniker": "HomeEase\\Controllers\\PendingApprovalController.cs",
+              "ToolTip": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Controllers\\PendingApprovalController.cs",
+              "RelativeToolTip": "HomeEase\\Controllers\\PendingApprovalController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-12T13:26:26.053Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
               "Title": "AuthController.cs",
               "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "HomeEase\\Controllers\\AuthController.cs",
@@ -183,12 +267,11 @@
               "RelativeToolTip": "HomeEase\\Controllers\\AuthController.cs",
               "ViewState": "AgIAAJAAAAAAAAAAAAAuwGYBAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-07T19:39:39.339Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-07T19:39:39.339Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 9,
               "Title": "NewServiceProviderDto.cs",
               "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Dtos\\AccountDtos\\NewServiceProviderDto.cs",
               "RelativeDocumentMoniker": "HomeEase\\Dtos\\AccountDtos\\NewServiceProviderDto.cs",
@@ -196,38 +279,23 @@
               "RelativeToolTip": "HomeEase\\Dtos\\AccountDtos\\NewServiceProviderDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAB+AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-12T14:18:57.817Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-12T14:18:57.817Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "BookingRepository.cs",
-              "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Repository\\BookingRepository.cs",
-              "RelativeDocumentMoniker": "HomeEase\\Repository\\BookingRepository.cs",
-              "ToolTip": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Repository\\BookingRepository.cs",
-              "RelativeToolTip": "HomeEase\\Repository\\BookingRepository.cs",
-              "ViewState": "AgIAAL8AAAAAAAAAAADwv9AAAAA5AAAAAAAAAA==",
+              "DocumentIndex": 11,
+              "Title": "AuditLogBackgroundService.cs",
+              "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Services\\AuditLogBackgroundService.cs",
+              "RelativeDocumentMoniker": "HomeEase\\Services\\AuditLogBackgroundService.cs",
+              "ToolTip": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Services\\AuditLogBackgroundService.cs",
+              "RelativeToolTip": "HomeEase\\Services\\AuditLogBackgroundService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAA6AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-27T15:34:14.441Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-17T08:54:18.16Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "ServiceOfferingsController.cs",
-              "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Controllers\\ServiceOfferingsController.cs",
-              "RelativeDocumentMoniker": "HomeEase\\Controllers\\ServiceOfferingsController.cs",
-              "ToolTip": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Controllers\\ServiceOfferingsController.cs",
-              "RelativeToolTip": "HomeEase\\Controllers\\ServiceOfferingsController.cs",
-              "ViewState": "AgIAABgAAAAAAAAAAAAiwCQAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-22T14:41:59.201Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 8,
               "Title": "RefreshRequestDto.cs",
               "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Dtos\\AccountDtos\\RefreshRequestDto.cs",
               "RelativeDocumentMoniker": "HomeEase\\Dtos\\AccountDtos\\RefreshRequestDto.cs",
@@ -235,24 +303,11 @@
               "RelativeToolTip": "HomeEase\\Dtos\\AccountDtos\\RefreshRequestDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-18T14:17:27.895Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-18T14:17:27.895Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "IBookingRepository.cs",
-              "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Interfaces\\IBookingRepository.cs",
-              "RelativeDocumentMoniker": "HomeEase\\Interfaces\\IBookingRepository.cs",
-              "ToolTip": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Interfaces\\IBookingRepository.cs",
-              "RelativeToolTip": "HomeEase\\Interfaces\\IBookingRepository.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABQAAAArAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-27T15:35:44.455Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 10,
               "Title": "TokenService.cs",
               "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Services\\TokenService.cs",
               "RelativeDocumentMoniker": "HomeEase\\Services\\TokenService.cs",
@@ -260,12 +315,11 @@
               "RelativeToolTip": "HomeEase\\Services\\TokenService.cs",
               "ViewState": "AgIAACEAAAAAAAAAAAAYwC4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-18T13:18:33.081Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-18T13:18:33.081Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 12,
               "Title": "IServiceOfferingRepository.cs",
               "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Interfaces\\IServiceOfferingRepository.cs",
               "RelativeDocumentMoniker": "HomeEase\\Interfaces\\IServiceOfferingRepository.cs",
@@ -277,7 +331,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 13,
               "Title": "PagedResult.cs",
               "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Utility\\PagedResult.cs",
               "RelativeDocumentMoniker": "HomeEase\\Utility\\PagedResult.cs",
@@ -289,19 +343,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "BookingsController.cs",
-              "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Controllers\\BookingsController.cs",
-              "RelativeDocumentMoniker": "HomeEase\\Controllers\\BookingsController.cs",
-              "ToolTip": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Controllers\\BookingsController.cs",
-              "RelativeToolTip": "HomeEase\\Controllers\\BookingsController.cs",
-              "ViewState": "AgIAAHYAAAAAAAAAAAAiwH8AAABBAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-12T13:26:20.55Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 18,
               "Title": "CustomerRepository.cs",
               "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Repository\\CustomerRepository.cs",
               "RelativeDocumentMoniker": "HomeEase\\Repository\\CustomerRepository.cs",
@@ -313,7 +355,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 14,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Program.cs",
               "RelativeDocumentMoniker": "HomeEase\\Program.cs",
@@ -325,7 +367,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 15,
               "Title": "AuditLogController.cs",
               "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Controllers\\AuditLogController.cs",
               "RelativeDocumentMoniker": "HomeEase\\Controllers\\AuditLogController.cs",
@@ -337,7 +379,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 17,
               "Title": "AuditQueue.cs",
               "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Repository\\AuditQueue.cs",
               "RelativeDocumentMoniker": "HomeEase\\Repository\\AuditQueue.cs",
@@ -349,7 +391,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 16,
               "Title": "AuditLog.cs",
               "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Models\\AuditLog.cs",
               "RelativeDocumentMoniker": "HomeEase\\Models\\AuditLog.cs",
@@ -361,7 +403,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 19,
               "Title": "IAuditQueue.cs",
               "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Interfaces\\IAuditQueue.cs",
               "RelativeDocumentMoniker": "HomeEase\\Interfaces\\IAuditQueue.cs",
@@ -373,7 +415,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 20,
               "Title": "20250716102006_Added audit logs table.cs",
               "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Migrations\\20250716102006_Added audit logs table.cs",
               "RelativeDocumentMoniker": "HomeEase\\Migrations\\20250716102006_Added audit logs table.cs",
@@ -385,7 +427,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 21,
               "Title": "ApplicationDbContext.cs",
               "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Data\\ApplicationDbContext.cs",
               "RelativeDocumentMoniker": "HomeEase\\Data\\ApplicationDbContext.cs",
@@ -397,7 +439,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 25,
               "Title": "UserDto.cs",
               "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Dtos\\AccountDtos\\UserDto.cs",
               "RelativeDocumentMoniker": "HomeEase\\Dtos\\AccountDtos\\UserDto.cs",
@@ -409,7 +451,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 23,
               "Title": "RegisterDto.cs",
               "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Dtos\\AccountDtos\\RegisterDto.cs",
               "RelativeDocumentMoniker": "HomeEase\\Dtos\\AccountDtos\\RegisterDto.cs",
@@ -421,7 +463,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 22,
               "Title": "EditProfile.cs",
               "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Dtos\\AccountDtos\\EditProfile.cs",
               "RelativeDocumentMoniker": "HomeEase\\Dtos\\AccountDtos\\EditProfile.cs",
@@ -433,7 +475,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 24,
               "Title": "LoginDto.cs",
               "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Dtos\\AccountDtos\\LoginDto.cs",
               "RelativeDocumentMoniker": "HomeEase\\Dtos\\AccountDtos\\LoginDto.cs",
@@ -445,7 +487,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 26,
               "Title": "UpdatePendingApprovalDto.cs",
               "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Dtos\\PendingApprovalsDtos\\UpdatePendingApprovalDto.cs",
               "RelativeDocumentMoniker": "HomeEase\\Dtos\\PendingApprovalsDtos\\UpdatePendingApprovalDto.cs",
@@ -457,7 +499,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 28,
               "Title": "Customer.cs",
               "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Models\\Customer.cs",
               "RelativeDocumentMoniker": "HomeEase\\Models\\Customer.cs",
@@ -469,7 +511,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 29,
               "Title": "AppUser.cs",
               "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Models\\AppUser.cs",
               "RelativeDocumentMoniker": "HomeEase\\Models\\AppUser.cs",
@@ -482,18 +524,6 @@
             {
               "$type": "Document",
               "DocumentIndex": 27,
-              "Title": "PendingApprovalController.cs",
-              "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Controllers\\PendingApprovalController.cs",
-              "RelativeDocumentMoniker": "HomeEase\\Controllers\\PendingApprovalController.cs",
-              "ToolTip": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Controllers\\PendingApprovalController.cs",
-              "RelativeToolTip": "HomeEase\\Controllers\\PendingApprovalController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-12T13:26:26.053Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 24,
               "Title": "IdentityUserExtensions.cs",
               "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Models\\IdentityUserExtensions.cs",
               "RelativeDocumentMoniker": "HomeEase\\Models\\IdentityUserExtensions.cs",
@@ -505,7 +535,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 30,
               "Title": "ReviewRepository.cs",
               "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Repository\\ReviewRepository.cs",
               "RelativeDocumentMoniker": "HomeEase\\Repository\\ReviewRepository.cs",
@@ -517,7 +547,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 31,
               "Title": "AdminDashboardDto.cs",
               "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Dtos\\BookingDtos\\AdminDashboardDto.cs",
               "RelativeDocumentMoniker": "HomeEase\\Dtos\\BookingDtos\\AdminDashboardDto.cs",
@@ -529,7 +559,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 35,
+              "DocumentIndex": 37,
               "Title": "ReviewMapper.cs",
               "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Mappers\\ReviewMapper.cs",
               "RelativeDocumentMoniker": "HomeEase\\Mappers\\ReviewMapper.cs",
@@ -541,7 +571,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 32,
               "Title": "ReviewsController.cs",
               "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Controllers\\ReviewsController.cs",
               "RelativeDocumentMoniker": "HomeEase\\Controllers\\ReviewsController.cs",
@@ -553,7 +583,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 33,
               "Title": "DashboardData.cs",
               "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Services\\DashboardData.cs",
               "RelativeDocumentMoniker": "HomeEase\\Services\\DashboardData.cs",
@@ -565,7 +595,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 32,
+              "DocumentIndex": 34,
               "Title": "Booking.cs",
               "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Models\\Booking.cs",
               "RelativeDocumentMoniker": "HomeEase\\Models\\Booking.cs",
@@ -577,7 +607,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 33,
+              "DocumentIndex": 35,
               "Title": "IReviewRepository.cs",
               "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Interfaces\\IReviewRepository.cs",
               "RelativeDocumentMoniker": "HomeEase\\Interfaces\\IReviewRepository.cs",
@@ -589,7 +619,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 34,
+              "DocumentIndex": 36,
               "Title": "ProviderDashboardDto.cs",
               "DocumentMoniker": "C:\\Users\\ashle\\OneDrive\\Documents\\HomeEase\\HomeEaseApi\\HomeEase\\Dtos\\BookingDtos\\ProviderDashboardDto.cs",
               "RelativeDocumentMoniker": "HomeEase\\Dtos\\BookingDtos\\ProviderDashboardDto.cs",

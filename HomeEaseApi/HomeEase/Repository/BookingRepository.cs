@@ -1,6 +1,8 @@
 ﻿using HomeEase.Data;
 using HomeEase.Dtos.BookingDtos;
+using HomeEase.Dtos.ServiceOfferingDtos;
 using HomeEase.Interfaces;
+using HomeEase.Mappers;
 using HomeEase.Models;
 using HomeEase.Services;
 using HomeEase.Utility;
@@ -209,6 +211,99 @@ namespace HomeEase.Repository
                                                   .Take(3)
                                                   .ToListAsync();
 
+            return bookings;
+        }
+
+        public async Task<PagedResult<BookingDto>> GetPagedByCustomerIdAsync(int customerId, int skip = 0, int take = 10, string? searchTerm = null)
+        {
+            var query = _context.Bookings.OrderByDescending(b => b.CreatedAt)
+                                         .Include(b => b.Review)
+                                         .Include(b => b.ServiceOffering).ThenInclude(so => so.ServiceProvider)
+                                         .Include(b => b.ServiceOffering).ThenInclude(so => so.Service)
+                                         .Include(b => b.Customer).ThenInclude(c => c.User)
+                                         .Where(b => b.CustomerId == customerId)
+                                         .AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(b => b.ServiceOffering.Service.Name.Contains(searchTerm) || 
+                                         b.ServiceOffering.ServiceProvider.CompanyName.Contains(searchTerm));
+            }
+
+            var totalCount = await query.CountAsync();
+
+            var items = await query.Skip(skip)
+                                   .Take(take)
+                                   .Select(b => b.ToBookingDto())
+                                   .ToListAsync();
+
+            return new PagedResult<BookingDto>
+            {
+                Items = items,
+                TotalCount = totalCount,
+                PageNumber = (skip / take) + 1,
+                PageSize = take
+            };
+        }
+
+        public async Task<PagedResult<BookingDto>> GetPagedByProviderIdAsync(int serviceProviderId, int skip = 0, int take = 10, string? searchTerm = null)
+        {
+            var query = _context.Bookings.OrderByDescending(b => b.CreatedAt)
+                                         .Include(b => b.Review)
+                                         .Include(b => b.ServiceOffering).ThenInclude(so => so.ServiceProvider)
+                                         .Include(b => b.ServiceOffering).ThenInclude(so => so.Service)
+                                         .Include(b => b.Customer).ThenInclude(c => c.User)
+                                         .Where(b => b.ServiceProviderId == serviceProviderId)
+                                         .AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(b => b.ServiceOffering.Service.Name.Contains(searchTerm) ||
+                                         b.Customer.User.FirstName.Contains(searchTerm) ||
+                                         b.Customer.User.LastName.Contains(searchTerm));
+            }
+
+            var totalCount = await query.CountAsync();
+
+            var items = await query.Skip(skip)
+                                   .Take(take)
+                                   .Select(b => b.ToBookingDto())
+                                   .ToListAsync();
+
+            return new PagedResult<BookingDto>
+            {
+                Items = items,
+                TotalCount = totalCount,
+                PageNumber = (skip / take) + 1,
+                PageSize = take
+            };
+        }
+
+        public async Task<List<Booking>> GetAllUpcomingCustomerBookings(int customerId)
+        {
+            var today = DateOnly.FromDateTime(DateTime.Now);
+            var bookings = await _context.Bookings
+                                            .Include(b => b.Review)
+                                            .Include(b => b.ServiceOffering).ThenInclude(so => so.ServiceProvider)
+                                            .Include(b => b.ServiceOffering).ThenInclude(so => so.Service)
+                                            .Include(b => b.Customer).ThenInclude(c => c.User)
+                                            .Where(b => b.CustomerId == customerId && b.BookingDate >= today)
+                                            .OrderBy(b => b.BookingDate)
+                                            .ToListAsync();
+            return bookings;
+        }
+
+        public async Task<List<Booking>> GetAllUpcomingProviderBookings(int providerId)
+        {
+            var today = DateOnly.FromDateTime(DateTime.Now);
+            var bookings = await _context.Bookings
+                                           .Include(b => b.Review)
+                                           .Include(b => b.ServiceOffering).ThenInclude(so => so.ServiceProvider)
+                                           .Include(b => b.ServiceOffering).ThenInclude(so => so.Service)
+                                           .Include(b => b.Customer).ThenInclude(c => c.User)
+                                           .Where(b => b.ServiceProviderId == providerId && b.BookingDate >= today)
+                                           .OrderBy(b => b.BookingDate)
+                                           .ToListAsync();
             return bookings;
         }
     }

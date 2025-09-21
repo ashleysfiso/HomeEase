@@ -29,7 +29,7 @@ namespace HomeEase.Controllers
         }
 
         [HttpGet("paged")]
-        public async Task<ActionResult<PagedResult<ServiceOfferingDto>>> GetServiceOfferings([FromQuery] int skip = 0, [FromQuery] int take = 10, [FromQuery] string? searchTerm = null)
+        public async Task<ActionResult<PagedResult<ServiceOfferingDto>>> GetPagedServiceOfferings([FromQuery] int skip = 0, [FromQuery] int take = 10, [FromQuery] string? searchTerm = null)
         {
             var result = await _serviceOfferingRepo.GetPagedAsync(skip, take, searchTerm);
             return Ok(result);

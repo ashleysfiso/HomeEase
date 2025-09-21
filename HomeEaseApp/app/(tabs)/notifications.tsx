@@ -13,6 +13,7 @@ import {
   TriangleAlert,
 } from "lucide-react-native";
 import { router } from "expo-router"; // Import router from expo-router
+import PremiumAppHeader from "~/components/AppHeader";
 
 const notificationsData = [
   {
@@ -107,16 +108,37 @@ const NotificationScreen = () => {
       params: { id: notification.id },
     });
   };
+  const handleSearch = () => {
+    console.log("Search pressed");
+  };
+
+  const handleNotifications = () => {
+    console.log("Notifications pressed");
+  };
+
+  const handleMessages = () => {
+    console.log("Messages pressed");
+  };
 
   return (
     <SafeAreaView className="flex-1  bg-background">
+      <PremiumAppHeader
+        showSearch={true}
+        showNotifications={true}
+        showMessages={true}
+        onSearchPress={handleSearch}
+        onNotificationPress={handleNotifications}
+        onMessagePress={handleMessages}
+        notificationCount={5}
+        variant="glass"
+      />
       <ScrollView className="flex-1 px-6" showsVerticalScrollIndicator={false}>
         {notificationsData.map((notification) => {
           const IconComponent = notification.icon;
           return (
             <View
               key={notification.id}
-              className="bg-card rounded-2xl p-4 mt-4 shadow-sm border border-border"
+              className="bg-card rounded-2xl p-4 mb-4 shadow-sm border border-border"
             >
               <View className="flex-row items-center mb-2">
                 <View

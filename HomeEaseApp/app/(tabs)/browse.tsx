@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import SearchBar from "~/components/SearchBar";
 import { getServiceOfferings } from "~/api/serviceOfferingApi";
+import PremiumAppHeader from "~/components/AppHeader";
 
 const BrowseServicesScreen = () => {
   const [favorites, setFavorites] = useState<number[]>([]);
@@ -75,6 +76,18 @@ const BrowseServicesScreen = () => {
     );
   };
 
+  const handleSearch = () => {
+    console.log("Search pressed");
+  };
+
+  const handleNotifications = () => {
+    console.log("Notifications pressed");
+  };
+
+  const handleMessages = () => {
+    console.log("Messages pressed");
+  };
+
   // 🔹 Render a service card
   const renderServiceCard = ({ item }: { item: any }) => (
     <TouchableOpacity
@@ -131,8 +144,19 @@ const BrowseServicesScreen = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-background">
+      <PremiumAppHeader
+        showSearch={true}
+        showNotifications={true}
+        showMessages={true}
+        onSearchPress={handleSearch}
+        onNotificationPress={handleNotifications}
+        onMessagePress={handleMessages}
+        notificationCount={5}
+        variant="glass"
+      />
+
       {/* Search Bar */}
-      <View className="px-4 pt-4 pb-6">
+      <View className="px-4 pb-6">
         <SearchBar
           value={searchQuery}
           onChangeText={setSearchQuery}

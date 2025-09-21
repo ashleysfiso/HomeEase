@@ -65,8 +65,20 @@
         }
 
         [Authorize(Roles = "Customer")]
+        [HttpGet("customer/paged/{customerId:int}")]
+        public async Task<IActionResult> GetByCustomerIdPaged([FromRoute] int customerId, 
+                                                              [FromQuery] int skip = 0, 
+                                                              [FromQuery] int take = 10, 
+                                                              [FromQuery] string? searchTerm = null)
+        {
+            var result = await _bookingRepo.GetPagedByCustomerIdAsync(customerId, skip, take, searchTerm);
+   
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "Customer")]
         [HttpGet("customer/recent5/{customerId:int}")]
-        public async Task<IActionResult> GetByCustomerIdRecent([FromRoute] int customerId)
+        public async Task<IActionResult> GetByPagedCustomerId([FromRoute] int customerId)
         {
             var bookings = await _bookingRepo.Recent5CustomerBookings(customerId);
             var bookingsDto = bookings.Select(b => b.ToBookingDto());
@@ -82,6 +94,15 @@
             return Ok(new { Name = booking.ServiceTypeName, Date = booking.BookingDate, Time = booking.Time });
         }
 
+        [Authorize(Roles = "Customer")]
+        [HttpGet("upcoming/all/customer/{customerId:int}")]
+        public async Task<IActionResult> GetAllUpcomingByCustomerId([FromRoute] int customerId)
+        {
+            var result = await _bookingRepo.GetAllUpcomingCustomerBookings(customerId);
+            var bookings = result.Select(b => b.ToBookingDto());
+            return Ok(bookings);
+        }
+
         [Authorize(Roles = "ServiceProvider")]
         [HttpGet("upcoming/provider/{providerId:int}")]
         public async Task<IActionResult> GetUpcomingByProviderId([FromRoute] int providerId)
@@ -91,12 +112,15 @@
             return Ok(new { Name = booking.ServiceTypeName, Date = booking.BookingDate, Time = booking.Time });
         }
 
-        /// <summary>
-        /// The GetByProviderId
-        /// </summary>
-        /// <param name="providerId">The providerId<see cref="int"/></param>
-        /// <returns>The <see cref="Task{IActionResult}"/></returns>
-        /// 
+        [Authorize(Roles = "ServiceProvider")]
+        [HttpGet("upcoming/all/provider/{providerId:int}")]
+        public async Task<IActionResult> GetAllUpcomingByProviderId([FromRoute] int providerId)
+        {
+            var result = await _bookingRepo.GetAllUpcomingProviderBookings(providerId);
+            var bookings = result.Select(b => b.ToBookingDto());
+            return Ok(bookings);
+        }
+
         [Authorize(Roles = "Admin,ServiceProvider")]
         [HttpGet("provider/{providerId:int}")]
         public async Task<IActionResult> GetByProviderId([FromRoute] int providerId)
@@ -115,12 +139,18 @@
             return Ok(bookingsDto);
         }
 
-        /// <summary>
-        /// The GetProviderDashboardData
-        /// </summary>
-        /// <param name="providerId">The providerId<see cref="int"/></param>
-        /// <returns>The <see cref="Task{IActionResult}"/></returns>
-        /// 
+        [Authorize(Roles = "Admin,ServiceProvider")]
+        [HttpGet("provider/paged/{providerId:int}")]
+        public async Task<IActionResult> GetByProviderIdPaged([FromRoute] int providerId,
+                                                              [FromQuery] int skip = 0,
+                                                              [FromQuery] int take = 10,
+                                                              [FromQuery] string? searchTerm = null)
+        {
+            var result = await _bookingRepo.GetPagedByProviderIdAsync(providerId, skip, take, searchTerm);
+
+            return Ok(result);
+        }
+
         [Authorize(Roles = "Admin,ServiceProvider")]
         [HttpGet("provider/dashboard/{providerId:int}")]
         public async Task<IActionResult> GetProviderDashboardData([FromRoute] int providerId)

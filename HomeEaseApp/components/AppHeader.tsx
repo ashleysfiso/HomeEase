@@ -84,7 +84,7 @@ const PremiumAppHeader = ({
               <View className="flex-row items-center">
                 <View>
                   <Text
-                    className={`text-3xl font-black ${textColor} tracking-tight`}
+                    className={`text-3xl font-black text-foreground/70 tracking-tight`}
                     style={{
                       fontFamily:
                         Platform.OS === "ios" ? "SF Pro Display" : "Roboto",
@@ -93,11 +93,7 @@ const PremiumAppHeader = ({
                   >
                     Home
                     <Text
-                      className={`text-3xl font-light ${
-                        variant === "gradient"
-                          ? "text-white/90"
-                          : "text-primary"
-                      }`}
+                      className={`text-3xl font-light text-foreground/70`}
                       style={{
                         fontFamily:
                           Platform.OS === "ios" ? "SF Pro Display" : "Roboto",
@@ -118,30 +114,13 @@ const PremiumAppHeader = ({
 
             {/* Right - Action Icons */}
             <View className="flex-row items-center gap-2">
-              {
-                <TouchableOpacity
-                  className={`p-3 rounded-2xl ${
-                    variant === "gradient"
-                      ? "bg-white/20 active:bg-white/30"
-                      : "bg-muted/50 active:bg-muted"
-                  }`}
-                  style={{
-                    shadowColor: "#000",
-                    shadowOffset: { width: 0, height: 2 },
-                    shadowOpacity: 0.1,
-                    shadowRadius: 4,
-                    elevation: 3,
-                  }}
-                ></TouchableOpacity>
-              }
-
-              {showNotifications && (
+              {/*showNotifications && (
                 <TouchableOpacity
                   onPress={onNotificationPress}
                   className={`p-3 rounded-2xl relative ${
                     variant === "gradient"
                       ? "bg-white/20 active:bg-white/30"
-                      : "bg-muted/50 active:bg-muted"
+                      : "bg-muted active:bg-muted"
                   }`}
                   style={{
                     shadowColor: "#000",
@@ -160,7 +139,7 @@ const PremiumAppHeader = ({
                     </View>
                   )}
                 </TouchableOpacity>
-              )}
+              )*/}
 
               {showMessages && (
                 <TouchableOpacity
@@ -168,7 +147,7 @@ const PremiumAppHeader = ({
                   className={`p-3 rounded-2xl ${
                     variant === "gradient"
                       ? "bg-white/20 active:bg-white/30"
-                      : "bg-muted/50 active:bg-muted"
+                      : "bg-muted active:bg-muted"
                   }`}
                   style={{
                     shadowColor: "#000",
@@ -179,8 +158,32 @@ const PremiumAppHeader = ({
                   }}
                 >
                   <MessageCircle size={22} color={iconColor} />
+                  {notificationCount > 0 && (
+                    <View className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full items-center justify-center border-2 border-white">
+                      <Text className="text-white text-xs font-bold">
+                        {notificationCount > 9 ? "9+" : notificationCount}
+                      </Text>
+                    </View>
+                  )}
                 </TouchableOpacity>
               )}
+              {
+                <TouchableOpacity
+                  className={`p-3 rounded-2xl ${
+                    variant === "gradient"
+                      ? "bg-white/20 active:bg-white/30"
+                      : "bg-muted active:bg-muted"
+                  }`}
+                  style={{
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.1,
+                    shadowRadius: 4,
+                    elevation: 3,
+                  }}
+                >
+                  <ThemeToggle />
+                </TouchableOpacity>
+              }
             </View>
           </View>
         </View>

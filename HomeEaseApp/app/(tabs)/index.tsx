@@ -211,7 +211,7 @@ export default function Index() {
         </View>*/}
 
         {/* Header */}
-        <View className="px-6 pt-4 pb-6">
+        <View className="px-6 pb-6">
           {/* Search Bar */}
           <SearchBar
             onPress={() => router.push("/browse")}
@@ -314,7 +314,11 @@ export default function Index() {
                   style={{ width: 150, marginRight: 12 }}
                 >
                   <Image
-                    source={{ uri: item?.imgURL }}
+                    source={{
+                      uri:
+                        item?.imgURL ??
+                        "https://picsum.photos/600/400?random=8",
+                    }}
                     className="w-full h-32"
                     resizeMode="cover"
                   />
@@ -367,11 +371,16 @@ export default function Index() {
                   key={booking.id}
                   className="bg-card rounded-2xl p-4 flex-row items-center shadow-sm border border-border"
                 >
-                  <View
-                    className="bg-primary/10 p-3 rounded-xl mr-4"
-                    style={{ backgroundColor: "#3b82f615" }}
-                  >
-                    <Home size={24} color="#3b82f6" />
+                  <View className="bg-primary/10  rounded-xl mr-4">
+                    <Image
+                      source={{
+                        uri:
+                          booking?.imgURL ??
+                          `https://picsum.photos/600/400?random=${booking.id}`,
+                      }}
+                      className="w-12 h-12 rounded-xl"
+                      resizeMode="cover"
+                    />
                   </View>
                   <View className="flex-1">
                     <Text className="font-semibold text-card-foreground mb-1">

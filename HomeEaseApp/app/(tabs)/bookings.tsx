@@ -7,12 +7,35 @@ import {
   Wrench,
 } from "lucide-react-native";
 import React, { useState } from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View, Image } from "react-native";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { SafeAreaView } from "react-native-safe-area-context";
+import PremiumAppHeader from "~/components/AppHeader";
+import BookingDetailsModal from "~/components/booking/BookingDetailsModal";
+import { formatDate } from "~/Utils/Utils";
+import { formatTime } from "~/Utils/Utils";
 
 const BookingsScreen = () => {
   const [activeTab, setActiveTab] = useState("upcoming");
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const sampleBooking = {
+    id: 4,
+    customerName: "John Doe",
+    customerPhone: "01234455678",
+    serviceName: "🧼 Home Cleaning Service 🏡✨",
+    serviceTypeName: "✅ Standard Cleaning",
+    companyName: "Cleaning Experts",
+    size: '"Bedrooms":"6+ Bedrooms","Bathrooms":"1-3 Bathrooms"',
+    bookingDate: "2025-06-10",
+    time: "13:00",
+    status: "Pending",
+    totalCost: 1470,
+    createdAt: "2025-06-08T15:06:58.8091429",
+    updatedAt: "2025-06-08T15:06:58.809144",
+    address: "My New Apartment 402b",
+    rating: null,
+  };
 
   const bookingsData = {
     upcoming: [
@@ -134,14 +157,22 @@ const BookingsScreen = () => {
             className="w-12 h-12 rounded-full items-center justify-center mr-3"
             style={{ backgroundColor: `${booking.iconBg}20` }}
           >
-            <IconComponent size={24} color={booking.iconBg} />
+            <Image
+              source={{
+                uri:
+                  booking?.imgURL ?? "https://picsum.photos/600/400?random=4",
+              }}
+              className="w-12 h-12 rounded-full"
+              resizeMode="cover"
+            />
           </View>
+
           <View className="flex-1">
             <Text className="text-lg font-semibold text-primary mb-1">
               {booking.service}
             </Text>
             <Text className="text-muted-foreground text-sm">
-              Reference Code: {booking.referenceCode}
+              Reference Code: {booking.serviceTypeName}
             </Text>
           </View>
         </View>
@@ -164,13 +195,21 @@ const BookingsScreen = () => {
               </Text>
             </View>
           </View>
+          <Text className="text-card-foreground text-sm">Schedule</Text>
           <View className="flex-row items-center mb-2">
             <Calendar size={16} color="#6b7280" />
             <Text className="text-card-foreground ml-2 font-medium">
-              {booking.time}, {booking.date}
+              {formatDate(booking.date)}, {formatTime(booking.time)}
             </Text>
           </View>
-          <Text className="text-card-foreground text-sm">Schedule</Text>
+          <TouchableOpacity
+            onPress={() => setModalVisible(true)}
+            className="bg-blue-400 rounded-xl py-3 items-center"
+          >
+            <Text className="text-primary-foreground font-bold">
+              View Details
+            </Text>
+          </TouchableOpacity>
         </View>
 
         {/* Provider and Call Button */}
@@ -215,11 +254,46 @@ const BookingsScreen = () => {
     </View>
   );
 
+  const handleSearch = () => {
+    console.log("Search pressed");
+  };
+
+  const handleNotifications = () => {
+    console.log("Notifications pressed");
+  };
+
+  const handleMessages = () => {
+    console.log("Messages pressed");
+  };
+
+  const handleCallCustomer = () => {
+    console.log("Call Customer", `Calling...`);
+  };
+
+  const handleUpdateStatus = (status: string) => {
+    console.log("Status Updated", `Booking status changed to: ${status}`);
+    setModalVisible(false);
+  };
+
+  const handleRateService = () => {
+    console.log("Rate Service", "Rating functionality would open here");
+  };
+
   return (
     <SafeAreaView edges={[]} className="flex-1 bg-background">
       {/* Header */}
+      <PremiumAppHeader
+        showSearch={true}
+        showNotifications={true}
+        showMessages={true}
+        onSearchPress={handleSearch}
+        onNotificationPress={handleNotifications}
+        onMessagePress={handleMessages}
+        notificationCount={5}
+        variant="glass"
+      />
       {/* Tabs Container */}
-      <View className="flex-1 px-6 pt-6">
+      <View className="flex-1 px-6 ">
         <Tabs
           value={activeTab}
           onValueChange={setActiveTab}
@@ -282,6 +356,14 @@ const BookingsScreen = () => {
           </TabsContent>
         </Tabs>
       </View>
+      <BookingDetailsModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        booking={sampleBooking}
+        onCallCustomer={handleCallCustomer}
+        onUpdateStatus={handleUpdateStatus}
+        onRateService={handleRateService}
+      />
     </SafeAreaView>
   );
 };

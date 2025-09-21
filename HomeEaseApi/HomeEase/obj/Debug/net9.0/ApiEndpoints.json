@@ -280,7 +280,38 @@
   },
   {
     "ContainingType": "HomeEase.Controllers.BookingsController",
-    "Method": "GetByCustomerIdRecent",
+    "Method": "GetByCustomerIdPaged",
+    "RelativePath": "api/Bookings/customer/paged/{customerId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "customerId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "skip",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "take",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "searchTerm",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.BookingsController",
+    "Method": "GetByPagedCustomerId",
     "RelativePath": "api/Bookings/customer/recent5/{customerId}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -344,8 +375,71 @@
   },
   {
     "ContainingType": "HomeEase.Controllers.BookingsController",
+    "Method": "GetByProviderIdPaged",
+    "RelativePath": "api/Bookings/provider/paged/{providerId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "providerId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "skip",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "take",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "searchTerm",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.BookingsController",
     "Method": "GetByProviderIdRecent",
     "RelativePath": "api/Bookings/provider/recent5/{providerId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "providerId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.BookingsController",
+    "Method": "GetAllUpcomingByCustomerId",
+    "RelativePath": "api/Bookings/upcoming/all/customer/{customerId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "customerId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.BookingsController",
+    "Method": "GetAllUpcomingByProviderId",
+    "RelativePath": "api/Bookings/upcoming/all/provider/{providerId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -854,7 +948,7 @@
   },
   {
     "ContainingType": "HomeEase.Controllers.ServiceOfferingsController",
-    "Method": "GetServiceOfferings",
+    "Method": "GetPagedServiceOfferings",
     "RelativePath": "api/ServiceOfferings/paged",
     "HttpMethod": "GET",
     "IsController": true,
