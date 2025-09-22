@@ -6,38 +6,157 @@ import {
   User,
   Wrench,
 } from "lucide-react-native";
-import React, { useState } from "react";
-import { ScrollView, Text, TouchableOpacity, View, Image } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+  Image,
+  ActivityIndicator,
+  FlatList,
+} from "react-native";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { SafeAreaView } from "react-native-safe-area-context";
 import PremiumAppHeader from "~/components/AppHeader";
 import BookingDetailsModal from "~/components/booking/BookingDetailsModal";
 import { formatDate } from "~/Utils/Utils";
 import { formatTime } from "~/Utils/Utils";
+import { useAuth } from "~/contexts/AuthContext";
+import {
+  getAllUpcomingCustomerBooking,
+  getAllUpcomingProviderBooking,
+  getCutomerBookingHistory,
+  getProviderBookingHistory,
+} from "~/api/bookingApi";
+import UpcomingBookingsSkeletonLoader from "~/components/skeletonLoader/SkeletonUpcomingBookings";
+import { Item } from "@rn-primitives/select";
+import SearchBar from "~/components/SearchBar";
+
+interface BookingData {
+  id: number;
+  customerName: string;
+  customerPhone: string;
+  serviceName: string;
+  serviceTypeName: string;
+  companyName: string;
+  size: string;
+  bookingDate: string;
+  time: string;
+  status: string;
+  totalCost: number;
+  createdAt: string;
+  updatedAt: string;
+  address: string;
+  rating: number | null;
+}
 
 const BookingsScreen = () => {
   const [activeTab, setActiveTab] = useState("upcoming");
   const [modalVisible, setModalVisible] = useState(false);
+  const [isUpcomingLoading, setIsUpcomingLoading] = useState(true);
+  const [isHistoryLoading, setIsHistoryLoading] = useState(false);
+  const [bookingsData, setBookingsData] = useState<BookingData[]>([]);
+  const [historyBookingsData, setHistoryBookingsData] = useState<BookingData[]>(
+    []
+  );
+  const [servicesFound, setServicesFound] = useState(0);
+  const [selectedBooking, setSelectedBooking] = useState<BookingData>();
+  const { user } = useAuth();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchTrigger, setSearchTrigger] = useState("");
+  // ✅ API state
+  const [skip, setSkip] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const take = 10;
+
+  const fetchServices = async (reset = false) => {
+    if (isHistoryLoading || (!hasMore && !reset)) return;
+    if (reset) setHistoryBookingsData([]);
+    setIsHistoryLoading(true);
+    try {
+      const currentSkip = reset ? 0 : skip;
+
+      const result = user?.customerID
+        ? await getCutomerBookingHistory(
+            user.customerID,
+            currentSkip,
+            take,
+            searchQuery
+          )
+        : await getProviderBookingHistory(
+            user?.providerId ?? 0,
+            currentSkip,
+            take,
+            searchQuery
+          );
+      if (reset) {
+        setHistoryBookingsData(result.items);
+        setSkip(take);
+        setHasMore(result.items.length < result.totalCount);
+        setServicesFound(result.totalCount);
+      } else {
+        setHistoryBookingsData((prev) => {
+          const newData = [...prev, ...result.items];
+          setHasMore(newData.length < result.totalCount);
+          return newData;
+        });
+        setSkip((prev) => prev + take);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsHistoryLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchServices(true);
+  }, [searchTrigger]);
+
+  useEffect(() => {
+    const fetchUpcomingBookings = async () => {
+      try {
+        if (user?.customerID) {
+          const result = await getAllUpcomingCustomerBooking(user.customerID);
+          setBookingsData(result);
+          setIsUpcomingLoading(false);
+          return;
+        }
+
+        if (user?.providerId) {
+          const result = await getAllUpcomingProviderBooking(user.providerId);
+          setBookingsData(result);
+          setIsUpcomingLoading(false);
+          return;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchUpcomingBookings();
+  }, [user]);
 
   const sampleBooking = {
-    id: 4,
-    customerName: "John Doe",
-    customerPhone: "01234455678",
-    serviceName: "🧼 Home Cleaning Service 🏡✨",
-    serviceTypeName: "✅ Standard Cleaning",
-    companyName: "Cleaning Experts",
-    size: '"Bedrooms":"6+ Bedrooms","Bathrooms":"1-3 Bathrooms"',
-    bookingDate: "2025-06-10",
-    time: "13:00",
-    status: "Pending",
-    totalCost: 1470,
-    createdAt: "2025-06-08T15:06:58.8091429",
-    updatedAt: "2025-06-08T15:06:58.809144",
-    address: "My New Apartment 402b",
+    id: 0,
+    customerName: "",
+    customerPhone: "",
+    serviceName: "",
+    serviceTypeName: "",
+    companyName: "",
+    size: '""',
+    bookingDate: "0000-00-00",
+    time: "",
+    status: "",
+    totalCost: 0,
+    createdAt: "",
+    updatedAt: "",
+    address: "",
     rating: null,
   };
 
-  const bookingsData = {
+  const bookingsDat = {
     upcoming: [
       {
         id: 1,
@@ -152,6 +271,7 @@ const BookingsScreen = () => {
         className="bg-card rounded-2xl p-4 mb-4 shadow-sm border border-border"
       >
         {/* Service Header */}
+
         <View className="flex-row items-center mb-3">
           <View
             className="w-12 h-12 rounded-full items-center justify-center mr-3"
@@ -168,11 +288,11 @@ const BookingsScreen = () => {
           </View>
 
           <View className="flex-1">
-            <Text className="text-lg font-semibold text-primary mb-1">
-              {booking.service}
+            <Text className="text-lg font-semibold text-foreground/70 mb-1">
+              {booking.serviceName}
             </Text>
             <Text className="text-muted-foreground text-sm">
-              Reference Code: {booking.serviceTypeName}
+              {booking.serviceTypeName}
             </Text>
           </View>
         </View>
@@ -195,15 +315,18 @@ const BookingsScreen = () => {
               </Text>
             </View>
           </View>
-          <Text className="text-card-foreground text-sm">Schedule</Text>
+          <Text className="text-muted-foreground text-sm">Schedule</Text>
           <View className="flex-row items-center mb-2">
             <Calendar size={16} color="#6b7280" />
-            <Text className="text-card-foreground ml-2 font-medium">
-              {formatDate(booking.date)}, {formatTime(booking.time)}
+            <Text className="text-card-foreground/70 ml-2 font-medium">
+              {formatDate(booking.bookingDate)}, {formatTime(booking.time)}
             </Text>
           </View>
           <TouchableOpacity
-            onPress={() => setModalVisible(true)}
+            onPress={() => {
+              setSelectedBooking(booking);
+              setModalVisible(true);
+            }}
             className="bg-blue-400 rounded-xl py-3 items-center"
           >
             <Text className="text-primary-foreground font-bold">
@@ -216,14 +339,26 @@ const BookingsScreen = () => {
         <View className="flex-row items-center justify-between pt-3 border-t border-border">
           <View className="flex-row items-center flex-1">
             <View className="w-8 h-8 bg-muted rounded-full items-center justify-center mr-3">
-              <User size={16} color="#6b7280" />
+              {user?.customerID ? (
+                <Image
+                  source={{
+                    uri:
+                      booking?.companyLogo ??
+                      "https://picsum.photos/600/400?random=9",
+                  }}
+                  className="w-10 h-10 rounded-full"
+                  resizeMode="cover"
+                />
+              ) : (
+                <User size={16} color="#6b7280" />
+              )}
             </View>
             <View>
               <Text className="font-medium text-card-foreground">
-                {booking.provider}
+                {user?.customerID ? booking.companyName : booking.customerName}
               </Text>
               <Text className="text-muted-foreground text-sm">
-                Service provider
+                {user?.customerID ? "Service provider" : "Customer"}
               </Text>
             </View>
           </View>
@@ -292,6 +427,19 @@ const BookingsScreen = () => {
         notificationCount={5}
         variant="glass"
       />
+      {/* Search Bar */}
+      {/* Search Bar */}
+      <View className="px-4 pb-6">
+        <SearchBar
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          onPress={() => setActiveTab("history")}
+          placeholder="Search service or service provider or customer's name"
+          searchTrigger={() => {
+            setSearchTrigger(searchQuery);
+          }}
+        />
+      </View>
       {/* Tabs Container */}
       <View className="flex-1 px-6 ">
         <Tabs
@@ -319,25 +467,52 @@ const BookingsScreen = () => {
                 flexGrow: 1,
               }}
             >
-              {bookingsData.upcoming.length > 0
-                ? bookingsData.upcoming.map(renderBookingCard)
-                : renderEmptyState("upcoming")}
+              {isUpcomingLoading ? (
+                <View>
+                  <UpcomingBookingsSkeletonLoader />
+                  <UpcomingBookingsSkeletonLoader />
+                  <UpcomingBookingsSkeletonLoader />
+                </View>
+              ) : bookingsData.length > 0 ? (
+                bookingsData.map(renderBookingCard)
+              ) : (
+                renderEmptyState("upcoming")
+              )}
             </ScrollView>
           </TabsContent>
 
           <TabsContent value="history" className="flex-1">
-            <ScrollView
-              className="flex-1"
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{
-                paddingBottom: 20,
-                flexGrow: 1,
-              }}
-            >
-              {bookingsData.history.length > 0
-                ? bookingsData.history.map(renderBookingCard)
-                : renderEmptyState("history")}
-            </ScrollView>
+            {
+              <FlatList
+                data={historyBookingsData}
+                renderItem={({ item }) => renderBookingCard(item)}
+                keyExtractor={(item) => `${item.id}`}
+                contentContainerStyle={{
+                  paddingBottom: 20,
+                }}
+                showsVerticalScrollIndicator={false}
+                onEndReached={() => fetchServices()}
+                onEndReachedThreshold={0.5}
+                ListFooterComponent={
+                  isHistoryLoading ? <ActivityIndicator size="small" /> : null
+                }
+                ListEmptyComponent={
+                  !isHistoryLoading ? (
+                    renderEmptyState
+                  ) : (
+                    <View>
+                      <UpcomingBookingsSkeletonLoader />
+                      <UpcomingBookingsSkeletonLoader />
+                      <UpcomingBookingsSkeletonLoader />
+                    </View>
+                  )
+                }
+                initialNumToRender={5} // how many items to render initially
+                maxToRenderPerBatch={10} // render more as you scroll
+                windowSize={5} // number of screens worth of content to render
+                removeClippedSubviews // unmount off-screen items
+              />
+            }
           </TabsContent>
 
           <TabsContent value="draft" className="flex-1">
@@ -349,8 +524,8 @@ const BookingsScreen = () => {
                 flexGrow: 1,
               }}
             >
-              {bookingsData.draft.length > 0
-                ? bookingsData.draft.map(renderBookingCard)
+              {bookingsDat.draft.length > 0
+                ? bookingsDat.draft.map(renderBookingCard)
                 : renderEmptyState("draft")}
             </ScrollView>
           </TabsContent>
@@ -359,7 +534,7 @@ const BookingsScreen = () => {
       <BookingDetailsModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
-        booking={sampleBooking}
+        booking={selectedBooking ?? sampleBooking}
         onCallCustomer={handleCallCustomer}
         onUpdateStatus={handleUpdateStatus}
         onRateService={handleRateService}

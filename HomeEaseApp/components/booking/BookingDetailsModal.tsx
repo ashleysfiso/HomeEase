@@ -161,9 +161,8 @@ const BookingDetailsModal = ({
     >
       <View className="flex-1 bg-black/50 justify-end">
         <View
-          className="bg-background rounded-t-3xl shadow-2xl"
+          className="h-3/4 bg-background rounded-t-3xl shadow-2xl"
           style={{
-            maxHeight: "90%",
             shadowColor: "#000",
             shadowOffset: { width: 0, height: -4 },
             shadowOpacity: 0.25,
@@ -189,7 +188,7 @@ const BookingDetailsModal = ({
             </TouchableOpacity>
           </View>
 
-          <ScrollView className="max-h-96" showsVerticalScrollIndicator={false}>
+          <ScrollView className="" showsVerticalScrollIndicator={false}>
             <View className="p-6 gap-6">
               {/* Status Badge */}
               <View className="flex-row items-center justify-center">

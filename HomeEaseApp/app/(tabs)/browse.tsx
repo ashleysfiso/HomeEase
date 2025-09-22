@@ -14,6 +14,7 @@ import {
 import SearchBar from "~/components/SearchBar";
 import { getServiceOfferings } from "~/api/serviceOfferingApi";
 import PremiumAppHeader from "~/components/AppHeader";
+import ServiceCardSkeleton from "~/components/skeletonLoader/SkeletonBrowseServices";
 
 const BrowseServicesScreen = () => {
   const [favorites, setFavorites] = useState<number[]>([]);
@@ -37,7 +38,7 @@ const BrowseServicesScreen = () => {
   // 🔹 Fetch services from API
   const fetchServices = async (reset = false) => {
     if (loading || (!hasMore && !reset)) return;
-
+    if (reset) setData([]);
     setLoading(true);
     try {
       const currentSkip = reset ? 0 : skip;
@@ -154,17 +155,17 @@ const BrowseServicesScreen = () => {
         notificationCount={5}
         variant="glass"
       />
-
       {/* Search Bar */}
-      <View className="px-4 pb-6">
+      <View className="px-4 pb-2">
         <SearchBar
           value={searchQuery}
           onChangeText={setSearchQuery}
           placeholder="Search service or service provider"
-          searchTrigger={() => setSearchTrigger(searchQuery)}
+          searchTrigger={() => {
+            setSearchTrigger(searchQuery);
+          }}
         />
       </View>
-
       {/* Section Header */}
       <View className="px-4 pb-4 flex-row items-center justify-between">
         <View>
@@ -184,42 +185,39 @@ const BrowseServicesScreen = () => {
           </TouchableOpacity>
         </View>
       </View>
-
       {/* Services Grid */}
-      {loading ? (
-        <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#3b82f6" />
-        </View>
-      ) : (
-        <FlatList
-          data={data}
-          renderItem={renderServiceCard}
-          numColumns={2}
-          keyExtractor={(item) => `${item.serviceId}-${item.serviceProviderId}`}
-          columnWrapperStyle={{ justifyContent: "space-around" }}
-          contentContainerStyle={{ paddingHorizontal: 8, paddingBottom: 20 }}
-          showsVerticalScrollIndicator={false}
-          onEndReached={() => fetchServices()}
-          onEndReachedThreshold={0.5}
-          ListFooterComponent={
-            loading ? <ActivityIndicator size="large" /> : null
-          }
-          ListEmptyComponent={
-            !loading ? (
-              <View className="flex-1 items-center justify-center py-20">
-                <Text className="text-muted-foreground text-lg">
-                  No services found
-                </Text>
-                <Text className="text-muted-foreground/60 text-sm mt-2">
-                  Try adjusting your filters
-                </Text>
-              </View>
-            ) : null
-          }
-        />
-      )}
-
-      {/* Filters modal can stay as is */}
+      <FlatList
+        data={data}
+        renderItem={renderServiceCard}
+        numColumns={2}
+        keyExtractor={(item) => `${item.serviceId}-${item.serviceProviderId}`}
+        columnWrapperStyle={{ justifyContent: "space-around" }}
+        contentContainerStyle={{ paddingHorizontal: 8, paddingBottom: 20 }}
+        showsVerticalScrollIndicator={false}
+        onEndReached={() => fetchServices()}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={
+          loading ? <ActivityIndicator size="large" /> : null
+        }
+        ListEmptyComponent={
+          !loading ? (
+            <View className="flex-1 items-center justify-center py-20">
+              <Text className="text-muted-foreground text-lg">
+                No services found
+              </Text>
+              <Text className="text-muted-foreground/60 text-sm mt-2">
+                Try adjusting your filters
+              </Text>
+            </View>
+          ) : (
+            <ServiceCardSkeleton />
+          )
+        }
+        initialNumToRender={5} // how many items to render initially
+        maxToRenderPerBatch={10} // render more as you scroll
+        windowSize={5} // number of screens worth of content to render
+        removeClippedSubviews // unmount off-screen items
+      />
     </SafeAreaView>
   );
 };
