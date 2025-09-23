@@ -122,6 +122,20 @@ namespace HomeEase.Controllers
                 distribution = ratingDistribution,
             });
         }
+
+        [Authorize]
+        [HttpGet("service-offering/paged/{providerId:int}/{serviceId:int}")]
+        public async Task<IActionResult> GetAllPagedByServiceOfferingId([FromRoute] int providerId, 
+                                                                        [FromRoute] int serviceId, 
+                                                                        [FromQuery] int skip = 0,
+                                                                        [FromQuery] int take = 10,
+                                                                        [FromQuery] string? searchTerm = null)
+        {
+            var reviews = await _reviewRepository.GetPagedByProviderIdAsync(providerId, serviceId,skip,take,searchTerm);
+            
+            return Ok(reviews); 
+        }
+
         [Authorize(Roles = "Admin")]
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id)

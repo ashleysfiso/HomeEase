@@ -3,6 +3,7 @@
     using HomeEase.Data;
     using HomeEase.Dtos.ReviewDtos;
     using HomeEase.Interfaces;
+    using HomeEase.Mappers;
     using HomeEase.Models;
     using HomeEase.Utility;
     using Microsoft.EntityFrameworkCore;
@@ -167,6 +168,39 @@
                                                 .ToListAsync();
 
             return reviews;
+        }
+
+        public async Task<PagedReviews<ReviewDto>> GetPagedByProviderIdAsync(int providerId = 0, int serviceId = 0, int skip = 0, int take = 10, string? searchTerm = null)
+        {
+            var query = _context.Reviews.Include(r => r.Customer).ThenInclude(c => c.User)
+                                        .Include(r => r.ServiceOffering).ThenInclude(so => so.ServiceProvider)
+                                        .Include(r => r.ServiceOffering).ThenInclude(so => so.Service)
+                                        .Where(r => r.ServiceOffering.ServiceProviderId == providerId &&
+                                                    r.ServiceOffering.ServiceId == serviceId
+                                                    && r.IsDeleted == false)
+                                        .AsQueryable();
+
+            var averageRating = await query.AnyAsync() ? await query.AverageAsync(r => r.Rating) : 0;
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(r => r.Customer.User.FirstName.Contains(searchTerm) ||
+                                         r.Customer.User.LastName.Contains(searchTerm) ||
+                                         r.Comment.Contains(searchTerm));
+            }
+
+            var totalCount = await query.CountAsync();
+
+            var items = await query.Select(r => r.ToReviewDto()).ToListAsync();
+
+            return new PagedReviews<ReviewDto>
+            {
+                Items = items,
+                AverageRating = averageRating,
+                TotalCount = totalCount,
+                PageNumber = (skip / take) + 1,
+                PageSize = take,
+            };
         }
 
         /// <summary>

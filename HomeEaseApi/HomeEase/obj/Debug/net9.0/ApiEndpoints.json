@@ -769,6 +769,42 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "HomeEase.Controllers.ReviewsController",
+    "Method": "GetAllPagedByServiceOfferingId",
+    "RelativePath": "api/Reviews/service-offering/paged/{providerId}/{serviceId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "providerId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "serviceId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "skip",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "take",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "searchTerm",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "HomeEase.Controllers.ServiceOfferingPricingOptionController",
     "Method": "GetAll",
     "RelativePath": "api/ServiceOfferingPricingOption",
