@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Modal,
   View,
@@ -25,7 +23,7 @@ interface ReviewsModalProps {
   onClose: () => void;
   reviewsData: ReviewItem[];
   isReviewsLoading?: boolean;
-  fetchReviews?: () => void;
+  fetchReviews: () => void;
   title?: string;
   averageRating: number;
   totalCount: string;
@@ -241,8 +239,8 @@ const ReviewsModal = ({
                 paddingTop: 20,
               }}
               showsVerticalScrollIndicator={false}
-              onEndReached={() => fetchReviews?.()}
-              onEndReachedThreshold={0.1}
+              onEndReached={() => fetchReviews()}
+              onEndReachedThreshold={0.5}
               ListFooterComponent={
                 isReviewsLoading ? (
                   <View className="items-center py-4">

@@ -32,6 +32,7 @@ import {
 import UpcomingBookingsSkeletonLoader from "~/components/skeletonLoader/SkeletonUpcomingBookings";
 import { Item } from "@rn-primitives/select";
 import SearchBar from "~/components/SearchBar";
+import LeaveReviewModal from "~/components/reviews/LeaveReviewModal";
 
 interface BookingData {
   id: number;
@@ -54,6 +55,10 @@ interface BookingData {
 const BookingsScreen = () => {
   const [activeTab, setActiveTab] = useState("upcoming");
   const [modalVisible, setModalVisible] = useState(false);
+  const [reviewModalVisible, setReviewModalVisible] = useState(false);
+  const [serviceName, setServiceName] = useState("");
+  const [companyName, setCompanyName] = useState("");
+  const [bookingId, setBookingId] = useState<number | null>(null);
   const [isUpcomingLoading, setIsUpcomingLoading] = useState(true);
   const [isHistoryLoading, setIsHistoryLoading] = useState(false);
   const [bookingsData, setBookingsData] = useState<BookingData[]>([]);
@@ -263,6 +268,11 @@ const BookingsScreen = () => {
     }
   };
 
+  const showReviewError = (message: any) => {
+    if (typeof message === "string") {
+    }
+  };
+
   const renderBookingCard = (booking: any) => {
     const IconComponent = booking.icon;
     return (
@@ -300,7 +310,16 @@ const BookingsScreen = () => {
         {/* Status and Schedule */}
         <View className="mb-4">
           <View className="flex-row items-center justify-between mb-2">
-            <Text className="text-muted-foreground text-sm">Status</Text>
+            <TouchableOpacity
+              onPress={() => {
+                setBookingId(booking?.id);
+                setServiceName(booking.serviceName);
+                setCompanyName(booking.companyName);
+                setReviewModalVisible(true);
+              }}
+            >
+              <Text className="text-blue-500/70 font-bold">Leave Review</Text>
+            </TouchableOpacity>
             <View
               className="px-3 py-1 rounded-full"
               style={{
@@ -315,7 +334,7 @@ const BookingsScreen = () => {
               </Text>
             </View>
           </View>
-          <Text className="text-muted-foreground text-sm">Schedule</Text>
+
           <View className="flex-row items-center mb-2">
             <Calendar size={16} color="#6b7280" />
             <Text className="text-card-foreground/70 ml-2 font-medium">
@@ -531,6 +550,16 @@ const BookingsScreen = () => {
           </TabsContent>
         </Tabs>
       </View>
+      <LeaveReviewModal
+        visible={reviewModalVisible}
+        onClose={() => {
+          setBookingId(null);
+          setReviewModalVisible(false);
+        }}
+        bookingId={bookingId}
+        serviceName={serviceName}
+        companyName={companyName}
+      />
       <BookingDetailsModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}

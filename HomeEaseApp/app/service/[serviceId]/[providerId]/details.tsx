@@ -132,6 +132,7 @@ const ServiceDetailScreen = () => {
 
   const fetchReviews = async (reset = false) => {
     if (isReviewsLoading || (!hasMore && !reset)) return;
+    console.log(`Reset: ${reset}`);
     setIsReviewsLoading(true);
     try {
       const currentSkip = reset ? 0 : skip;
@@ -141,7 +142,7 @@ const ServiceDetailScreen = () => {
       const result = await getReviews(
         Number(serviceId),
         Number(providerId),
-        skip,
+        currentSkip,
         take
       );
       if (reset) {
@@ -182,7 +183,7 @@ const ServiceDetailScreen = () => {
       fetchService();
       fetchReviews(true);
     }
-  });
+  }, []);
 
   const reviews = [
     {
