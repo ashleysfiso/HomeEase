@@ -196,7 +196,7 @@
             return new PagedReviews<ReviewDto>
             {
                 Items = items,
-                AverageRating = averageRating,
+                AverageRating = Math.Round(averageRating, 2, MidpointRounding.AwayFromZero),
                 TotalCount = totalCount,
                 PageNumber = (skip / take) + 1,
                 PageSize = take,

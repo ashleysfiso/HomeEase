@@ -10,5 +10,7 @@ namespace HomeEase.Models
         public DateTime RefreshTokenExpiryTime { get; set; }
         public Customer? Customer { get; set; }
         public ServiceProvider? ServiceProvider { get; set; }
+        public List<NotificationToken> NotificationTokens { get; set; }
+        public List<UserNotification> UserNotifications { get; set; }
     }
 }

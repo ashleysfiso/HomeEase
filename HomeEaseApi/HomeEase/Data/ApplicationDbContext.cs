@@ -26,6 +26,8 @@ namespace HomeEase.Data
         public DbSet<PricingOption> PricingOptions => Set<PricingOption>();
         public DbSet<ServiceOfferingPricingOption> ServiceOfferingPricings => Set<ServiceOfferingPricingOption>();
         public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
+        public DbSet<NotificationToken> NotificationTokens => Set<NotificationToken>();
+        public DbSet<UserNotification> UserNotifications => Set<UserNotification>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

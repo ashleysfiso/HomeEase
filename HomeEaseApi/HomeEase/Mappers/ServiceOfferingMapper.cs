@@ -21,7 +21,7 @@ namespace HomeEase.Mappers
                 ImgURL = serviceOffering.ImgURL,
                 Status = serviceOffering.Status,
                 IsDeleted = serviceOffering.IsDeleted,
-                Rating = serviceOffering.Reiviews.Count != 0 ? serviceOffering.Reiviews.Average(r => r.Rating) : null,
+                Rating = serviceOffering.Reiviews.Count != 0 ? Math.Round( serviceOffering.Reiviews.Average(r => r.Rating), 2, MidpointRounding.AwayFromZero) : null,
                 ReviewCount = $"{serviceOffering.Reiviews.Count()}",
                 PricingOptions = serviceOffering.PricingOptions.GroupBy(po => new { po.PricingOption.ServiceType.Name, po.PricingOption.UnitLabel })
                                                                .Select(group => new PricingOptionGroup2
