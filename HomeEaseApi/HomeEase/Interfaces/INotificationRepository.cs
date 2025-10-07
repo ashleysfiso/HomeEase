@@ -10,5 +10,7 @@ namespace HomeEase.Interfaces
         public Task<UserNotification> SendNotificationAsync(string userId, string title, string body, object data = null);
         public Task<PagedResult<NotificationDto>> GetUserNotifications(string userId, int skip = 0,
                                                                         int take = 10, string? searchTerm = null);
+        public Task<string?> MarkNotificationsAsOpened(int id);
+        public Task<int> GetUnreadNotificationCount(string userId);
     }
 }

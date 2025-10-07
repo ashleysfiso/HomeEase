@@ -63,5 +63,28 @@ namespace HomeEase.Controllers
 
             return Ok(notification);
         }
+
+        // 🔹 4. Send a notification to a use
+        [Authorize]
+        [HttpPost("mark-as-opened/{id:int}")]
+        public async Task<IActionResult> MarkNotificationAsOpened([FromRoute] int id)
+        {
+            var result = await _notificationRepository.MarkNotificationsAsOpened(id);
+            if(result == null)
+            {
+                return BadRequest("Invalid notification id");
+            }
+
+            return Ok(result);
+        }
+
+        [Authorize]
+        [HttpGet("unread-count/{userId}")]
+        public async Task<IActionResult> GetUnreadNotificationCount([FromRoute] string userId)
+        {
+            var count = await _notificationRepository.GetUnreadNotificationCount(userId);
+            return Ok(count);
+        }
+
     }
 }

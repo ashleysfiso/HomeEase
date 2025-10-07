@@ -25,6 +25,12 @@ namespace HomeEase.Repository
             _context = context;
         }
 
+        public async Task<int> GetUnreadNotificationCount(string userId)
+        {
+            var notificationCount = await _context.UserNotifications.Where(n => n.UserId == userId).CountAsync(n => n.Opened == false);
+            return notificationCount;
+        }
+
         public async Task<PagedResult<NotificationDto>> GetUserNotifications(string userId, int skip = 0, int take = 10, string? searchTerm = null)
         {
             var query = _context.UserNotifications.OrderByDescending(n => n.SentAt)
@@ -50,6 +56,15 @@ namespace HomeEase.Repository
                 PageNumber = (skip / take) + 1,
                 PageSize = take
             };
+        }
+
+        public async Task<string?> MarkNotificationsAsOpened(int id)
+        {
+            var notification = await _context.UserNotifications.FirstOrDefaultAsync(n => n.Id == id);
+            if (notification == null) return null;
+            notification.Opened = true;
+            await _context.SaveChangesAsync();
+            return "Marked as opened";
         }
 
         public async Task<string?> RegisterDeviceAsync(string userId, string expoPushToken)

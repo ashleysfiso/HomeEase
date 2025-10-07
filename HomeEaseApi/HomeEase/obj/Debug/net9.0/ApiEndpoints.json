@@ -543,6 +543,22 @@
   },
   {
     "ContainingType": "HomeEase.Controllers.NotificationsController",
+    "Method": "MarkNotificationAsOpened",
+    "RelativePath": "api/Notifications/mark-as-opened/{id}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.NotificationsController",
     "Method": "RegisterDevice",
     "RelativePath": "api/Notifications/register",
     "HttpMethod": "POST",
@@ -568,6 +584,22 @@
       {
         "Name": "request",
         "Type": "HomeEase.Dtos.NotificationDtos.SendNotificationDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HomeEase.Controllers.NotificationsController",
+    "Method": "GetUnreadNotificationCount",
+    "RelativePath": "api/Notifications/unread-count/{userId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
