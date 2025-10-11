@@ -1,7 +1,5 @@
 ﻿namespace HomeEase.Controllers
 {
-    using System.Data;
-    using System.Security.Claims;
     using HomeEase.Data;
     using HomeEase.Dtos.AccountDtos;
     using HomeEase.Interfaces;
@@ -10,10 +8,10 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Identity.Data;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Rewrite;
     using Microsoft.EntityFrameworkCore;
+    using System.Data;
+    using System.Security.Claims;
 
     /// <summary>
     /// Defines the <see cref="AuthController" />
@@ -89,7 +87,7 @@
                                 Details = "Register successful"
                             });
                             return Ok("User registered");
-                            
+
                         }
                         await transaction.RollbackAsync();
                         await _userManager.DeleteAsync(user);
@@ -281,7 +279,7 @@
             await _userManager.UpdateAsync(user);
 
             var updatedUser = await _userManager.FindByIdAsync(user.Id);
-           
+
 
             Response.Cookies.Delete("refreshToken");
             Response.Cookies.Delete("access_token");
@@ -356,7 +354,7 @@
                 {
                     Email = user.Email,
                     FirstName = user.FirstName,
-                    LastName= user.LastName,
+                    LastName = user.LastName,
                     UserId = user.Id,
                     Role = role,
                     CustomerID = user.Customer?.Id,
@@ -444,7 +442,7 @@
                 refreshToken = newRefreshToken
             });
         }
-        
+
         [HttpPost("logout")]
         [Authorize]
         public async Task<IActionResult> Logout()
@@ -454,7 +452,7 @@
 
             user.RefreshToken = null;
             user.RefreshTokenExpiryTime = DateTime.MinValue;
-            
+
             await _userManager.UpdateAsync(user);
             _auditQueue.Enqueue(new AuditLog
             {
@@ -483,7 +481,7 @@
             var user = await _userManager.Users.Include(u => u.Customer).Include(u => u.ServiceProvider).FirstOrDefaultAsync(u => u.Id == userId);
             var role = await _userManager.GetRolesAsync(user);
             return Ok(
-                new 
+                new
                 {
                     Email = user.Email,
                     UserName = $"{user.FirstName} {user.LastName}",
@@ -494,11 +492,12 @@
                 });
         }
 
-        
+
         [HttpGet("get-user/{userId}")]
         public async Task<IActionResult> GetUser([FromRoute] string userId)
         {
             var user = await _userManager.Users.Include(u => u.Customer).Include(u => u.ServiceProvider).FirstOrDefaultAsync(u => u.Id == userId);
+            if (user == null) return NotFound("User Not Found");
             var role = await _userManager.GetRolesAsync(user);
             return Ok(
                 new
@@ -583,14 +582,14 @@
             });
 
             return Ok(new
-              {
-                  user.Id,
-                  user.UserName,
-                  user.Email,
-                  user.PhoneNumber,
-                  user.FirstName,
-                  user.LastName
-              });
+            {
+                user.Id,
+                user.UserName,
+                user.Email,
+                user.PhoneNumber,
+                user.FirstName,
+                user.LastName
+            });
         }
 
         [Authorize]

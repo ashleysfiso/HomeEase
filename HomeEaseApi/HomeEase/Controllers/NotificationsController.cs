@@ -1,7 +1,6 @@
 ﻿using HomeEase.Dtos.NotificationDtos;
 using HomeEase.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeEase.Controllers
@@ -39,7 +38,7 @@ namespace HomeEase.Controllers
                 return BadRequest(new { message = "UserId and ExpoPushToken are required." });
 
             var message = await _notificationRepository.RegisterDeviceAsync(request.UserId, request.ExpoPushToken);
-            if(message == null)
+            if (message == null)
             {
                 return BadRequest("Invalid user Id");
             }
@@ -70,7 +69,7 @@ namespace HomeEase.Controllers
         public async Task<IActionResult> MarkNotificationAsOpened([FromRoute] int id)
         {
             var result = await _notificationRepository.MarkNotificationsAsOpened(id);
-            if(result == null)
+            if (result == null)
             {
                 return BadRequest("Invalid notification id");
             }

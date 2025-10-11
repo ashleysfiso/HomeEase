@@ -1,13 +1,11 @@
 ﻿using HomeEase.Data;
 using HomeEase.Dtos.BookingDtos;
-using HomeEase.Dtos.ServiceOfferingDtos;
 using HomeEase.Interfaces;
 using HomeEase.Mappers;
 using HomeEase.Models;
 using HomeEase.Services;
 using HomeEase.Utility;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace HomeEase.Repository
 {
@@ -64,7 +62,7 @@ namespace HomeEase.Repository
                                                  .Include(b => b.Customer).ThenInclude(c => c.User)
                                                  .Include(b => b.Review)
                                                  .FirstOrDefaultAsync(b => b.Id == id);
-            if(booking == null)
+            if (booking == null)
             {
                 return null;
             }
@@ -84,7 +82,7 @@ namespace HomeEase.Repository
                                                  .Include(b => b.Review)
                                                  .FirstOrDefaultAsync(b => b.Id == bookingId);
 
-            if(booking == null)
+            if (booking == null)
             {
                 return null;
             }
@@ -226,7 +224,7 @@ namespace HomeEase.Repository
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                query = query.Where(b => b.ServiceOffering.Service.Name.Contains(searchTerm) || 
+                query = query.Where(b => b.ServiceOffering.Service.Name.Contains(searchTerm) ||
                                          b.ServiceOffering.ServiceProvider.CompanyName.Contains(searchTerm));
             }
 
