@@ -571,16 +571,6 @@
 
             if (user == null)
                 return NotFound("User not found");
-
-            _auditQueue.Enqueue(new AuditLog
-            {
-                Action = "User edit profile",
-                PerformedBy = user.Id,
-                TableName = "Users",
-                RecordId = user.Id,
-                Details = "Edit profile successful"
-            });
-
             return Ok(new
             {
                 user.Id,
@@ -589,6 +579,31 @@
                 user.PhoneNumber,
                 user.FirstName,
                 user.LastName
+            });
+        }
+
+        [Authorize]
+        [HttpGet("user-profile/app/{userId}")]
+        public async Task<IActionResult> UserProfileApp([FromRoute] string userId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid data submitted");
+            }
+            var user = await _userManager.Users.Include(u => u.Customer).Include(u => u.ServiceProvider).FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+                return NotFound("User not found");
+            var role = await _userManager.GetRolesAsync(user);
+            return Ok(new
+            {
+                user.Id,
+                Role = role,
+                user.Email,
+                user.PhoneNumber,
+                user.FirstName,
+                user.LastName,
+                ProviderId = user.ServiceProvider?.Id,
             });
         }
 

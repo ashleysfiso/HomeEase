@@ -200,6 +200,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "HomeEase.Controllers.AuthController",
+    "Method": "UserProfileApp",
+    "RelativePath": "api/Auth/user-profile/app/{userId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "HomeEase.Controllers.BookingsController",
     "Method": "GetAll",
     "RelativePath": "api/Bookings",
