@@ -1,4 +1,3 @@
-using System.Text;
 using HomeEase.Data;
 using HomeEase.Interfaces;
 using HomeEase.Models;
@@ -9,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -124,6 +124,7 @@ builder.Services.AddScoped<IPricingOptionRepository, PricingOptionRepository>();
 builder.Services.AddScoped<IServiceOfferingPricingOptionRepository, ServiceOfferingPricingOptionRepository>();
 builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+builder.Services.AddScoped<IConversationRepository, ConversationRepository>();
 builder.Services.AddSingleton<AuditQueue>();
 builder.Services.AddHostedService<AuditLogBackgroundService>();
 builder.Services.AddHttpClient<NotificationService>();
@@ -144,10 +145,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("AllowFrontend");
- 
+
 app.UseHttpsRedirection();
 
-app.UseAuthorization(); 
+app.UseAuthorization();
 
 app.MapControllers();
 

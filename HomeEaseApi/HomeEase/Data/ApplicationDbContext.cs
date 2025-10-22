@@ -1,5 +1,4 @@
-﻿using System.Reflection.Emit;
-using HomeEase.Models;
+﻿using HomeEase.Models;
 using HomeEase.Utility;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -11,7 +10,7 @@ namespace HomeEase.Data
     public class ApplicationDbContext : IdentityDbContext<AppUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {         
+        {
         }
 
         public DbSet<Service> Services => Set<Service>();
@@ -28,6 +27,9 @@ namespace HomeEase.Data
         public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
         public DbSet<NotificationToken> NotificationTokens => Set<NotificationToken>();
         public DbSet<UserNotification> UserNotifications => Set<UserNotification>();
+        public DbSet<Message> Messages => Set<Message>();
+        public DbSet<Conversation> Conversations => Set<Conversation>();
+        public DbSet<ConversationMember> ConversationMembers => Set<ConversationMember>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -73,11 +75,11 @@ namespace HomeEase.Data
                 .WithMany(s => s.ServiceProviderServices)
                 .HasForeignKey(so => so.ServiceId);
 
-            
+
             builder.Entity<Booking>()
                 .HasOne(b => b.ServiceOffering)
                 .WithMany(so => so.Bookings)
-                .HasForeignKey(b => new { b.ServiceProviderId, b.ServiceId }) 
+                .HasForeignKey(b => new { b.ServiceProviderId, b.ServiceId })
                 .HasPrincipalKey(so => new { so.ServiceProviderId, so.ServiceId })
                 .OnDelete(DeleteBehavior.Restrict);
 
@@ -85,7 +87,7 @@ namespace HomeEase.Data
                 .HasOne(b => b.Review)
                 .WithOne(r => r.Booking)
                 .HasForeignKey<Review>(r => r.BookingId)
-                .OnDelete(DeleteBehavior.Restrict); 
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Review>()
                 .HasOne(r => r.ServiceOffering)
@@ -115,6 +117,24 @@ namespace HomeEase.Data
                 .HasOne(sop => sop.PricingOption)
                 .WithMany()
                 .HasForeignKey(sop => sop.PricingOptionId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<ConversationMember>()
+                .HasOne(cm => cm.User)
+                .WithMany(u => u.Conversations)
+                .HasForeignKey(cm => cm.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Message>()
+                .HasOne(m => m.Sender)
+                .WithMany(u => u.SentMessages)
+                .HasForeignKey(m => m.SenderId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Message>()
+                .HasOne(m => m.Conversation)
+                .WithMany(c => c.Messages)
+                .HasForeignKey(m => m.ConversationId)
                 .OnDelete(DeleteBehavior.Restrict);
 
         }

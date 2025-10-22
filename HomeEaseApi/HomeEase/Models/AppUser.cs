@@ -12,5 +12,7 @@ namespace HomeEase.Models
         public ServiceProvider? ServiceProvider { get; set; }
         public List<NotificationToken> NotificationTokens { get; set; }
         public List<UserNotification> UserNotifications { get; set; }
+        public List<Message> SentMessages { get; set; } = new();
+        public List<ConversationMember> Conversations { get; set; } = new();
     }
 }
