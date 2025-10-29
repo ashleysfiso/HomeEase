@@ -1,5 +1,6 @@
 import React from "react";
 import { ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import {
   Collapsible,
@@ -37,10 +38,10 @@ export function NavMain({ items }) {
               <Collapsible key={item.title} asChild defaultOpen={item.isActive}>
                 <SidebarMenuItem>
                   <SidebarMenuButton asChild tooltip={item.title}>
-                    <a href={item.url}>
+                    <Link to={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                   {item.items?.length ? (
                     <>
@@ -55,9 +56,9 @@ export function NavMain({ items }) {
                           {item.items?.map((subItem) => (
                             <SidebarMenuSubItem key={subItem.title}>
                               <SidebarMenuSubButton asChild>
-                                <a href={subItem.url}>
+                                <Link href={subItem.url}>
                                   <span>{subItem.title}</span>
-                                </a>
+                                </Link>
                               </SidebarMenuSubButton>
                             </SidebarMenuSubItem>
                           ))}
