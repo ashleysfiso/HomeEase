@@ -18,6 +18,7 @@ import { EditUserProfile } from "@/api";
 import MyLoader from "./MyLoader";
 import { useToast } from "@/hooks/use-toast";
 import { UpdatePassword } from "@/api";
+import ImageUpload from "./ImageUpload";
 
 export default function EditProfile() {
   const [isLoading, setIsLoading] = useState(true);
@@ -172,9 +173,12 @@ export default function EditProfile() {
           </div>
 
           <Tabs defaultValue="user-info" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
+            <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="user-info">User Info</TabsTrigger>
               <TabsTrigger value="password">Password</TabsTrigger>
+              {user.role.includes("ServiceProvider") && (
+                <TabsTrigger value="upload-logo">Upload Logo</TabsTrigger>
+              )}
             </TabsList>
 
             <TabsContent value="user-info" className="space-y-4">
@@ -296,6 +300,18 @@ export default function EditProfile() {
                   </Button>
                 </CardFooter>
               </Card>
+            </TabsContent>
+
+            <TabsContent value="upload-logo" className="space-y-4">
+              <ImageUpload
+                onUploadComplete={(url) => {
+                  console.log("Upload complete:", url);
+                }}
+                maxSizeMB={5}
+                acceptedFormats={["image/jpeg", "image/png", "image/gif"]}
+                type="Logo"
+                id={user?.userId}
+              />
             </TabsContent>
           </Tabs>
         </div>

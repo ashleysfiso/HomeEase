@@ -108,7 +108,7 @@ export default function Reviews({ data, isAdmin }) {
             <div className="text-center space-y-4">
               <div className="space-y-2">
                 <div className="text-4xl font-bold">
-                  {averageRating.toFixed(1)}
+                  {averageRating ? averageRating.toFixed(1) : 0}
                 </div>
                 <StarRating rating={Math.round(averageRating)} size="w-6 h-6" />
                 <p className="text-sm text-muted-foreground">

@@ -66,6 +66,32 @@ export async function UpdatePassword(creds) {
   }
 }
 
+export async function UpdateLogo(userId, url) {
+  try {
+    const res = await axiosInstance.put(
+      `ServiceProviders/company-logo/${userId}/${url}`
+    );
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
+}
+
+export async function GetPresignedURL(fileName, contentType) {
+  try {
+    const res = await axiosInstance.get(
+      "https://localhost:7234/api/AwsUpload/presigned-url",
+      {
+        params: { fileName: fileName, contentType: contentType },
+      }
+    );
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    throw { message: handleAxiosError(err) };
+  }
+}
+
 //===================================================================================================================
 // Service offerings functions
 export async function GetServiceOfferings() {
@@ -213,6 +239,15 @@ export async function AddNewService(service) {
 export async function UpdateService(service) {
   try {
     const res = await axiosInstance.put(`Services/${service.id}`, service);
+    return res.data;
+  } catch (err) {
+    throw { message: handleAxiosError(err) };
+  }
+}
+
+export async function UpdateServiceImgURl(id, url) {
+  try {
+    const res = await axiosInstance.put(`Services/service-image/${id}/${url}`);
     return res.data;
   } catch (err) {
     throw { message: handleAxiosError(err) };
